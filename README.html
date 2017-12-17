@@ -567,8 +567,8 @@ me enough, you can install the pre-compiled packages in <em>pkg/</em> with
 <tt class="docutils literal">pacman <span class="pre">-U</span> [package]</tt>.</p>
 <p>Then copy the <em>xmr-mine</em> script to your local path and edit the config
 variables at the head of the script with your desired wallet and pool info.</p>
-<p>A valid machine lookup name must be specified by MINER_NAME in order
-to correctly display miner stats.</p>
+<p>A valid machine hostname and domain must be specified by MINER_NAME
+in order to correctly display miner stats.</p>
 </div>
 <div class="section" id="synopsis">
 <h1>Synopsis</h1>
@@ -583,33 +583,54 @@ processor supports AES.  Check if <em>xmr-stak</em> is already running.  Generat
 <div class="section" id="options">
 <h1>Options</h1>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">-B,</span> <span class="pre">--background</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--background,</span> <span class="pre">-B</span></tt></dt>
 <dd>Launch in quiet daemon mode and fork to background.</dd>
-<dt><tt class="docutils literal"><span class="pre">-C,</span> <span class="pre">--config</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--config,</span> <span class="pre">-C</span></tt></dt>
 <dd>Use XMR_CONFIG (defined in script variables) file as <em>config.txt</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--cpu</span></tt></dt>
 <dd>Use XMR_CPU (defined in script variables) file as <em>cpu.txt</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">-D,</span> <span class="pre">--dryrun</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--dryrun,</span> <span class="pre">-D</span></tt></dt>
 <dd>Run script and generate <em>config.txt</em> without launching <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">-G,</span> <span class="pre">--gen-config,</span> <span class="pre">--generate-config</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--gen-config,</span> <span class="pre">-G</span></tt></dt>
 <dd>Let <em>xmr-stak</em> generate a new <em>config.txt</em> file in DIR_MINE.
 Newly generated config files must be copied manually to XMR_CONFIG
 if future use is desired.</dd>
-<dt><tt class="docutils literal"><span class="pre">-H,</span> <span class="pre">--hash</span></tt></dt>
-<dd>Print hash rate.</dd>
-<dt><tt class="docutils literal"><span class="pre">-I,</span> <span class="pre">--incognito</span></tt></dt>
-<dd>Launch <em>xmr-stak</em> in daemon mode piping all output to <em>/dev/null</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">-K,</span> <span class="pre">--kill</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--kill,</span> <span class="pre">-K</span></tt></dt>
 <dd>Kill any instances of <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">-N,</span> <span class="pre">--nvidia</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--nvidia,</span> <span class="pre">-N</span></tt></dt>
 <dd>Use XMR_NVIDIA (defined in script variables) file as <em>nvidia.txt</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">-R,</span> <span class="pre">--random-pool,</span> <span class="pre">--random-weight</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--quiet,</span> <span class="pre">-Q</span></tt></dt>
+<dd>Launch <em>xmr-stak</em> in daemon mode.  Pipe all output to <em>/dev/null</em>.</dd>
+<dt><tt class="docutils literal"><span class="pre">--random-pool,</span> <span class="pre">-R</span></tt></dt>
 <dd>Randomize pool weights.</dd>
-<dt><tt class="docutils literal"><span class="pre">-S,</span> <span class="pre">--status</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--show-hash,</span> <span class="pre">-H</span></tt></dt>
+<dd>Print hash rate.</dd>
+<dt><tt class="docutils literal"><span class="pre">--show-status,</span> <span class="pre">-S</span></tt></dt>
 <dd>Print current pool status and hash rate.</dd>
-<dt><tt class="docutils literal"><span class="pre">-W,</span> <span class="pre">--wallet</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--show-wallet,</span> <span class="pre">-W</span></tt></dt>
 <dd>Print XMR wallet address.</dd>
+<dt><tt class="docutils literal"><span class="pre">--wallet,</span> <span class="pre">-w</span> &lt;XMR ADDRESS&gt;</tt></dt>
+<dd>Specify xmr wallet to mine to.</dd>
 </dl>
+</div>
+<div class="section" id="environment-variables">
+<h1>Environment Variables</h1>
+<p>The default behavior of xmr-mine can may be affected by setting
+optional environment variables.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal">XMR_WALLET</tt></dt>
+<dd>Default wallet address mined to.</dd>
+<dt><tt class="docutils literal">XMR_POOL</tt></dt>
+<dd>Default xmr mining pool address and port number.  This is added
+to the list of pool address and given the highest weight.</dd>
+<dt><tt class="docutils literal">XMR_POOL_PASSWORD</tt></dt>
+<dd>Pool password to use for default pool XMR_POOL.  HOSTNAME is
+used if left unset.  Some pools are capable of monitoring
+individual miners identified by the pool password.</dd>
+</dl>
+</div>
+<div class="section" id="configuration-files">
+<h1>Configuration Files</h1>
 </div>
 <div class="section" id="notes">
 <h1>Notes</h1>

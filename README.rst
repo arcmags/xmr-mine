@@ -30,8 +30,8 @@ me enough, you can install the pre-compiled packages in *pkg/* with
 Then copy the *xmr-mine* script to your local path and edit the config
 variables at the head of the script with your desired wallet and pool info.
 
-A valid machine lookup name must be specified by MINER_NAME in order
-to correctly display miner stats.
+A valid machine hostname and domain must be specified by MINER_NAME
+in order to correctly display miner stats.
 
 Synopsis
 ========
@@ -50,43 +50,70 @@ processor supports AES.  Check if *xmr-stak* is already running.  Generate
 Options
 =======
 
-``-B, --background``
+``--background, -B``
     Launch in quiet daemon mode and fork to background.
 
-``-C, --config``
+``--config, -C``
     Use XMR_CONFIG (defined in script variables) file as *config.txt*.
 
 ``--cpu``
     Use XMR_CPU (defined in script variables) file as *cpu.txt*.
 
-``-D, --dryrun``
+``--dryrun, -D``
     Run script and generate *config.txt* without launching *xmr-stak*.
 
-``-G, --gen-config, --generate-config``
+``--gen-config, -G``
     Let *xmr-stak* generate a new *config.txt* file in DIR_MINE.
     Newly generated config files must be copied manually to XMR_CONFIG
     if future use is desired.
 
-``-H, --hash``
-    Print hash rate.
-
-``-I, --incognito``
-    Launch *xmr-stak* in daemon mode piping all output to */dev/null*.
-
-``-K, --kill``
+``--kill, -K``
     Kill any instances of *xmr-stak*.
 
-``-N, --nvidia``
+``--nvidia, -N``
     Use XMR_NVIDIA (defined in script variables) file as *nvidia.txt*.
 
-``-R, --random-pool, --random-weight``
+``--quiet, -Q``
+    Launch *xmr-stak* in daemon mode.  Pipe all output to */dev/null*.
+
+``--random-pool, -R``
     Randomize pool weights.
 
-``-S, --status``
+``--show-hash, -H``
+    Print hash rate.
+
+``--show-status, -S``
     Print current pool status and hash rate.
 
-``-W, --wallet``
+``--show-wallet, -W``
     Print XMR wallet address.
+
+``--wallet, -w <XMR ADDRESS>``
+    Specify xmr wallet to mine to.
+
+
+Environment Variables
+=====================
+
+The default behavior of xmr-mine can may be affected by setting
+optional environment variables.
+
+``XMR_WALLET``
+    Default wallet address mined to.
+
+``XMR_POOL``
+    Default xmr mining pool address and port number.  This is added
+    to the list of pool address and given the highest weight.
+
+``XMR_POOL_PASSWORD``
+    Pool password to use for default pool XMR_POOL.  HOSTNAME is
+    used if left unset.  Some pools are capable of monitoring
+    individual miners identified by the pool password.
+
+
+Configuration Files
+===================
+
 
 
 Notes
