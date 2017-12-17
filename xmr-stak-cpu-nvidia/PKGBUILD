@@ -1,0 +1,39 @@
+# Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+pkgname=xmr-stak-cpu-nvidia
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="Monero CPU/nvidia all in one miner"
+arch=('x86_64')
+url='https://github.com/fireice-uk/xmr-stak'
+license=('GPL3')
+conflicts=('xmr-stak-git')
+conflicts=('xmr-stak-cpu')
+makedepends=('cmake' 'opencl-headers')
+depends=('libmicrohttpd' 'openssl' 'hwloc' 'cuda' 'ocl-icd')
+source=("xmr-stak-${pkgver}.tar.gz::$url/archive/v${pkgver}.tar.gz"
+    'no-donate.patch')
+md5sums=('4b8d709980c8a14b8e74d47ae4a21d30'
+    'dcaf327fcbc4baebf9e0c8d98c76f787')
+
+prepare() {
+    cd "$srcdir/xmr-stak-${pkgver}"
+    patch -p1 -i ../no-donate.patch
+}
+
+build() {
+    cd "$srcdir/xmr-stak-${pkgver}"
+    cmake . \
+        -DCMAKE_C_COMPILER=gcc-6 \
+        -DCMAKE_CXX_COMPILER=g++-6 \
+        -DXMR-STAK_CURRENCY=monero \
+        -DOpenCL_ENABLE=OFF
+    make
+}
+
+package() {
+    cd "$srcdir/xmr-stak-${pkgver}"
+    install -D -m755 ./bin/xmr-stak \
+        "$pkgdir/usr/bin/xmr-stak"
+    install -D -m644 ./bin/libxmrstak_cuda_backend.so \
+        "$pkgdir/usr/lib/libxmrstak_cuda_backend.so"
+}
