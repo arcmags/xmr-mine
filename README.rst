@@ -115,12 +115,6 @@ optional environment variables.
     *~/.xmr-mine* is used by default if left unset.
 
 
-Configuration Files
-===================
-
-All
-
-
 Notes
 =====
 
