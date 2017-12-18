@@ -211,7 +211,7 @@ ntp_check() {
 }
 
 # Execute specified action from FLAG.
-mine_action()
+mine_action() {
     # print help:
     if [ "$FLAG_HELP" = 'true' ]; then
         print_help
@@ -376,28 +376,35 @@ config_build() {
         pool_weights=( `shuf -i 1-${#pool_addresses[@]} \
             -n ${#pool_addresses[@]}` )
     fi
-    # add default pool:
+    # get max weight:
+    local WEIGHT_MAX=0
+    for WEIGHT in ${pool_weights[@]}; do
+        if [ $WEIGHT -gt $WEIGHT_MAX ]; then
+            WEIGHT_MAX=$WEIGHT
+        fi
+    done
+    # add default pool to list:
     if [ -n "$pool_address" ]; then
         pool_addresses+=( "$pool_address" )
-        pool_weights+=( ${#pool_addresses[@]} )
-        pool_passwords+=( "$pool_password" }
+        pool_weights+=( $((WEIGHT_MAX + 1)) )
+        pool_passwords+=( "$pool_password" )
     fi
-    # begin pool list:
+    # begin config.txt:
     XMR_CONFIG_TEXT="\"pool_list\" :\n"
     XMR_CONFIG_TEXT+="[\n"
-    i=0
+    local I=0
     # add pools:
     for POOL in ${pool_addresses[@]}; do
         XMR_CONFIG_TEXT+="  {\n"
         XMR_CONFIG_TEXT+="    \"pool_address\" : \"$POOL\",\n"
         XMR_CONFIG_TEXT+="    \"wallet_address\" : \"$wallet_address\",\n"
-        XMR_CONFIG_TEXT+="    \"pool_password\" : \"${pool_passwords[i]}\",\n"
-        XMR_CONFIG_TEXT+="    \"pool_weight\" : ${pool_weights[i]},\n"
+        XMR_CONFIG_TEXT+="    \"pool_password\" : \"${pool_passwords[I]}\",\n"
+        XMR_CONFIG_TEXT+="    \"pool_weight\" : ${pool_weights[I]},\n"
         XMR_CONFIG_TEXT+="    \"use_nicehash\" : $use_nicehash,\n"
         XMR_CONFIG_TEXT+="    \"use_tls\" : $use_tls,\n"
         XMR_CONFIG_TEXT+="    \"tls_fingerprint\" : \"$tls_fingerprint\"\n"
         XMR_CONFIG_TEXT+="  },\n"
-        ((i++))
+        ((I++))
     done
     XMR_CONFIG_TEXT+="],\n"
     # add global settings:
