@@ -313,15 +313,32 @@ print_mine_status() {
 
 # Print wallet address.
 print_wallet() {
-    printf ":: wallet: "
-    if [ `tput cols` -lt 107 ]; then
-        printf "${wallet_address:0:48}\n"
-        printf "           ${wallet_address:48}\n"
+    local XMR_MINE_WALLET=
+    # get address from active config.txt:
+    cd "$MINE_DIRECTORY"
+    if [ -f config.txt ] && (pgrep -x xmr-stak >/dev/null); then
+        XMR_MINE_WALLET="`grep -Pom1 \
+            '^\s*(?!(\*|/\*)).*"wallet_address"\s*:\s*"\K[A-Za-z0-9]+(?=")' \
+            config.txt`"
+    # get address from script if not active:
     else
-        printf "${wallet_address}\n"
+        XMR_MINE_WALLET="$wallet_address"
     fi
-    if !(pgrep -x xmr-stak >/dev/null); then
-        printf ":: not mining\n"
+    # formatted output:
+    if [ "$FLAG_QUIET" = 'false' ]; then
+        printf ":: wallet: "
+        if [ `tput cols` -lt 107 ]; then
+            printf "${XMR_MINE_WALLET:0:48}\n"
+            printf "           ${XMR_MINE_WALLET:48}\n"
+        else
+            printf "${XMR_MINE_WALLET}\n"
+        fi
+        if !(pgrep -x xmr-stak >/dev/null); then
+            printf ":: not mining\n"
+        fi
+    # raw output (quiet):
+    elif [ -n "$XMR_MINE_WALLET" ] && (pgrep -x xmr-stak >/dev/null); then
+        printf "${XMR_MINE_WALLET}\n"
     fi
     return 0
 }
@@ -345,10 +362,10 @@ config_file() {
     return 0
 }
 
-#config_trim() {
-    #XMR_CONFIG_DIRECTORY
-
-#}
+config_trim() {
+    grep -Pv '^\s*(\s*/|\s*\*|\s*$)' config.txt
+    return 0
+}
 
 # Copy existing cpu config file or let xmr-stak build one.
 cpu_file() {
@@ -465,9 +482,10 @@ mine_action
 # precheck system before firing up miner:
 mine_precheck
 
-# switch to mining directory:
+# switch to clean mine directory:
 mkdir -p "$MINE_DIRECTORY"
 cd "$MINE_DIRECTORY"
+rm -f config.txt cpu.txt nvidia.txt
 
 # use existing config or let script build new config.txt:
 if [ "$FLAG_CONFIG_NEW" = 'false' ]; then
