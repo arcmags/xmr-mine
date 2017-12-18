@@ -98,8 +98,8 @@ ENVIRONMENT VARIABLES
         individual miners identified by the pool password.
 
     XMR_CONFIG_DIRECTORY
-        Directory containing any xmr-stak configuration files.  ~/.xmr-mine
-        is used if left unset.
+        Directory containing any xmr-stak configuration files.
+        ~/.xmr-mine is used by default if left unset.
 
 CONFIGURATION FILES
 
@@ -345,6 +345,11 @@ config_file() {
     fi
     return 0
 }
+
+#config_trim() {
+
+
+#}
 
 # Copy existing cpu config file or let xmr-stak build one.
 cpu_file() {

@@ -110,10 +110,15 @@ optional environment variables.
     used if left unset.  Some pools are capable of monitoring
     individual miners identified by the pool password.
 
+``XMR_CONFIG_DIRECTORY``
+    Directory to save and source xmr-stak configuration files from.
+    *~/.xmr-mine* is used by default if left unset.
+
 
 Configuration Files
 ===================
 
+All
 
 
 Notes
