@@ -93,16 +93,12 @@ ENVIRONMENT VARIABLES
 
     XMR_POOL_PASSWORD
         Pool password used for default pool.  HOSTNAME is used if no
-        password is set.  Some pools arc capable a monitoring
-        individual miners identified by the pool password.
+        password is set.  Some pools are capable a monitoring
+        individual miners identified by their pool passwords.
 
     XMR_CONFIG_DIRECTORY
         Directory containing any xmr-stak configuration files.
         ~/.xmr-mine is used by default if left unset.
-
-CONFIGURATION FILES
-
-
 
 CONFIGURATION
     Every xmr-stak config.txt variable is set in the XMR-STAK SETTINGS
@@ -165,7 +161,7 @@ http_pass=''
 prefer_ipv4='true'
 
 
-##===========================  VARIABLES  ============================##
+##========================  SCRIPT VARIABLES  ========================##
 # default xmr-stak config files:
 XMR_CONFIG_DIRECTORY="${XMR_CONFIG_DIRECTORY:-$HOME/.xmr-mine}"
 XMR_CONFIG="$XMR_CONFIG_DIRECTORY/config.txt"
@@ -173,7 +169,7 @@ XMR_CPU="$XMR_CONFIG_DIRECTORY/cpu.txt"
 XMR_NVIDIA="$XMR_CONFIG_DIRECTORY/nvidia.txt"
 # machine HOSTNAME.localdomain (used for printing stats the api.json):
 MINE_NAME="$HOSTNAME.localdomain"
-# script variables:
+# active mining directory:
 MINE_DIRECTORY='/tmp/xmr-mine'
 # script flags:
 FLAG_CONFIG_FILE='false'

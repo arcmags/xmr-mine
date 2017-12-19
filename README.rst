@@ -108,7 +108,7 @@ optional environment variables.
 ``XMR_POOL_PASSWORD``
     Pool password to use for default pool XMR_POOL.  HOSTNAME is
     used if left unset.  Some pools are capable of monitoring
-    individual miners identified by the pool password.
+    individual miners identified by their pool passwords.
 
 ``XMR_CONFIG_DIRECTORY``
     Directory to save and source xmr-stak configuration files from.
