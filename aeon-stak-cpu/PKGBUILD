@@ -1,13 +1,11 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
-pkgname=xmr-stak-cpu
+pkgname=aeon-stak-cpu
 pkgver=2.2.0
 pkgrel=1
-pkgdesc="Monero CPU miner"
+pkgdesc="AEON CPU miner"
 arch=('x86_64')
 url='https://github.com/fireice-uk/xmr-stak'
 license=('GPL3')
-conflicts=('xmr-stak-git')
-conflicts=('xmr-stak-cpu-nvidia')
 makedepends=('cmake')
 depends=('libmicrohttpd' 'openssl' 'hwloc')
 source=("xmr-stak-${pkgver}.tar.gz::$url/archive/v${pkgver}.tar.gz"
@@ -23,7 +21,7 @@ prepare() {
 build() {
     cd "$srcdir/xmr-stak-${pkgver}"
     cmake . \
-        -DXMR-STAK_CURRENCY=monero \
+        -DXMR-STAK_CURRENCY=aeon \
         -DOpenCL_ENABLE=OFF \
         -DCUDA_ENABLE=OFF
     make
@@ -31,5 +29,5 @@ build() {
 
 package() {
     cd "$srcdir/xmr-stak-${pkgver}"
-    install -D -m755 ./bin/xmr-stak "$pkgdir/usr/bin/xmr-stak"
+    install -D -m755 ./bin/xmr-stak "$pkgdir/usr/bin/aeon-stak"
 }

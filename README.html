@@ -583,22 +583,14 @@ processor supports AES.  Check if <em>xmr-stak</em> is already running.  Generat
 <div class="section" id="options">
 <h1>Options</h1>
 <dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--aeon,</span> <span class="pre">-A</span></tt></dt>
+<dd>Mine for AEON currency instead of Monero.  (Requires aoen-stak.)</dd>
 <dt><tt class="docutils literal"><span class="pre">--background,</span> <span class="pre">-B</span></tt></dt>
 <dd>Launch in quiet daemon mode and fork to background.</dd>
-<dt><tt class="docutils literal"><span class="pre">--config,</span> <span class="pre">-C</span></tt></dt>
-<dd>Use XMR_CONFIG (defined in script variables) file as <em>config.txt</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--cpu</span></tt></dt>
-<dd>Use XMR_CPU (defined in script variables) file as <em>cpu.txt</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--dryrun,</span> <span class="pre">-D</span></tt></dt>
 <dd>Run script and generate <em>config.txt</em> without launching <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--gen-config,</span> <span class="pre">-G</span></tt></dt>
-<dd>Let <em>xmr-stak</em> generate a new <em>config.txt</em> file in DIR_MINE.
-Newly generated config files must be copied manually to XMR_CONFIG
-if future use is desired.</dd>
 <dt><tt class="docutils literal"><span class="pre">--kill,</span> <span class="pre">-K</span></tt></dt>
 <dd>Kill any instances of <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--nvidia,</span> <span class="pre">-N</span></tt></dt>
-<dd>Use XMR_NVIDIA (defined in script variables) file as <em>nvidia.txt</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--quiet,</span> <span class="pre">-Q</span></tt></dt>
 <dd>Launch <em>xmr-stak</em> in daemon mode.  Pipe all output to <em>/dev/null</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--random-pool,</span> <span class="pre">-R</span></tt></dt>
@@ -619,7 +611,7 @@ if future use is desired.</dd>
 optional environment variables.</p>
 <dl class="docutils">
 <dt><tt class="docutils literal">XMR_WALLET</tt></dt>
-<dd>Default wallet address mined to.</dd>
+<dd>Default Monero wallet address mined to.</dd>
 <dt><tt class="docutils literal">XMR_POOL</tt></dt>
 <dd>Default xmr mining pool address and port number.  This is added
 to the list of pool address and given the highest weight.</dd>
@@ -630,6 +622,14 @@ individual miners identified by their pool passwords.</dd>
 <dt><tt class="docutils literal">XMR_CONFIG_DIRECTORY</tt></dt>
 <dd>Directory to save and source xmr-stak configuration files from.
 <em>~/.xmr-mine</em> is used by default if left unset.</dd>
+<dt><tt class="docutils literal">AEON_WALLET</tt></dt>
+<dd>Default AEON wallet address mined to.</dd>
+<dt><tt class="docutils literal">AEON_POOL</tt></dt>
+<dd>Default AEON mining pool address and port number.  This is added
+to the list of aeon pool address and given the highest weight.</dd>
+<dt><tt class="docutils literal">AEON_POOL_PASSWORD</tt></dt>
+<dd>Pool password to use for default pool AEON_POOL.  HOSTNAME is
+used if left unset.</dd>
 </dl>
 </div>
 <div class="section" id="notes">

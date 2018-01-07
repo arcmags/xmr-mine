@@ -28,31 +28,20 @@ REQUIREMENTS
         timesyncd.service before launching xmr-stak.
 
 OPTIONS
+    --aeon, -A
+        Mine for AEON currency instead of Monero.
+
     --background, -B
         Launch xmr-stak in daemon mode and fork to background.
 
-    --config, -C
-        Use XMR_CONFIG file as config.txt.
-
-    --cpu
-        Use XMR_CPU file as cpu.txt.
-
     --dryrun, D
         Run script and generate config.txt without launching xmr-stak
-
-    --gen-config, -G
-        Use xmr-stak to generate a new config in the MINE_DIRECTORY directory.
-        Newly generated config files must be copied manually to XMR_CONFIG
-        if future use is desired.
 
     --help
         Print help.
 
     --kill, -K
         Kill any instances of xmr-stak.
-
-    --nvidia, -N
-        Use XMR_NVIDIA file as nvidia.txt.
 
     --pool, -p <ADDRESS:PORT>
         Specify default pool address and port number.  Pool is added
@@ -85,7 +74,7 @@ ENVIRONMENT VARIABLES
     setting optional environment variables.
 
     XMR_WALLET
-        Default wallet address.
+        Default Monero wallet address.
 
     XMR_POOL
         Default xmr mining pool address and port number.  This is added
@@ -99,6 +88,17 @@ ENVIRONMENT VARIABLES
     XMR_CONFIG_DIRECTORY
         Directory containing any xmr-stak configuration files.
         ~/.xmr-mine is used by default if left unset.
+
+    AEON_WALLET
+        Default AEON wallet address.
+
+    AEON_POOL
+        Default AEON mining pool address and port number.  This is added
+        to the list of aeon pools addresses and given the highest weight.
+
+    AEON_POOL_PASSWORD
+        Pool password used for default aeon pool.  HOSTNAME is used if no
+        password is set.
 
 CONFIGURATION
     Every xmr-stak config.txt variable is set in the XMR-STAK SETTINGS
@@ -119,9 +119,12 @@ EODOC
 ##=======================  XMR-STAK SETTINGS  ========================##
 # default wallet:
 wallet_address="$XMR_WALLET"
+aeon_wallet_address="$AEON_WALLET"
 # default pool:
 pool_address="$XMR_POOL"
 pool_password="${XMR_POOL_PASSWORD:-$HOSTNAME}"
+aeon_pool_address="$AEON_POOL"
+aeon_pool_password="${AEON_POOL_PASSWORD:-$HOSTNAME}"
 # pools:
 pool_addresses=(
     'pool.supportxmr.com:3333'
@@ -135,6 +138,18 @@ pool_passwords=(
 )
 pool_weights=(
     3
+    2
+    1
+)
+aeon_pool_addresses=(
+    'pool.aeon.hashvault.pro:5555'
+    'aeon.sumominer.com:3333'
+)
+aeon_pool_passwords=(
+    "$aeon_pool_password"
+    "$aeon_pool_password"
+)
+aeon_pool_weights=(
     2
     1
 )
@@ -171,18 +186,21 @@ XMR_NVIDIA="$XMR_CONFIG_DIRECTORY/nvidia.txt"
 MINE_NAME="$HOSTNAME.localdomain"
 # active mining directory:
 MINE_DIRECTORY='/tmp/xmr-mine'
+# commands:
+CMD_MINE_XMR='/usr/bin/xmr-stak'
+CMD_MINE="$CMD_MINE_XMR"
+CMD_MINE_AEON='/usr/bin/aeon-stak'
 # script flags:
+FLAG_AEON='false'
 FLAG_CONFIG_FILE='false'
-FLAG_CPU_FILE='false'
 FLAG_DAEMON='false'
 FLAG_DRYRUN='false'
 FLAG_ERROR='false'
 FLAG_HASH='false'
 FLAG_HELP='false'
 FLAG_QUIET='false'
-FLAG_CONFIG_NEW='false'
 FLAG_KILL='false'
-FLAG_NVIDIA_FILE='false'
+#FLAG_NVIDIA_FILE='false'
 FLAG_RANDOM_POOL='false'
 FLAG_STATUS='false'
 FLAG_WALLET='false'
@@ -232,12 +250,17 @@ mine_precheck() {
     # FAIL: no AES support:
     if !(cat /proc/cpuinfo | grep -P 'flags\s*:.* aes( |$)' >/dev/null); then
         printf ":! CPU does not support AES\n"
-        printf ":: unable to launch xmr-stak\n"
+        printf ":: unable to launch stak miner\n"
         exit 3
     fi
     # FAIL: xmr-stak already running:
     if (pgrep -x xmr-stak >/dev/null); then
         printf ":! xmr-stak is already running\n"
+        exit 2
+    fi
+    # FAIL: aeon-stak already running:
+    if (pgrep -x aeon-stak >/dev/null); then
+        printf ":! aeon-stak is already running\n"
         exit 2
     fi
     # FAIL: no internet connection:
@@ -258,6 +281,9 @@ mine_kill() {
     if (pgrep -x xmr-stak >/dev/null); then
         pkill xmr-stak
         printf ":: killed xmr-stak\n"
+    elif (pgrep -x aeon-stak >/dev/null); then
+        pkill aeon-stak
+        printf ":: killed aeon-stak\n"
     else
         printf ":: not mining\n"
     fi
@@ -266,7 +292,7 @@ mine_kill() {
 
 # Print current pool status and hash rate.
 print_mine_status() {
-    if (pgrep -x xmr-stak >/dev/null); then
+    if (pgrep -x xmr-stak >/dev/null) || (pgrep -x aeon-stak >/dev/null); then
         XMR_JSON="`curl -s ${MINE_NAME}:${httpd_port}/api.json`"
         HASH_RATE="`printf "$XMR_JSON" | \
             grep -Po '"total": ?\[\K[^,]+(?=,)'`"
@@ -291,12 +317,17 @@ print_mine_status() {
             $UP_HOURS $UP_MINS $UP_SECS`"
         POOL_PING="`printf "$XMR_JSON" | \
             grep -Po '"ping": ?\K[0-9]+(?=,)'`"
+        POOL_PASSWORD="`cat "$MINE_DIRECTORY/config.txt" | \
+            tr -d '\n' | \
+            grep -Po ".*?\K{.*?${POOL_ADDRESS}.*?}(?=,)" | \
+            grep -Po '.*pool_password"\s?:\s?"\K[^"]*(?=")'`"
         # print hash rate only:
         if [ "$FLAG_HASH" = 'true' ]; then
-            printf ":: hash rate: $hashRate\n"
+            printf ":: hash rate: $HASH_RATE\n"
         # print full status:
         else
             printf ":: pool address: $POOL_ADDRESS\n"
+            printf "  pool password: $POOL_PASSWORD\n"
             printf "           ping: $POOL_PING\n"
             printf "         uptime: $UP_TEXT\n"
             printf "      hash rate: $HASH_RATE\n"
@@ -312,7 +343,8 @@ print_wallet() {
     local XMR_MINE_WALLET=
     # get address from active config.txt:
     cd "$MINE_DIRECTORY"
-    if [ -f config.txt ] && (pgrep -x xmr-stak >/dev/null); then
+    if [ -f config.txt ] &&
+    ( (pgrep -x xmr-stak >/dev/null) || (pgrep -x aeon-stak >/dev/null) ); then
         XMR_MINE_WALLET="`grep -Pom1 \
             '^\s*(?!(\*|/\*)).*"wallet_address"\s*:\s*"\K[A-Za-z0-9]+(?=")' \
             config.txt`"
@@ -329,31 +361,14 @@ print_wallet() {
         else
             printf "${XMR_MINE_WALLET}\n"
         fi
-        if !(pgrep -x xmr-stak >/dev/null); then
+        if !(pgrep -x xmr-stak >/dev/null) &&
+        !(pgrep -x aeon-stak >/dev/null); then
             printf ":: not mining\n"
         fi
     # raw output (quiet):
-    elif [ -n "$XMR_MINE_WALLET" ] && (pgrep -x xmr-stak >/dev/null); then
+    elif [ -n "$XMR_MINE_WALLET" ] &&
+    ( (pgrep -x xmr-stak >/dev/null) || (pgrep -x aeon-stak >/dev/null) ); then
         printf "${XMR_MINE_WALLET}\n"
-    fi
-    return 0
-}
-
-# Copy existing config file or let script build one.
-config_file() {
-    if [ "$FLAG_CONFIG_FILE" = 'true' ]; then
-        # use existing config:
-        if [ -f "$XMR_CONFIG" ]; then
-            cp "$XMR_CONFIG" ./config.txt
-        # build new config:
-        else
-            printf ":! no config file found\n"
-            printf ":: generating new config.txt\n"
-            config_build
-        fi
-    # build new config:
-    else
-        config_build
     fi
     return 0
 }
@@ -364,7 +379,7 @@ config_trim() {
 }
 
 # Copy existing cpu config file or let xmr-stak build one.
-cpu_file() {
+cpu_setup() {
     if [ -f "$XMR_CPU" ]; then
         cp "$XMR_CPU" ./cpu.txt
     else
@@ -374,20 +389,38 @@ cpu_file() {
     return 0
 }
 
-# Copy existing nvidia config file or let xmr-stak build one.
-nvidia_file() {
-    if [ -f "$XMR_NVIDIA" ]; then
-        cp "$XMR_NVIDIA" ./nvidia.txt
-    else
-        printf ":! no nvidia file found\n"
-        printf ":: generating new nvidia.txt\n"
-    fi
+# Copy nvidia config file with filename matching machine GPU.
+nvidia_setup() {
+    cd "$XMR_CONFIG_DIRECTORY"
+    local GPU="`lspci | grep -Po '^.*?VGA.+?controller:\s?\K.*'`"
+    local CONFIG_FILES="`ls`"
+    # look for config file with filename matching GPU:
+    for FILE in $CONFIG_FILES; do
+        FILE_GPU="${FILE%.txt}"
+        FILE_GPU="${FILE_GPU//_/ }"
+        if [[ "$GPU" =~ "${FILE_GPU}" ]]; then
+            cp "$FILE" "$MINE_DIRECTORY/nvidia.txt"
+        fi
+    done
+    cd "$MINE_DIRECTORY"
     return 0
 }
 
 # Build xmr-stak config.txt file.
 config_build() {
     local STR_XMR_CONFIG=''
+
+    # mine AEON instead of Monero:
+    if [ "$FLAG_AEON" = 'true' ]; then
+        wallet_address="$aeon_wallet_address"
+        pool_address="$aeon_pool_address"
+        pool_password="$aeon_pool_password"
+        pool_addresses=( ${aeon_pool_addresses[@]} )
+        pool_passwords=( ${aeon_pool_passwords[@]} )
+        pool_weights=( ${aeon_pool_weights[@]} )
+        currency='aeon'
+    fi
+
     # generate random pool weights:
     if [ "$FLAG_RANDOM_POOL" = 'true' ]; then
         pool_weights=( `shuf -i 1-${#pool_addresses[@]} \
@@ -406,6 +439,7 @@ config_build() {
         pool_weights+=( $((WEIGHT_MAX + 1)) )
         pool_passwords+=( "$pool_password" )
     fi
+
     # begin config.txt:
     STR_XMR_CONFIG="\"pool_list\" :\n"
     STR_XMR_CONFIG+="[\n"
@@ -415,7 +449,8 @@ config_build() {
         STR_XMR_CONFIG+="  {\n"
         STR_XMR_CONFIG+="    \"pool_address\" : \"$POOL\",\n"
         STR_XMR_CONFIG+="    \"wallet_address\" : \"$wallet_address\",\n"
-        STR_XMR_CONFIG+="    \"pool_password\" : \"${pool_passwords[I]}\",\n"
+        #STR_XMR_CONFIG+="    \"pool_password\" : \"${pool_passwords[I]}\",\n"
+        STR_XMR_CONFIG+="    \"pool_password\" : \"${pool_password}\",\n"
         STR_XMR_CONFIG+="    \"pool_weight\" : ${pool_weights[I]},\n"
         STR_XMR_CONFIG+="    \"use_nicehash\" : $use_nicehash,\n"
         STR_XMR_CONFIG+="    \"use_tls\" : $use_tls,\n"
@@ -450,23 +485,20 @@ config_build() {
 ##=============================  SCRIPT  =============================##
 # parse args:
 while [ -n "$1" ]; do case $1 in
-    --background|-B)   FLAG_DAEMON='true'                    ;;
-    --config|-C)       FLAG_CONFIG_FILE='true'               ;;
-    --cpu)             FLAG_CPU_FILE='true'                  ;;
-    --dryrun|-D)       FLAG_DRYRUN='true'                    ;;
-    --gen-config|-G)   FLAG_CONFIG_NEW='true'                ;;
-    --hash|-H)         FLAG_HASH='true'                      ;;
-    --help)            FLAG_HELP='true'                      ;;
-    --kill|-K)         FLAG_KILL='true'                      ;;
-    --nvidia|-N)       FLAG_NVIDIA_FILE='true'               ;;
-    --pool|-p)         shift; pool_address="$1"              ;;
-    --password|--pass) shift; pool_password="$1"             ;;
-    --quiet|-Q|-I)     FLAG_QUIET='true'; FLAG_DAEMON='true' ;;
-    --random-pool|-R)  FLAG_RANDOM_POOL='true'               ;;
-    --show-hash|-H)    FLAG_HASH='true'                      ;;
-    --show-status|-S)  FLAG_STATUS='true'                    ;;
-    --show-wallet|-W)  FLAG_WALLET='true'                    ;;
-    --wallet|-w)       shift; wallet_address="$1"            ;;
+    --aeon|-A)         FLAG_AEON='true'                                     ;;
+    --background|-B)   FLAG_DAEMON='true'                                   ;;
+    --dryrun|-D)       FLAG_DRYRUN='true'                                   ;;
+    --hash|-H)         FLAG_HASH='true'                                     ;;
+    --help)            FLAG_HELP='true'                                     ;;
+    --kill|-K)         FLAG_KILL='true'                                     ;;
+    --pool|-p)         shift; pool_address="$1"; aoen_pool_address="$1"     ;;
+    --password|--pass) shift; pool_password="$1"; aoen_pool_password="$1"   ;;
+    --quiet|-Q|-I)     FLAG_QUIET='true'; FLAG_DAEMON='true'                ;;
+    --random-pool|-R)  FLAG_RANDOM_POOL='true'                              ;;
+    --show-hash|-H)    FLAG_HASH='true'                                     ;;
+    --show-status|-S)  FLAG_STATUS='true'                                   ;;
+    --show-wallet|-W)  FLAG_WALLET='true'                                   ;;
+    --wallet|-w)       shift; wallet_address="$1"; aoen_wallet_address="$1" ;;
     # FAIL: unrecognized option:
     *)  printf ":! unrecognized option: $1\n"
         exit 5 ;;
@@ -483,14 +515,7 @@ mkdir -p "$MINE_DIRECTORY"
 cd "$MINE_DIRECTORY"
 rm -f config.txt cpu.txt nvidia.txt
 
-# use existing config or let script build new config.txt:
-if [ "$FLAG_CONFIG_NEW" = 'false' ]; then
-    config_file
-else
-    if [ -f config.txt ]; then
-        rm config.txt
-    fi
-fi
+config_build
 
 # enable daemon_mode in config.txt:
 if [ -f ./config.txt ] && [ "$FLAG_DAEMON" = 'true' ]; then
@@ -500,14 +525,12 @@ else
     FLAG_DAEMON='false'
 fi
 
-# copy default cpu config or let xmr-stak build new cpu.txt:
-if [ "$FLAG_CPU_FILE" = 'true' ]; then
-    cpu_file
-fi
+cpu_setup
+nvidia_setup
 
-# copy default nvidia config or let xmr-stak build new nvidia.txt:
-if [ "$FLAG_NVIDIA_FILE" = 'true' ]; then
-    nvidia_file
+# set command:
+if [ "$FLAG_AEON" = 'true' ]; then
+    CMD_MINE="$CMD_MINE_AEON"
 fi
 
 # launch xmr-stak:
@@ -516,17 +539,17 @@ if [ "$FLAG_DRYRUN" = 'false' ]; then
     if [ "$FLAG_DAEMON" = 'true' ]; then
         # daemon incognito mode:
         if [ "$FLAG_QUIET" = 'true' ]; then
-            xmr-stak >/dev/null 2>&1 &
+            $CMD_MINE >/dev/null 2>&1 &
             sleep 2
         # daemon normal mode:
         else
-            xmr-stak &
+            $CMD_MINE &
             sleep 2
-            printf ":: xmr-stak forked to background PID: $!\n"
+            printf ":: ${CMD_MINE##*/} forked to background PID: $!\n"
         fi
     # normal mode:
     else
-        exec /usr/bin/xmr-stak
+        exec $CMD_MINE
     fi
 fi
 
