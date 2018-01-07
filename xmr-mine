@@ -491,14 +491,14 @@ while [ -n "$1" ]; do case $1 in
     --hash|-H)         FLAG_HASH='true'                                     ;;
     --help)            FLAG_HELP='true'                                     ;;
     --kill|-K)         FLAG_KILL='true'                                     ;;
-    --pool|-p)         shift; pool_address="$1"; aoen_pool_address="$1"     ;;
-    --password|--pass) shift; pool_password="$1"; aoen_pool_password="$1"   ;;
+    --pool|-p)         shift; pool_address="$1"; aeon_pool_address="$1"     ;;
+    --password|--pass) shift; pool_password="$1"; aeon_pool_password="$1"   ;;
     --quiet|-Q|-I)     FLAG_QUIET='true'; FLAG_DAEMON='true'                ;;
     --random-pool|-R)  FLAG_RANDOM_POOL='true'                              ;;
     --show-hash|-H)    FLAG_HASH='true'                                     ;;
     --show-status|-S)  FLAG_STATUS='true'                                   ;;
     --show-wallet|-W)  FLAG_WALLET='true'                                   ;;
-    --wallet|-w)       shift; wallet_address="$1"; aoen_wallet_address="$1" ;;
+    --wallet|-w)       shift; wallet_address="$1"; aeon_wallet_address="$1" ;;
     # FAIL: unrecognized option:
     *)  printf ":! unrecognized option: $1\n"
         exit 5 ;;
