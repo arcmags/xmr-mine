@@ -25,7 +25,6 @@ build() {
     cmake . \
         -DCMAKE_C_COMPILER=gcc-6 \
         -DCMAKE_CXX_COMPILER=g++-6 \
-        -DXMR-STAK_CURRENCY=monero \
         -DOpenCL_ENABLE=OFF
     make
 }

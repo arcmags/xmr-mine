@@ -23,7 +23,6 @@ prepare() {
 build() {
     cd "$srcdir/xmr-stak-${pkgver}"
     cmake . \
-        -DXMR-STAK_CURRENCY=monero \
         -DOpenCL_ENABLE=OFF \
         -DCUDA_ENABLE=OFF
     make

@@ -546,7 +546,7 @@ ul.auto-toc {
 <h1 class="title">xmr-mine</h1>
 
 <p>Mine for <a class="reference external" href="https://getmonero.org/">Monero</a> on Arch Linux!  In addition to the <em>xmr-mine</em> wrapper
-script, this project contains Arch build files and pre-compiled binaries of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> in both CPU only and CPU + Nvidia versions. (and <a class="reference external" href="https://github.com/xmrig/xmrig">xmrig</a>)</p>
+script, this project contains Arch build files and pre-compiled binaries of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> in both CPU only and CPU + Nvidia versions.</p>
 <div class="section" id="requirements">
 <h1>Requirements</h1>
 <dl class="docutils">
@@ -583,53 +583,35 @@ processor supports AES.  Check if <em>xmr-stak</em> is already running.  Generat
 <div class="section" id="options">
 <h1>Options</h1>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">--aeon,</span> <span class="pre">-A</span></tt></dt>
-<dd>Mine for AEON currency instead of Monero.  (Requires aoen-stak.)</dd>
 <dt><tt class="docutils literal"><span class="pre">--background,</span> <span class="pre">-B</span></tt></dt>
 <dd>Launch in quiet daemon mode and fork to background.</dd>
+<dt><tt class="docutils literal"><span class="pre">--currency,</span> <span class="pre">-C</span> &lt;CURRENCY&gt;</tt></dt>
+<dd>Specify what currency to mine for.</dd>
 <dt><tt class="docutils literal"><span class="pre">--dryrun,</span> <span class="pre">-D</span></tt></dt>
 <dd>Run script and generate <em>config.txt</em> without launching <em>xmr-stak</em>.</dd>
+<dt><tt class="docutils literal"><span class="pre">--help</span></tt></dt>
+<dd>Print help.</dd>
 <dt><tt class="docutils literal"><span class="pre">--kill,</span> <span class="pre">-K</span></tt></dt>
 <dd>Kill any instances of <em>xmr-stak</em>.</dd>
+<dt><tt class="docutils literal"><span class="pre">--name,</span> <span class="pre">--pass</span> &lt;POOL PASSWORD&gt;</tt></dt>
+<dd>Password used to identify miner on pool.  $HOSTNAME is used if nothing
+is specified.</dd>
 <dt><tt class="docutils literal"><span class="pre">--quiet,</span> <span class="pre">-Q</span></tt></dt>
 <dd>Launch <em>xmr-stak</em> in daemon mode.  Pipe all output to <em>/dev/null</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--random-pool,</span> <span class="pre">-R</span></tt></dt>
 <dd>Randomize pool weights.</dd>
-<dt><tt class="docutils literal"><span class="pre">--show-hash,</span> <span class="pre">-H</span></tt></dt>
-<dd>Print hash rate.</dd>
 <dt><tt class="docutils literal"><span class="pre">--show-status,</span> <span class="pre">-S</span></tt></dt>
 <dd>Print current pool status and hash rate.</dd>
-<dt><tt class="docutils literal"><span class="pre">--show-wallet,</span> <span class="pre">-W</span></tt></dt>
-<dd>Print XMR wallet address.</dd>
-<dt><tt class="docutils literal"><span class="pre">--wallet,</span> <span class="pre">-w</span> &lt;XMR ADDRESS&gt;</tt></dt>
-<dd>Specify xmr wallet to mine to.</dd>
+<dt><tt class="docutils literal"><span class="pre">--wallet,</span> <span class="pre">-w</span> &lt;ADDRESS&gt;</tt></dt>
+<dd>Specify wallet address to mine to.</dd>
 </dl>
 </div>
 <div class="section" id="environment-variables">
 <h1>Environment Variables</h1>
-<p>The default behavior of xmr-mine can may be affected by setting
-optional environment variables.</p>
 <dl class="docutils">
-<dt><tt class="docutils literal">XMR_WALLET</tt></dt>
-<dd>Default Monero wallet address mined to.</dd>
-<dt><tt class="docutils literal">XMR_POOL</tt></dt>
-<dd>Default xmr mining pool address and port number.  This is added
-to the list of pool address and given the highest weight.</dd>
-<dt><tt class="docutils literal">XMR_POOL_PASSWORD</tt></dt>
-<dd>Pool password to use for default pool XMR_POOL.  HOSTNAME is
-used if left unset.  Some pools are capable of monitoring
-individual miners identified by their pool passwords.</dd>
-<dt><tt class="docutils literal">XMR_CONFIG_DIRECTORY</tt></dt>
-<dd>Directory to save and source xmr-stak configuration files from.
-<em>~/.xmr-mine</em> is used by default if left unset.</dd>
-<dt><tt class="docutils literal">AEON_WALLET</tt></dt>
-<dd>Default AEON wallet address mined to.</dd>
-<dt><tt class="docutils literal">AEON_POOL</tt></dt>
-<dd>Default AEON mining pool address and port number.  This is added
-to the list of aeon pool address and given the highest weight.</dd>
-<dt><tt class="docutils literal">AEON_POOL_PASSWORD</tt></dt>
-<dd>Pool password to use for default pool AEON_POOL.  HOSTNAME is
-used if left unset.</dd>
+<dt><tt class="docutils literal">MINER_CONFIG_DIR</tt></dt>
+<dd>Directory containing any <em>xmr-stak</em> configuration files.
+<em>~/.xmr-mine</em> is used by default.</dd>
 </dl>
 </div>
 <div class="section" id="notes">
@@ -638,10 +620,10 @@ used if left unset.</dd>
 ensure uptime status is calculated correctly.</p>
 <p>Script requires processor to have AES support because, for some reason,
 the new <em>xmr-stak</em> core dumps on me on CPUs without AES (on Arch Linux).</p>
-<p><em>xmr-stak</em> may not generate the best (or even remotely decent) <em>nvidia.txt</em>
-config for some GPUs.  Right now, only one possible <em>nvidia.txt</em> can be used
-by the the script.  (Possible future implementation of multiple nvidia
-configs selected by card type.)</p>
+<p>Any number of CryptoNight currencies may be specified in <em>xmr-mine.conf</em>
+as long as a valid wallet and pool address are given there as well.</p>
+<p>Multiple GPU configurations can be saved in <em>~/.xmr-mine</em>.  GPU configuration
+is chosen based on device name and config filename.</p>
 </div>
 <div class="section" id="credits">
 <h1>Credits</h1>
@@ -652,6 +634,9 @@ configs selected by card type.)</p>
 <tr class="field"><th class="field-name">Author:</th><td class="field-body">arcmags</td>
 </tr>
 <tr class="field"><th class="field-name">License:</th><td class="field-body">GPL 3.0</td>
+</tr>
+<tr class="field"><th class="field-name">Donate(xmr):</th><td class="field-body">41dUPANhvCvLUuRVJpUc9cRFnsLHzWiTPUhyuamrVwa61xoP
+uxZaD6R28cLqxEhTaC6LuwcHtkbUi2uELDD88MoQHJKePvP</td>
 </tr>
 </tbody>
 </table>

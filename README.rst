@@ -3,7 +3,7 @@ xmr-mine
 ========
 
 Mine for Monero_ on Arch Linux!  In addition to the *xmr-mine* wrapper
-script, this project contains Arch build files and pre-compiled binaries of xmr-stak_ in both CPU only and CPU + Nvidia versions. (and xmrig_)
+script, this project contains Arch build files and pre-compiled binaries of xmr-stak_ in both CPU only and CPU + Nvidia versions.
 
 
 Requirements
@@ -50,17 +50,24 @@ processor supports AES.  Check if *xmr-stak* is already running.  Generate
 Options
 =======
 
-``--aeon, -A``
-    Mine for AEON currency instead of Monero.  (Requires aoen-stak.)
-
 ``--background, -B``
     Launch in quiet daemon mode and fork to background.
+
+``--currency, -C <CURRENCY>``
+    Specify what currency to mine for.
 
 ``--dryrun, -D``
     Run script and generate *config.txt* without launching *xmr-stak*.
 
+``--help``
+    Print help.
+
 ``--kill, -K``
     Kill any instances of *xmr-stak*.
+
+``--name, --pass <POOL PASSWORD>``
+    Password used to identify miner on pool.  $HOSTNAME is used if nothing
+    is specified.
 
 ``--quiet, -Q``
     Launch *xmr-stak* in daemon mode.  Pipe all output to */dev/null*.
@@ -68,51 +75,19 @@ Options
 ``--random-pool, -R``
     Randomize pool weights.
 
-``--show-hash, -H``
-    Print hash rate.
-
 ``--show-status, -S``
     Print current pool status and hash rate.
 
-``--show-wallet, -W``
-    Print XMR wallet address.
-
-``--wallet, -w <XMR ADDRESS>``
-    Specify xmr wallet to mine to.
+``--wallet, -w <ADDRESS>``
+    Specify wallet address to mine to.
 
 
 Environment Variables
 =====================
 
-The default behavior of xmr-mine can may be affected by setting
-optional environment variables.
-
-``XMR_WALLET``
-    Default Monero wallet address mined to.
-
-``XMR_POOL``
-    Default xmr mining pool address and port number.  This is added
-    to the list of pool address and given the highest weight.
-
-``XMR_POOL_PASSWORD``
-    Pool password to use for default pool XMR_POOL.  HOSTNAME is
-    used if left unset.  Some pools are capable of monitoring
-    individual miners identified by their pool passwords.
-
-``XMR_CONFIG_DIRECTORY``
-    Directory to save and source xmr-stak configuration files from.
-    *~/.xmr-mine* is used by default if left unset.
-
-``AEON_WALLET``
-    Default AEON wallet address mined to.
-
-``AEON_POOL``
-    Default AEON mining pool address and port number.  This is added
-    to the list of aeon pool address and given the highest weight.
-
-``AEON_POOL_PASSWORD``
-    Pool password to use for default pool AEON_POOL.  HOSTNAME is
-    used if left unset.
+``MINER_CONFIG_DIR``
+    Directory containing any *xmr-stak* configuration files.
+    *~/.xmr-mine* is used by default.
 
 
 Notes
@@ -124,10 +99,11 @@ ensure uptime status is calculated correctly.
 Script requires processor to have AES support because, for some reason,
 the new *xmr-stak* core dumps on me on CPUs without AES (on Arch Linux).
 
-*xmr-stak* may not generate the best (or even remotely decent) *nvidia.txt*
-config for some GPUs.  Right now, only one possible *nvidia.txt* can be used
-by the the script.  (Possible future implementation of multiple nvidia
-configs selected by card type.)
+Any number of CryptoNight currencies may be specified in *xmr-mine.conf*
+as long as a valid wallet and pool address are given there as well.
+
+Multiple GPU configurations can be saved in *~/.xmr-mine*.  GPU configuration
+is chosen based on device name and config filename.
 
 
 Credits
@@ -139,9 +115,11 @@ Credits
 :License:
     GPL 3.0
 
+:Donate(xmr):
+    41dUPANhvCvLUuRVJpUc9cRFnsLHzWiTPUhyuamrVwa61xoP
+    uxZaD6R28cLqxEhTaC6LuwcHtkbUi2uELDD88MoQHJKePvP
 
 
 .. _Monero: https://getmonero.org/
 .. _xmr-stak: https://github.com/fireice-uk/xmr-stak
-.. _xmrig: https://github.com/xmrig/xmrig
 .. _xmr-stak-git: https://aur.archlinux.org/packages/xmr-stak-git
