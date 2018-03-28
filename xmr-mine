@@ -1,8 +1,8 @@
 #!/bin/bash
-##==============================  xmr-mine  ==============================##
-# Copyright (C) 2017 arcmags                 GNU General Public License v3 #
-##========================================================================##
-# Basic wrapper script for xmr-stak.
+##============================  xmr-mine  ============================##
+# Copyright (C) 2018 arcmags             GNU General Public License v3 #
+##====================================================================##
+# Wrapper script for xmr-stak v2.3.0.
 
 miner_help() {
 cat <<'EODOC'
@@ -10,21 +10,18 @@ NAME
     xmr-mine
 
 SYNOPSIS
-    xmr-mine [ARGUMENTS]
+    xmr-mine [OPTIONS]
 
 DESCRIPTION
-    Wrapper script for xmr-stak.  Check for internet connection and
-    system clock sync.  Check processor for AES support.
-    Check if xmr-stak is already running.  Build config.txt from
-    command line arguments and xmr-mine.conf file.  Launch xmr-stak.
-
-REQUIREMENTS
-    xmr-stak
-        Monero unified CPU/GPU pool miner.
-
-    timedatectl set-ntp true
-        This script ensures system clock is synced via the systemd-
-        timesyncd.service before launching xmr-stak.
+    Parse command line arguments.
+    Check if already running.
+    Check internet connection.
+    Check processor for AES support.
+    Use any preexisting config.txt, pools.txt, cpu.txt, nividia.txt.
+    Use any device specific nivida config files.
+    Build config.txt.
+    Build pools.txt (source ~/.xmr-mine/xmr-mine.conf).
+    Launch xmr-stak.
 
 OPTIONS
     --background, -B
@@ -34,27 +31,33 @@ OPTIONS
         Specify currency to mine for.
 
     --dryrun, D
-        Run script and generate config.txt without launching xmr-stak
+        Generate config.txt and pools.txt without launching xmr-stak.
 
     --help
         Print help.
 
     --kill, -K
-        Kill any instances of xmr-stak.
+        Kill any instance of xmr-stak.
 
-    --name, --pass <POOL PASSWORD>
+    --pass <POOL PASSWORD>
         Password used to identify miner.  $HOSTNAME is used if no
         password is specified.
 
     --pool, -p <ADDRESS:PORT>
-        Specify default pool address and port number.  Pool is added
-        to the list of pools and given the highest weight.
+        Add pool to pools.txt with highest weight.
+
+    --proxy <ADDRESS:PORT>
+        Specify xmr-node-proxy server address and port number.  Proxy
+        is added to the list of pools with highest weight.
 
     --quiet, -Q
         Launch xmr-stak in daemon mode.  Pipe all output to /dev/null.
 
     --random-pool, -R
         Randomize pool weights.
+
+    --rig, -r <RIG ID>
+        Set rig_id (used by some pools).  Default is blank.
 
     --show-status, -S
         Print current pool status and hash rate.
@@ -74,8 +77,12 @@ CONFIGURATION
     overriden by the --currency option.
 
     Every xmr-stak config.txt variable is set in the XMR-STAK SETTINGS
-    section of this script.  These are used to build config.txt upon every
-    run unless a config file is specified.
+    section of this script.  These are used to build config.txt upon
+    every run unless a config file is specified.
+
+REQUIREMENTS
+    xmr-stak v2.3.0
+        Monero unified CPU/GPU pool miner.
 
 SEE ALSO
     https://github.com/arcmags/xmr-mine
@@ -86,30 +93,37 @@ exit 0
 
 
 ##===========================  VARIABLES  ============================##
-MINER_NAME=
+DIR_SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# miner variables:
+MINER_PASS=
+MINER_RIG=
 MINER_CURRENCY=
 MINER_WALLET=
 MINER_ACTION=
 MINER_POOLS=()
+MINER_PROXY=
+MINER_CONFIG=
+XMR_STAK_CONFIG=
+XMR_STAK_POOLS=
+XMR_STAK_CPU=
+XMR_STAK_NVIDIA=
+# miner config directory:
 MINER_CONFIG_DIR="${MINER_CONFIG_DIR:-$HOME/.xmr-mine}"
-MINER_CONFIG="$MINER_CONFIG_DIR/xmr-mine.conf"
-MINER_DIR='/tmp/xmr-mine'
-# default xmr-stak config files:
-XMR_STAK_CONFIG="$MINER_CONFIG_DIR/config.txt"
-XMR_STAK_CONFIG_CPU="$MINER_CONFIG_DIR/cpu.txt"
-XMR_STAK_CONFIG_NVIDIA="$MINER_CONFIG_DIR/nvidia.txt"
+# miner directory:
+MINER_DIR="/tmp/xmr-mine"
 # script flags:
 FLAG_DAEMON='false'
 FLAG_DRYRUN='false'
 FLAG_QUIET='false'
 FLAG_RANDOM_POOL='false'
+
 ##=================  default xmr-stak settings  ==================##
 # pool:
 use_nicehash='false'
 use_tls='false'
 tls_fingerprint=''
 # global:
-currency='monero'
+currency='monero7'
 call_timeout=10
 retry_time=30
 giveup_limit=0
@@ -141,8 +155,7 @@ net_check() {
 
 # Check system clock sync status.
 ntp_check() {
-    return `timedatectl | \
-        grep 'timesyncd.service active: yes' >/dev/null`
+    return `timedatectl | grep 'clock synchronized: yes' >/dev/null`
 }
 
 # Printing functions.
@@ -150,68 +163,109 @@ miner_print() {
     if [ "$FLAG_QUIET" = 'false' ]; then
         printf ":: $1\n"
     fi
+    return 0
 }
 miner_error() {
     if [ "$FLAG_QUIET" = 'false' ]; then
-        printf "!: $1\n"
+        printf ":! $1\n"
     fi
+    return 0
 }
 
 # Kill miner (xmr-stak).
 miner_kill() {
     if !(pgrep -x xmr-stak >/dev/null); then
-        printf ":: not mining\n"
+        miner_print "not mining"
         exit 1
     fi
     pkill xmr-stak
-    printf ":: killed xmr-stak\n"
+    miner_print "killed xmr-stak"
     exit 0
 }
 
 # Print current pool status and hash rate.
 miner_status() {
+    local UP_TEXT=''
+    local UP_MINS=
+    local UP_HOURS=
+    local UP_DAYS=
+    local UP_SECS=
+    local POOL_PING=
+    local POOL_ADDRESS=
+    local HASH_RATE=
+    local JSON=
+    local POOL_PASS=
+    local POOL_CURRENCY=
+    local WALLET=
+    # check if even mining:
     if !(pgrep -x xmr-stak >/dev/null); then
-        printf ":: not mining\n"
+        miner_print "not mining"
         exit 1
     fi
-    local JSON="`curl -s $HOSTNAME:${httpd_port}/api.json`"
-    local HASH_RATE="`printf "$JSON" | \
-        grep -Po '"total": ?\[\K[^,]+(?=,)'`"
+
+    # get api.json:
+    JSON="`curl -s $HOSTNAME:${httpd_port}/api.json`"
+
+    # hashrate:
+    HASH_RATE="`grep -Po '"total": ?\[\K[^,]+(?=,)' <<< "$JSON"`"
     if [ "$HASH_RATE" = 'null' ]; then
         HASH_RATE='no data yet'
     fi
-    local POOL_ADDRESS="`printf "$JSON" | \
-        grep -Po '"pool": ?"\K[^:]+(?=(:|"))'`"
-    local UP_SECS="`printf "$JSON" | \
-        grep -Po '"uptime": ?\K[0-9]+(?=,)'`"
-    local UP_DAYS=$(( $UP_SECS / 86400 ))
+
+    # pool address:
+    POOL_ADDRESS="`grep -Po \
+        '"pool": ?"\K[^:]+(?=(:|"))' <<< "$JSON"`"
+
+    # pool ping:
+    POOL_PING="`grep -Po '"ping": ?\K[0-9]+(?=,)' <<< "$JSON"`"
+
+    # calculate uptime:
+    UP_SECS="`grep -Po '"uptime": ?\K[0-9]+(?=,)' <<< "$JSON"`"
+    UP_DAYS=$(( $UP_SECS / 86400 ))
     UP_SECS=$(( $UP_SECS % 86400 ))
-    local UP_HOURS=$(( $UP_SECS / 3600 ))
+    UP_HOURS=$(( $UP_SECS / 3600 ))
     UP_SECS=$(( $UP_SECS % 3600 ))
-    local UP_MINS=$(( $UP_SECS / 60 ))
+    UP_MINS=$(( $UP_SECS / 60 ))
     UP_SECS=$(( $UP_SECS % 60 ))
-    local UP_TEXT=''
     if [ $UP_DAYS -gt 0 ]; then
         UP_TEXT="${UP_DAYS}d "
     fi
     UP_TEXT+="`printf "%02d:%02d:%02d" \
         $UP_HOURS $UP_MINS $UP_SECS`"
-    local POOL_PING="`printf "$JSON" | \
-        grep -Po '"ping": ?\K[0-9]+(?=,)'`"
-    local POOL_PASSWORD="`cat "$MINER_DIR/config.txt" | \
-        tr -d '\n' | \
-        grep -Po ".*?\K{.*?${POOL_ADDRESS}.*?}(?=,)" | \
-        grep -Pom1 '.*pool_password"\s?:\s?"\K[^"]*(?=")'`"
-    local WALLET="`cat "$MINER_DIR/config.txt" | \
-        tr -d '\n' | \
-        grep -Po ".*?\K{.*?${POOL_ADDRESS}.*?}(?=,)" | \
-        grep -Pom1 '.*wallet_address"\s?:\s?"\K[^"]*(?=")'`"
-    printf ":: wallet: $WALLET\n"
-    printf "     pool: $POOL_ADDRESS\n"
-    printf "       id: $POOL_PASSWORD\n"
-    printf "     ping: $POOL_PING\n"
-    printf "   uptime: $UP_TEXT\n"
-    printf " hashrate: $HASH_RATE\n"
+
+    # get wallet and pass from pools.txt:
+    if [ -f "$MINER_DIR/pools.txt" ]; then
+        POOL_PASS="`cat "$MINER_DIR/pools.txt" | \
+            tr -d '\n' | \
+            grep -Po ".*?\K{.*?${POOL_ADDRESS}.*?}(?=,)" | \
+            grep -Pom1 '.*pool_password"\s?:\s?"\K[^"]*(?=")'`"
+        WALLET="`cat "$MINER_DIR/pools.txt" | \
+            tr -d '\n' | \
+            grep -Po ".*?\K{.*?${POOL_ADDRESS}.*?}(?=,)" | \
+            grep -Pom1 '.*wallet_address"\s?:\s?"\K[^"]*(?=")'`"
+
+    # get wallet and pass from xmr-mine.conf:
+    else
+        POOL_CURRENCY="`grep -Po \
+            "^\K[A-Z]+(?=_POOL=${POOL_ADDRESS})" "$MINER_CONFIG"`"
+        WALLET="`grep -Po \
+            "${POOL_CURRENCY}_WALLET=\K[^ ]+" "$MINER_CONFIG"`"
+        POOL_PASS="`grep -Po '^ *MINER_PASS=\K[^ ]+' "$MINER_CONFIG"`"
+        if [ -z "$POOL_PASS" ]; then
+            POOL_PASS="$HOSTNAME"
+        fi
+    fi
+
+    # print status:
+    if [ "$FLAG_QUIET" = 'false' ]; then
+        printf ":: wallet: $WALLET\n"
+        printf "     pool: $POOL_ADDRESS\n"
+        printf "       id: $POOL_PASS\n"
+        printf "     ping: $POOL_PING\n"
+        printf "   uptime: $UP_TEXT\n"
+        printf " hashrate: $HASH_RATE\n"
+    fi
+
     exit 0
 }
 
@@ -225,38 +279,72 @@ config_trim() {
 MINER_ACTION='mine'
 
 # parse args:
-while [ -n "$1" ]; do case $1 in
-    --background|-B)   FLAG_DAEMON='true'                     ;;
-    --currency|-C)     shift; MINER_CURRENCY="$1"             ;;
-    --dryrun|-D)       FLAG_DRYRUN='true'                     ;;
-    --help)            MINER_ACTION='help'                    ;;
-    --kill|-K)         MINER_ACTION='kill'                    ;;
-    --pool|-p)         shift; MINER_POOLS+=( "$1" )           ;;
-    --name|-N|--pass)  shift; MINER_NAME="$1"                 ;;
-    --quiet|-Q|-I)     FLAG_QUIET='true'; FLAG_DAEMON='true'  ;;
-    --random-pool|-R)  FLAG_RANDOM_POOL='true'                ;;
-    --show-status|-S)  MINER_ACTION='status'                  ;;
-    --wallet|-w)       shift; MINER_WALLET="$1"               ;;
+while [ -n "$1" ]; do case "$1" in
+    --background|-B)    FLAG_DAEMON='true'                      ;;
+    --currency|-c)      shift; MINER_CURRENCY="$1"              ;;
+    --dryrun|-D)        FLAG_DRYRUN='true'                      ;;
+    --help)             MINER_ACTION='help'                     ;;
+    --kill|-K)          MINER_ACTION='kill'                     ;;
+    --pool|-p)          shift; MINER_POOLS+=( "$1" )            ;;
+    --proxy)            shift; MINER_PROXY="$1"                 ;;
+    --pass)             shift; MINER_PASS="$1"                  ;;
+    --quiet|-Q|-I)      FLAG_QUIET='true'; FLAG_DAEMON='true'   ;;
+    --random-pool|-R)   FLAG_RANDOM_POOL='true'                 ;;
+    --rig|-r)           shift; MINER_RIG="$1"                   ;;
+    --show-status|-S)   MINER_ACTION='status'                   ;;
+    --wallet|-w)        shift; MINER_WALLET="$1"                ;;
     # FAIL: unrecognized option:
-    *)  printf ":! unrecognized option: $1\n"; exit 5         ;;
+    *)  printf ":! unrecognized option: $1\n"; exit 5           ;;
 esac; shift; done
 
-# take miner actions other than mining:
+# check config directory:
+if [ -d "$MINER_CONFIG_DIR" ]; then
+    # check xmr-mine.conf:
+    if [ -f "$MINER_CONFIG_DIR/xmr-mine.conf" ]; then
+        MINER_CONFIG="$MINER_CONFIG_DIR/xmr-mine.conf"
+    else
+        MINER_CONFIG="$DIR_SCRIPT/.xmr-mine/xmr-mine.conf"
+    fi
+
+# use config directory in git repo:
+else
+    MINER_CONFIG_DIR="$DIR_SCRIPT/.xmr-mine"
+    MINER_CONFIG="$DIR_SCRIPT/.xmr-mine/xmr-mine.conf"
+fi
+
+# set xmr-stak config files:
+XMR_STAK_CONFIG="$MINER_CONFIG_DIR/config.txt"
+XMR_STAK_POOLS="$MINER_CONFIG_DIR/pools.txt"
+XMR_STAK_CPU="$MINER_CONFIG_DIR/cpu.txt"
+XMR_STAK_NVIDIA="$MINER_CONFIG_DIR/nvidia.txt"
+
+# take miner action other than mining:
 case $MINER_ACTION in
-    help)    miner_help    ;;
-    kill)    miner_kill    ;;
-    status)  miner_status  ;;
+    help)       miner_help      ;;
+    kill)       miner_kill      ;;
+    status)     miner_status    ;;
 esac
 
-# FAIL: no AES support:
-if !(cat /proc/cpuinfo | grep -P 'flags\s*:.* aes( |$)' >/dev/null); then
-    miner_error "CPU does not support AES"
-    miner_print "unable to launch stak miner"
-    exit 3
+# FAIL: no xmr-mine.conf:
+if [ ! -f "$MINER_CONFIG" ]; then
+    miner_error "xmr-mine.conf not found"
+    exit 5
+fi
+
+# FAIL: xmr-mine already running:
+if [ "`pidof -x xmr-mine`" != "$$" ]; then
+    miner_error "xmr-mine is already running"
+    exit 4
 fi
 # FAIL: xmr-stak already running:
 if (pgrep -x xmr-stak >/dev/null); then
     miner_error "xmr-stak is already running"
+    exit 3
+fi
+# FAIL: no AES support:
+if !(grep -P 'flags\s*:.* aes( |$)' /proc/cpuinfo >/dev/null); then
+    miner_error "CPU does not support AES"
+    miner_print "unable to launch stak miner"
     exit 2
 fi
 # FAIL: no internet connection:
@@ -264,23 +352,11 @@ if !(net_check); then
     miner_error "no internet connection"
     exit 1
 fi
-# FAIL: system clock not synced:
-if !(ntp_check); then
-    miner_error "system clock not synced"
-    exit 1
-fi
-
-# parse miner name:
-if [ -z "$MINER_NAME" ]; then
-    MINER_NAME="`grep -Po '^ *MINER_NAME=\K[^ ]+' "$MINER_CONFIG"`"
-    if [ -z "$MINER_NAME" ]; then
-        MINER_NAME="$HOSTNAME"
-    fi
-fi
 
 # parse currency:
 if [ -z "$MINER_CURRENCY" ]; then
-    MINER_CURRENCY="`grep -Po '^ *MINER_CURRENCY=\K[^ ]+' "$MINER_CONFIG"`"
+    MINER_CURRENCY="`grep -Po \
+        '^ *MINER_CURRENCY=\K[^ ]+' "$MINER_CONFIG"`"
     # FAIL: no currency specified:
     if [ -z "$MINER_CURRENCY" ]; then
         miner_error "no currency specified"
@@ -288,8 +364,32 @@ if [ -z "$MINER_CURRENCY" ]; then
     fi
 fi
 MINER_CURRENCY="${MINER_CURRENCY^^}"
-if [ "$MINER_CURRENCY" = 'AEON' ]; then
-    currency='aeon'
+
+# set xmr-stak currency:
+case "$MINER_CURRENCY" in
+    AEON)   currency='aeon'         ;;
+    EDL)    currency='edollar'      ;;
+    ETN)    currency='electroneum'  ;;
+    GRFT)   currency='graft'        ;;
+    ITNS)   currency='intense'      ;;
+    KRB)    currency='karbo'        ;;
+    SUMO)   currency='sumokoin'     ;;
+    XMR)    currency='monero7'      ;;
+    *)      currency='cryptonight'  ;;
+esac
+
+# parse miner password:
+if [ -z "$MINER_PASS" ]; then
+    MINER_PASS="`grep -Po '^ *MINER_PASS=\K[^ ]+' "$MINER_CONFIG"`"
+    # fallback to HOSTNAME:
+    if [ -z "$MINER_PASS" ]; then
+        MINER_PASS="$HOSTNAME"
+    fi
+fi
+
+# parse miner rig:
+if [ -z "$MINER_RIG" ]; then
+    MINER_RIG="`grep -Po '^ *MINER_RIG=\K[^ ]+' "$MINER_CONFIG"`"
 fi
 
 # parse wallet:
@@ -304,12 +404,16 @@ if [ -z "$MINER_WALLET" ]; then
 fi
 
 # parse pools:
-MINER_POOLS+=( `grep -Po "^ *${MINER_CURRENCY}_POOL=\K[^ ]+" "$MINER_CONFIG"` )
+MINER_POOLS+=( `grep -Po \
+    "^ *${MINER_CURRENCY}_POOL=\K[^ ]+" "$MINER_CONFIG"` )
+
 # FAIL: no pools for specified currency:
 if [ ${#MINER_POOLS[@]} -eq 0 ]; then
     miner_error "no pools for $MINER_CURRENCY"
     exit 1
 fi
+
+# sort pools:
 MINER_POOLS=( `for POOL in ${MINER_POOLS[@]}; \
     do printf "$POOL\n"; done | uniq` )
 if [ "$FLAG_RANDOM_POOL" = 'true' ]; then
@@ -317,7 +421,7 @@ if [ "$FLAG_RANDOM_POOL" = 'true' ]; then
         do printf "$POOL\n"; done | sort -R` )
 fi
 
-# parse mode:
+# set daemon mode:
 if [ "$FLAG_DAEMON" = 'true' ]; then
     daemon_mode='true'
     verbose_level=0
@@ -326,67 +430,98 @@ fi
 # switch to clean miner directory:
 mkdir -p "$MINER_DIR"
 cd "$MINER_DIR"
-rm -f config.txt cpu.txt nvidia.txt
+rm -f config.txt pools.txt cpu.txt nvidia.txt
 
-# build config.txt:
-CONFIG_TXT="\"pool_list\" :\n"
-CONFIG_TXT+="[\n"
-# add pools:
-P=${#MINER_POOLS[@]}
-for POOL in ${MINER_POOLS[@]}; do
-    CONFIG_TXT+="  {\n"
-    CONFIG_TXT+="    \"pool_address\" : \"$POOL\",\n"
-    CONFIG_TXT+="    \"wallet_address\" : \"${MINER_WALLET}\",\n"
-    CONFIG_TXT+="    \"pool_password\" : \"${MINER_NAME}\",\n"
-    CONFIG_TXT+="    \"pool_weight\" : $P,\n"
-    CONFIG_TXT+="    \"use_nicehash\" : $use_nicehash,\n"
-    CONFIG_TXT+="    \"use_tls\" : $use_tls,\n"
-    CONFIG_TXT+="    \"tls_fingerprint\" : \"$tls_fing1erprint\"\n"
-    CONFIG_TXT+="  },\n"
-    ((P--))
-done
-CONFIG_TXT+="],\n"
-# add global settings:
-CONFIG_TXT+="\"currency\" : \"$currency\",\n"
-CONFIG_TXT+="\"call_timeout\" : $call_timeout,\n"
-CONFIG_TXT+="\"retry_time\" : $retry_time,\n"
-CONFIG_TXT+="\"giveup_limit\" : $giveup_limit,\n"
-CONFIG_TXT+="\"verbose_level\" : $verbose_level,\n"
-CONFIG_TXT+="\"print_motd\" : $print_motd,\n"
-CONFIG_TXT+="\"h_print_time\" : $h_print_time,\n"
-CONFIG_TXT+="\"aes_override\" : $aes_override,\n"
-CONFIG_TXT+="\"use_slow_memory\" : \"$use_slow_memory\",\n"
-CONFIG_TXT+="\"tls_secure_algo\" : $tls_secure_algo,\n"
-CONFIG_TXT+="\"daemon_mode\" : $daemon_mode,\n"
-CONFIG_TXT+="\"flush_stdout\" : $flush_stdout,\n"
-CONFIG_TXT+="\"output_file\" : \"$output_file\",\n"
-CONFIG_TXT+="\"httpd_port\" : $httpd_port,\n"
-CONFIG_TXT+="\"http_login\" : \"$http_login\",\n"
-CONFIG_TXT+="\"http_pass\" : \"$http_pass\",\n"
-CONFIG_TXT+="\"prefer_ipv4\" : $prefer_ipv4,\n"
-printf "$CONFIG_TXT" > config.txt
+# use preexisting config.txt:
+if [ -f "$XMR_STAK_CONFIG" ]; then
+    cp "$XMR_STAK_CONFIG" ./config.txt
 
-# use preexisting cpu.txt:
-if [ -f "$XMR_STAK_CONFIG_CPU" ]; then
-    cp "$XMR_STAK_CONFIG_CPU" ./cpu.txt
+# build new config.txt:
+else
+    CONFIG_TXT="\"call_timeout\" : $call_timeout,\n"
+    CONFIG_TXT+="\"retry_time\" : $retry_time,\n"
+    CONFIG_TXT+="\"giveup_limit\" : $giveup_limit,\n"
+    CONFIG_TXT+="\"verbose_level\" : $verbose_level,\n"
+    CONFIG_TXT+="\"print_motd\" : $print_motd,\n"
+    CONFIG_TXT+="\"h_print_time\" : $h_print_time,\n"
+    CONFIG_TXT+="\"aes_override\" : $aes_override,\n"
+    CONFIG_TXT+="\"use_slow_memory\" : \"$use_slow_memory\",\n"
+    CONFIG_TXT+="\"tls_secure_algo\" : $tls_secure_algo,\n"
+    CONFIG_TXT+="\"daemon_mode\" : $daemon_mode,\n"
+    CONFIG_TXT+="\"flush_stdout\" : $flush_stdout,\n"
+    CONFIG_TXT+="\"output_file\" : \"$output_file\",\n"
+    CONFIG_TXT+="\"httpd_port\" : $httpd_port,\n"
+    CONFIG_TXT+="\"http_login\" : \"$http_login\",\n"
+    CONFIG_TXT+="\"http_pass\" : \"$http_pass\",\n"
+    CONFIG_TXT+="\"prefer_ipv4\" : $prefer_ipv4,\n"
+    printf "$CONFIG_TXT" > config.txt
 fi
 
-# use gpu specific nvidia.txt:
+# use preexisting pools.txt:
+if [ -f "$XMR_STAK_POOLS" ]; then
+    cp "$XMR_STAK_POOLS" ./pools.txt
+
+# build new pools.txt:
+else
+    POOLS_TXT="\"pool_list\" :\n"
+    POOLS_TXT+="[\n"
+    P=${#MINER_POOLS[@]}
+    if [ -n "$MINER_PROXY" ]; then
+        ((P++))
+        POOLS_TXT+="  {\n"
+        POOLS_TXT+="    \"pool_address\" : \"${MINER_PROXY}\",\n"
+        POOLS_TXT+="    \"pool_weight\" : $P,\n"
+        POOLS_TXT+="    \"wallet_address\" : \"\",\n"
+        POOLS_TXT+="    \"pool_password\" : \"proxy\",\n"
+        POOLS_TXT+="    \"rig_id\" : \"\",\n"
+        POOLS_TXT+="    \"use_nicehash\" : true,\n"
+        POOLS_TXT+="    \"use_tls\" : $use_tls,\n"
+        POOLS_TXT+="    \"tls_fingerprint\" : \"$tls_fing1erprint\"\n"
+        POOLS_TXT+="  },\n"
+        ((P--))
+    fi
+    for POOL in ${MINER_POOLS[@]}; do
+        POOLS_TXT+="  {\n"
+        POOLS_TXT+="    \"pool_address\" : \"$POOL\",\n"
+        POOLS_TXT+="    \"pool_weight\" : $P,\n"
+        POOLS_TXT+="    \"wallet_address\" : \"${MINER_WALLET}\",\n"
+        POOLS_TXT+="    \"pool_password\" : \"${MINER_PASS}\",\n"
+        POOLS_TXT+="    \"rig_id\" : \"${MINER_RIG}\",\n"
+        POOLS_TXT+="    \"use_nicehash\" : $use_nicehash,\n"
+        POOLS_TXT+="    \"use_tls\" : $use_tls,\n"
+        POOLS_TXT+="    \"tls_fingerprint\" : \"$tls_fing1erprint\"\n"
+        POOLS_TXT+="  },\n"
+        ((P--))
+    done
+    POOLS_TXT+="],\n"
+    POOLS_TXT+="\"currency\" : \"$currency\",\n"
+    printf "$POOLS_TXT" > pools.txt
+fi
+
+# use preexisting cpu.txt:
+if [ -f "$XMR_STAK_CPU" ]; then
+    cp "$XMR_STAK_CPU" ./cpu.txt
+fi
+
+# use preexisting nvidia.txt:
+if [ -f "$XMR_STAK_NVIDIA" ]; then
+    cp "$XMR_STAK_NVIDIA" ./nvidia.txt
+fi
+
+# use preexisting GPU specific nvidia.txt:
 GPU="`lspci | grep -Pom1 '^.*?VGA.+?controller:\s?\K.*'`"
 CONFIG_FILES="`ls "$MINER_CONFIG_DIR"`"
 for FILE in $CONFIG_FILES; do
     FILE_GPU="${FILE%.txt}"
     FILE_GPU="${FILE_GPU//_/ }"
     if [[ "$GPU" =~ "${FILE_GPU}" ]]; then
-        cp "$FILE" ./nvidia.txt
+        cp "$MINER_CONFIG_DIR/$FILE" ./nvidia.txt
     fi
 done
-if [ ! -f nvidia.txt ] && [ -f "$XMR_STAK_CONFIG_NVIDIA" ]; then
-    cp "$XMR_STAK_CONFIG_NVIDIA" ./nvidia.txt
-fi
 
 # launch xmr-stak:
 if [ "$FLAG_DRYRUN" = 'false' ]; then
+
     # daemon mode:
     if [ "$FLAG_DAEMON" = 'true' ]; then
         # daemon incognito mode:
@@ -399,6 +534,7 @@ if [ "$FLAG_DRYRUN" = 'false' ]; then
             sleep 2
             miner_print "xmr-stak forked to background PID: $!\n"
         fi
+
     # normal mode:
     else
         xmr-stak

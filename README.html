@@ -546,29 +546,24 @@ ul.auto-toc {
 <h1 class="title">xmr-mine</h1>
 
 <p>Mine for <a class="reference external" href="https://getmonero.org/">Monero</a> on Arch Linux!  In addition to the <em>xmr-mine</em> wrapper
-script, this project contains Arch build files and pre-compiled binaries of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> in both CPU only and CPU + Nvidia versions.</p>
+script, this project contains Arch build files and pre-compiled
+binaries of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> in both CPU only and CPU + Nvidia versions.</p>
+<p>This script simplifies the execution of <em>xmr-stak</em> and enables the
+command line selection of different pools or currencies without
+editing configuration files.  All currency and pool settings are kept
+in the <em>xmr-mine.conf</em> file.  Additionally, this script loads any
+device specific <em>nvidia.txt</em> configuration files contained in the
+configuration directory.</p>
+<p>The xmr-mine configuration directory defaults to <em>~/.xmr-mine</em> with
+a fallback to the <em>./.xmr-mine</em> directory contained within this repo.</p>
 <div class="section" id="requirements">
 <h1>Requirements</h1>
 <dl class="docutils">
-<dt>xmr-stak</dt>
+<dt>xmr-stak v2.3.0</dt>
 <dd>The <em>xmr-mine</em> is wrapper script extending the functionality of
-<em>xmr-stak</em> at the command line.  Some for of <em>xmr-stak</em> must be
-installed.  (<a class="reference external" href="https://aur.archlinux.org/packages/xmr-stak-git">xmr-stak-git</a> is available in the AUR as well as this repo.)</dd>
-<dt>timedatectl set-ntp true</dt>
-<dd>This script ensures system clock is synced via the
-<em>systemd-timesyncd.service</em> prior to launching <em>xmr-stak</em>.</dd>
+<em>xmr-stak</em> at the command line.  Some form of <em>xmr-stak</em> must be
+installed.</dd>
 </dl>
-</div>
-<div class="section" id="installation">
-<h1>Installation</h1>
-<p>xmr-stak miners can be installed by executing <tt class="docutils literal">makepkg <span class="pre">-sri</span></tt> within their
-PKGBUILD directories.  Or, if you're unable to compile yourself and you trust
-me enough, you can install the pre-compiled packages in <em>pkg/</em> with
-<tt class="docutils literal">pacman <span class="pre">-U</span> [package]</tt>.</p>
-<p>Then copy the <em>xmr-mine</em> script to your local path and edit the config
-variables at the head of the script with your desired wallet and pool info.</p>
-<p>A valid machine hostname and domain must be specified by MINER_NAME
-in order to correctly display miner stats.</p>
 </div>
 <div class="section" id="synopsis">
 <h1>Synopsis</h1>
@@ -576,9 +571,16 @@ in order to correctly display miner stats.</p>
 </div>
 <div class="section" id="description">
 <h1>Description</h1>
-<p>Check for internet connection and wait for system clock sync.  Ensure
-processor supports AES.  Check if <em>xmr-stak</em> is already running.  Generate
-<em>config.txt</em> file from script variables and arguments.  Launch <em>xmr-stak</em>.</p>
+<p>Parse command line arguments.
+Check if already running.
+Check internet connection.
+Check processor for AES support.
+Use any preexisting <em>config.txt</em>, <em>pools.txt</em>, <em>cpu.txt</em>,
+or <em>nividia.txt</em> files.
+Use any device specific nivida config files.
+Build config.txt.
+Build pools.txt (source <em>xmr-mine.conf</em>).
+Launch xmr-stak.</p>
 </div>
 <div class="section" id="options">
 <h1>Options</h1>
@@ -588,14 +590,18 @@ processor supports AES.  Check if <em>xmr-stak</em> is already running.  Generat
 <dt><tt class="docutils literal"><span class="pre">--currency,</span> <span class="pre">-C</span> &lt;CURRENCY&gt;</tt></dt>
 <dd>Specify what currency to mine for.</dd>
 <dt><tt class="docutils literal"><span class="pre">--dryrun,</span> <span class="pre">-D</span></tt></dt>
-<dd>Run script and generate <em>config.txt</em> without launching <em>xmr-stak</em>.</dd>
+<dd>Generate <em>config.txt</em> and <em>pools.txt</em> without launching <em>xmr-stak</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--help</span></tt></dt>
 <dd>Print help.</dd>
 <dt><tt class="docutils literal"><span class="pre">--kill,</span> <span class="pre">-K</span></tt></dt>
-<dd>Kill any instances of <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--name,</span> <span class="pre">--pass</span> &lt;POOL PASSWORD&gt;</tt></dt>
-<dd>Password used to identify miner on pool.  $HOSTNAME is used if nothing
-is specified.</dd>
+<dd>Kill any instance of <em>xmr-stak</em>.</dd>
+<dt><tt class="docutils literal"><span class="pre">--pass</span> &lt;POOL PASSWORD&gt;</tt></dt>
+<dd>Password used to identify miner on pool.
+<em>$HOSTNAME</em> is used if nothing is specified.</dd>
+<dt><tt class="docutils literal"><span class="pre">--pool,</span> <span class="pre">-p</span> &lt;ADDRESS:PORT&gt;</tt></dt>
+<dd>Add pool to <em>pools.txt</em> with highest weight.</dd>
+<dt><tt class="docutils literal"><span class="pre">--proxy</span> &lt;ADDRESS:PORT&gt;</tt></dt>
+<dd>Add <a class="reference external" href="https://github.com/Snipa22/xmr-node-proxy">xmr-node-proxy</a> address to <em>pools.txt</em> with highest weight.</dd>
 <dt><tt class="docutils literal"><span class="pre">--quiet,</span> <span class="pre">-Q</span></tt></dt>
 <dd>Launch <em>xmr-stak</em> in daemon mode.  Pipe all output to <em>/dev/null</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--random-pool,</span> <span class="pre">-R</span></tt></dt>
@@ -616,14 +622,12 @@ is specified.</dd>
 </div>
 <div class="section" id="notes">
 <h1>Notes</h1>
-<p>Script requires system clock sync prior to launching xmr-stak to
-ensure uptime status is calculated correctly.</p>
-<p>Script requires processor to have AES support because, for some reason,
-the new <em>xmr-stak</em> core dumps on me on CPUs without AES (on Arch Linux).</p>
-<p>Any number of CryptoNight currencies may be specified in <em>xmr-mine.conf</em>
-as long as a valid wallet and pool address are given there as well.</p>
-<p>Multiple GPU configurations can be saved in <em>~/.xmr-mine</em>.  GPU configuration
-is chosen based on device name and config filename.</p>
+<p>Script requires processor to have AES support.</p>
+<p>Any number of CryptoNight currencies may be specified in
+<em>xmr-mine.conf</em>.</p>
+<p>Device specific GPU configurations can be saved in <em>~/.xmr-mine</em>.
+GPU configuration is chosen based on device name and config filename.
+See example.</p>
 </div>
 <div class="section" id="credits">
 <h1>Credits</h1>
