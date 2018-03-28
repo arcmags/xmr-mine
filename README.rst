@@ -2,19 +2,19 @@
 xmr-mine
 ========
 
-Mine for Monero_ on Arch Linux!  In addition to the *xmr-mine* wrapper
-script, this project contains Arch build files and pre-compiled
-binaries of xmr-stak_ in both CPU only and CPU + Nvidia versions.
+Mine for Monero_ on Arch Linux!
 
-This script simplifies the execution of *xmr-stak* and enables the
+This script simplifies the execution of xmr-stak_ by enabling the
 command line selection of different pools or currencies without
-editing configuration files.  All currency and pool settings are kept
-in the *xmr-mine.conf* file.  Additionally, this script loads any
-device specific *nvidia.txt* configuration files contained in the
-configuration directory.
+the need to constantly edit a configuration file.  All currency and
+pool settings can be kept in the *xmr-mine.conf* file, which is
+sourced upon script execution.  Additionally, this script can load
+device specific configuration files contained in the configuration
+directory as the *nvidia.txt* file.
 
 The xmr-mine configuration directory defaults to *~/.xmr-mine* with
 a fallback to the *./.xmr-mine* directory contained within this repo.
+
 
 Requirements
 ============
@@ -80,7 +80,7 @@ Options
 ``--random-pool, -R``
     Randomize pool weights.
 
-``--show-status, -S``
+``--status, -S``
     Print current pool status and hash rate.
 
 ``--wallet, -w <ADDRESS>``
@@ -124,5 +124,4 @@ Credits
 
 .. _Monero: https://getmonero.org/
 .. _xmr-stak: https://github.com/fireice-uk/xmr-stak
-.. _xmr-stak-git: https://aur.archlinux.org/packages/xmr-stak-git
 .. _xmr-node-proxy: https://github.com/Snipa22/xmr-node-proxy

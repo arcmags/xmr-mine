@@ -545,15 +545,14 @@ ul.auto-toc {
 <div class="document" id="xmr-mine">
 <h1 class="title">xmr-mine</h1>
 
-<p>Mine for <a class="reference external" href="https://getmonero.org/">Monero</a> on Arch Linux!  In addition to the <em>xmr-mine</em> wrapper
-script, this project contains Arch build files and pre-compiled
-binaries of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> in both CPU only and CPU + Nvidia versions.</p>
-<p>This script simplifies the execution of <em>xmr-stak</em> and enables the
+<p>Mine for <a class="reference external" href="https://getmonero.org/">Monero</a> on Arch Linux!</p>
+<p>This script simplifies the execution of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> by enabling the
 command line selection of different pools or currencies without
-editing configuration files.  All currency and pool settings are kept
-in the <em>xmr-mine.conf</em> file.  Additionally, this script loads any
-device specific <em>nvidia.txt</em> configuration files contained in the
-configuration directory.</p>
+the need to constantly edit a configuration file.  All currency and
+pool settings can be kept in the <em>xmr-mine.conf</em> file, which is
+sourced upon script execution.  Additionally, this script can load
+device specific configuration files contained in the configuration
+directory as the <em>nvidia.txt</em> file.</p>
 <p>The xmr-mine configuration directory defaults to <em>~/.xmr-mine</em> with
 a fallback to the <em>./.xmr-mine</em> directory contained within this repo.</p>
 <div class="section" id="requirements">
@@ -606,7 +605,7 @@ Launch xmr-stak.</p>
 <dd>Launch <em>xmr-stak</em> in daemon mode.  Pipe all output to <em>/dev/null</em>.</dd>
 <dt><tt class="docutils literal"><span class="pre">--random-pool,</span> <span class="pre">-R</span></tt></dt>
 <dd>Randomize pool weights.</dd>
-<dt><tt class="docutils literal"><span class="pre">--show-status,</span> <span class="pre">-S</span></tt></dt>
+<dt><tt class="docutils literal"><span class="pre">--status,</span> <span class="pre">-S</span></tt></dt>
 <dd>Print current pool status and hash rate.</dd>
 <dt><tt class="docutils literal"><span class="pre">--wallet,</span> <span class="pre">-w</span> &lt;ADDRESS&gt;</tt></dt>
 <dd>Specify wallet address to mine to.</dd>

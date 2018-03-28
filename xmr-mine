@@ -59,7 +59,7 @@ OPTIONS
     --rig, -r <RIG ID>
         Set rig_id (used by some pools).  Default is blank.
 
-    --show-status, -S
+    --status, -S
         Print current pool status and hash rate.
 
     --wallet, -w <ADDRESS>
@@ -99,7 +99,7 @@ MINER_PASS=
 MINER_RIG=
 MINER_CURRENCY=
 MINER_WALLET=
-MINER_ACTION=
+MINER_ACTION='mine'
 MINER_POOLS=()
 MINER_PROXY=
 MINER_CONFIG=
@@ -116,13 +116,10 @@ FLAG_DAEMON='false'
 FLAG_DRYRUN='false'
 FLAG_QUIET='false'
 FLAG_RANDOM_POOL='false'
-
-##=================  default xmr-stak settings  ==================##
-# pool:
+# default xmr-stak settings:
 use_nicehash='false'
 use_tls='false'
 tls_fingerprint=''
-# global:
 currency='monero7'
 call_timeout=10
 retry_time=30
@@ -213,8 +210,7 @@ miner_status() {
     fi
 
     # pool address:
-    POOL_ADDRESS="`grep -Po \
-        '"pool": ?"\K[^:]+(?=(:|"))' <<< "$JSON"`"
+    POOL_ADDRESS="`grep -Po '"pool": ?"\K[^:]+(?=(:|"))' <<< "$JSON"`"
 
     # pool ping:
     POOL_PING="`grep -Po '"ping": ?\K[0-9]+(?=,)' <<< "$JSON"`"
@@ -230,8 +226,7 @@ miner_status() {
     if [ $UP_DAYS -gt 0 ]; then
         UP_TEXT="${UP_DAYS}d "
     fi
-    UP_TEXT+="`printf "%02d:%02d:%02d" \
-        $UP_HOURS $UP_MINS $UP_SECS`"
+    UP_TEXT+="`printf "%02d:%02d:%02d" $UP_HOURS $UP_MINS $UP_SECS`"
 
     # get wallet and pass from pools.txt:
     if [ -f "$MINER_DIR/pools.txt" ]; then
@@ -269,11 +264,6 @@ miner_status() {
     exit 0
 }
 
-config_trim() {
-    grep -Pv '^\s*(\s*/|\s*\*|\s*$)' config.txt
-    return 0
-}
-
 
 ##=============================  SCRIPT  =============================##
 MINER_ACTION='mine'
@@ -291,22 +281,22 @@ while [ -n "$1" ]; do case "$1" in
     --quiet|-Q|-I)      FLAG_QUIET='true'; FLAG_DAEMON='true'   ;;
     --random-pool|-R)   FLAG_RANDOM_POOL='true'                 ;;
     --rig|-r)           shift; MINER_RIG="$1"                   ;;
-    --show-status|-S)   MINER_ACTION='status'                   ;;
+    --status|-S)        MINER_ACTION='status'                   ;;
     --wallet|-w)        shift; MINER_WALLET="$1"                ;;
     # FAIL: unrecognized option:
     *)  printf ":! unrecognized option: $1\n"; exit 5           ;;
 esac; shift; done
 
-# check config directory:
+# check for config directory:
 if [ -d "$MINER_CONFIG_DIR" ]; then
     # check xmr-mine.conf:
     if [ -f "$MINER_CONFIG_DIR/xmr-mine.conf" ]; then
         MINER_CONFIG="$MINER_CONFIG_DIR/xmr-mine.conf"
+    # try to use xmr-mine.conf in git repo:
     else
         MINER_CONFIG="$DIR_SCRIPT/.xmr-mine/xmr-mine.conf"
     fi
-
-# use config directory in git repo:
+# try to use config directory in git repo:
 else
     MINER_CONFIG_DIR="$DIR_SCRIPT/.xmr-mine"
     MINER_CONFIG="$DIR_SCRIPT/.xmr-mine/xmr-mine.conf"
