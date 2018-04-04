@@ -2,7 +2,7 @@
 ##============================  xmr-mine  ============================##
 # Copyright (C) 2018 arcmags             GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.3.0.
+# Wrapper script for xmr-stak v2.4.1.
 
 miner_help() {
 cat <<'EODOC'
@@ -28,7 +28,8 @@ OPTIONS
         Launch xmr-stak in daemon mode and fork to background.
 
     --currency, -C <currency>
-        Specify currency to mine for.
+        Set currency to mine for.  Any currency with a wallet and
+        pool given in xmr-mine.conf may be used.
 
     --dryrun, D
         Generate config.txt and pools.txt without launching xmr-stak.
@@ -81,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.3.0
+    xmr-stak v2.4.1
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -343,8 +344,20 @@ if !(net_check); then
     exit 1
 fi
 
-# parse currency:
-if [ -z "$MINER_CURRENCY" ]; then
+# set MINER_CURRENCY from long names:
+if [ -n "$MINER_CURRENCY" ]; then
+    case "${MINER_CURRENCY,,}" in
+        edollar)                MINER_CURRENCY='EDL'  ;;
+        electroneum)            MINER_CURRENCY='ETN'  ;;
+        graft)                  MINER_CURRENCY='GRFT' ;;
+        intense|intensecoin)    MINER_CURRENCY='ITNS' ;;
+        karbo)                  MINER_CURRENCY='KRB'  ;;
+        monero)                 MINER_CURRENCY='XMR'  ;;
+        stellite)               MINER_CURRENCY='XLT'  ;;
+        sumokoin)               MINER_CURRENCY='SUMO' ;;
+    esac
+# set MINER_CURRENCY from MINER_CONFIG:
+else
     MINER_CURRENCY="`grep -Po \
         '^ *MINER_CURRENCY=\K[^ ]+' "$MINER_CONFIG"`"
     # FAIL: no currency specified:
@@ -355,15 +368,16 @@ if [ -z "$MINER_CURRENCY" ]; then
 fi
 MINER_CURRENCY="${MINER_CURRENCY^^}"
 
-# set xmr-stak currency:
+# set xmr-stak currency from MINER_CURRENCY:
 case "$MINER_CURRENCY" in
-    AEON)   currency='aeon'         ;;
+    AEON)   currency='aeon7'        ;;
     EDL)    currency='edollar'      ;;
     ETN)    currency='electroneum'  ;;
     GRFT)   currency='graft'        ;;
     ITNS)   currency='intense'      ;;
     KRB)    currency='karbo'        ;;
     SUMO)   currency='sumokoin'     ;;
+    XLT)    currency='stellite'     ;;
     XMR)    currency='monero7'      ;;
     *)      currency='cryptonight'  ;;
 esac

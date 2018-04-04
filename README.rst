@@ -19,7 +19,7 @@ a fallback to the *./.xmr-mine* directory contained within this repo.
 Requirements
 ============
 
-xmr-stak v2.3.0
+xmr-stak v2.4.1
     The *xmr-mine* is wrapper script extending the functionality of
     *xmr-stak* at the command line.  Some form of *xmr-stak* must be
     installed.
@@ -53,7 +53,8 @@ Options
     Launch in quiet daemon mode and fork to background.
 
 ``--currency, -C <CURRENCY>``
-    Specify what currency to mine for.
+    Set currency to mine for.  Any currency with a wallet and pool
+    given in *xmr-mine.conf* may be used.
 
 ``--dryrun, -D``
     Generate *config.txt* and *pools.txt* without launching *xmr-stak*.
