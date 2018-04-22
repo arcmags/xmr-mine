@@ -1,0 +1,25 @@
+pkgbase = stellite
+	pkgdesc = Stellite: cryptonote currency daemon, wallet, and miner
+	pkgver = 1.2.3.2
+	pkgrel = 1
+	url = https://github.com/stellitecoin/Stellite
+	arch = x86_64
+	arch = i686
+	arch = armv7h
+	arch = aarch64
+	license = custom:Cryptonote
+	makedepends = git
+	makedepends = cmake
+	makedepends = boost
+	makedepends = gtest
+	depends = boost-libs
+	depends = unbound
+	depends = miniupnpc
+	depends = libunwind
+	depends = openssl
+	depends = readline
+	depends = zeromq
+	source = https://github.com/stellitecoin/Stellite/archive/1.2.3.2.tar.gz
+	md5sums = 212a960ea375df8368603c9b7ac801f5
+
+pkgname = stellite
