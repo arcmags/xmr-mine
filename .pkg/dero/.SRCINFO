@@ -1,0 +1,18 @@
+pkgbase = dero
+	pkgdesc = Dero: private cryptonote currency with smart contracts
+	pkgver = 1.0.2.alpha
+	pkgrel = 1
+	url = https://dero.io
+	arch = x86_64
+	license = custom:Cryptonote
+	depends = boost-libs
+	depends = unbound
+	depends = miniupnpc
+	depends = libunwind
+	depends = openssl
+	depends = readline
+	depends = zeromq
+	source = http://seeds.dero.io/alpha/dero_linux_amd64.tar.gz
+	md5sums = 4affecf71d1bc584668f6ee0379b3351
+
+pkgname = masari
