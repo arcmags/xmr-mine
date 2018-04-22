@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.4.1
+    xmr-stak v2.4.3
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -347,14 +347,17 @@ fi
 # set MINER_CURRENCY from long names:
 if [ -n "$MINER_CURRENCY" ]; then
     case "${MINER_CURRENCY,,}" in
-        edollar)                MINER_CURRENCY='EDL'  ;;
-        electroneum)            MINER_CURRENCY='ETN'  ;;
-        graft)                  MINER_CURRENCY='GRFT' ;;
-        intense|intensecoin)    MINER_CURRENCY='ITNS' ;;
-        karbo)                  MINER_CURRENCY='KRB'  ;;
-        monero)                 MINER_CURRENCY='XMR'  ;;
-        stellite)               MINER_CURRENCY='XLT'  ;;
-        sumokoin)               MINER_CURRENCY='SUMO' ;;
+        bbscoin)                MINER_CURRENCY='BBS'    ;;
+        croat)                  MINER_CURRENCY='CROAT'  ;;
+        edollar)                MINER_CURRENCY='EDL'    ;;
+        electroneum)            MINER_CURRENCY='ETN'    ;;
+        graft)                  MINER_CURRENCY='GRFT'   ;;
+        haven)                  MINER_CURRENCY='XHV'    ;;
+        intense|intensecoin)    MINER_CURRENCY='ITNS'   ;;
+        karbo)                  MINER_CURRENCY='KRB'    ;;
+        monero)                 MINER_CURRENCY='XMR'    ;;
+        stellite)               MINER_CURRENCY='XLT'    ;;
+        sumokoin)               MINER_CURRENCY='SUMO'   ;;
     esac
 # set MINER_CURRENCY from MINER_CONFIG:
 else
@@ -371,12 +374,15 @@ MINER_CURRENCY="${MINER_CURRENCY^^}"
 # set xmr-stak currency from MINER_CURRENCY:
 case "$MINER_CURRENCY" in
     AEON)   currency='aeon7'        ;;
+    BBS)    currency='bbscoin'      ;;
+    CROAT)  currency='croat'        ;;
     EDL)    currency='edollar'      ;;
     ETN)    currency='electroneum'  ;;
     GRFT)   currency='graft'        ;;
     ITNS)   currency='intense'      ;;
     KRB)    currency='karbo'        ;;
     SUMO)   currency='sumokoin'     ;;
+    XHV)    currency='haven'        ;;
     XLT)    currency='stellite'     ;;
     XMR)    currency='monero7'      ;;
     *)      currency='cryptonight'  ;;

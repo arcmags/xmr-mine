@@ -1,0 +1,27 @@
+pkgbase = intensecoin
+	pkgdesc = Intenscoin: cryptonote currency daemon, wallet, and miner
+	pkgver = 2.0.0
+	pkgrel = 1
+	url = https://github.com/valiant1x/intensecoin
+	arch = x86_64
+	arch = i686
+	arch = armv7h
+	arch = aarch64
+	license = custom:Cryptonote
+	makedepends = git
+	makedepends = cmake
+	makedepends = boost
+	makedepends = gtest
+	makedepends = qt5-tools
+	depends = boost-libs
+	depends = unbound
+	depends = miniupnpc
+	depends = libunwind
+	depends = openssl
+	depends = readline
+	depends = zeromq
+	provides = monero
+	source = https://github.com/valiant1x/intensecoin/archive/v2.0.0.tar.gz
+	md5sums = f1d5a6ca3bcd2c5f9b9f6a8fe72cdf72
+
+pkgname = intensecoin

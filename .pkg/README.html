@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
-<title>xmr-mine</title>
+<title>Arch Linux Packages</title>
 <style type="text/css">
 
 /*======================  dark.css  ======================*/
@@ -542,108 +542,16 @@ ul.auto-toc {
 </style>
 </head>
 <body>
-<div class="document" id="xmr-mine">
-<h1 class="title">xmr-mine</h1>
+<div class="document" id="arch-linux-packages">
+<h1 class="title">Arch Linux Packages</h1>
 
-<p>Mine for <a class="reference external" href="https://getmonero.org/">Monero</a> on Arch Linux!</p>
-<p>This script simplifies the execution of <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a> by enabling the
-command line selection of different pools or currencies without
-the need to constantly edit a configuration file.  All currency and
-pool settings can be kept in the <em>xmr-mine.conf</em> file, which is
-sourced upon script execution.  Additionally, this script can load
-device specific configuration files contained in the configuration
-directory as the <em>nvidia.txt</em> file.</p>
-<p>The xmr-mine configuration directory defaults to <em>~/.xmr-mine</em> with
-a fallback to the <em>./.xmr-mine</em> directory contained within this repo.</p>
-<div class="section" id="requirements">
-<h1>Requirements</h1>
-<dl class="docutils">
-<dt>xmr-stak v2.4.3</dt>
-<dd>The <em>xmr-mine</em> wrapper script extends the functionality of
-<em>xmr-stak</em> at the command line.  Some form of <em>xmr-stak</em> must be
-installed.</dd>
-</dl>
-</div>
-<div class="section" id="synopsis">
-<h1>Synopsis</h1>
-<p><tt class="docutils literal"><span class="pre">xmr-mine</span> [options]</tt></p>
-</div>
-<div class="section" id="description">
-<h1>Description</h1>
-<p>Parse command line arguments.
-Check if already running.
-Check internet connection.
-Check processor for AES support.
-Use any preexisting <em>config.txt</em>, <em>pools.txt</em>, <em>cpu.txt</em>,
-or <em>nividia.txt</em> files.
-Use any device specific nivida config files.
-Build config.txt.
-Build pools.txt (source <em>xmr-mine.conf</em>).
-Launch xmr-stak.</p>
-</div>
-<div class="section" id="options">
-<h1>Options</h1>
-<dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">--background,</span> <span class="pre">-B</span></tt></dt>
-<dd>Launch in quiet daemon mode and fork to background.</dd>
-<dt><tt class="docutils literal"><span class="pre">--currency,</span> <span class="pre">-C</span> &lt;CURRENCY&gt;</tt></dt>
-<dd>Set currency to mine for.  Any currency with a wallet and pool
-given in <em>xmr-mine.conf</em> may be used.</dd>
-<dt><tt class="docutils literal"><span class="pre">--dryrun,</span> <span class="pre">-D</span></tt></dt>
-<dd>Generate <em>config.txt</em> and <em>pools.txt</em> without launching <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--help</span></tt></dt>
-<dd>Print help.</dd>
-<dt><tt class="docutils literal"><span class="pre">--kill,</span> <span class="pre">-K</span></tt></dt>
-<dd>Kill any instance of <em>xmr-stak</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--pass</span> &lt;POOL PASSWORD&gt;</tt></dt>
-<dd>Password used to identify miner on pool.
-<em>$HOSTNAME</em> is used if nothing is specified.</dd>
-<dt><tt class="docutils literal"><span class="pre">--pool,</span> <span class="pre">-p</span> &lt;ADDRESS:PORT&gt;</tt></dt>
-<dd>Add pool to <em>pools.txt</em> with highest weight.</dd>
-<dt><tt class="docutils literal"><span class="pre">--proxy</span> &lt;ADDRESS:PORT&gt;</tt></dt>
-<dd>Add <a class="reference external" href="https://github.com/Snipa22/xmr-node-proxy">xmr-node-proxy</a> address to <em>pools.txt</em> with highest weight.</dd>
-<dt><tt class="docutils literal"><span class="pre">--quiet,</span> <span class="pre">-Q</span></tt></dt>
-<dd>Launch <em>xmr-stak</em> in daemon mode.  Pipe all output to <em>/dev/null</em>.</dd>
-<dt><tt class="docutils literal"><span class="pre">--random-pool,</span> <span class="pre">-R</span></tt></dt>
-<dd>Randomize pool weights.</dd>
-<dt><tt class="docutils literal"><span class="pre">--status,</span> <span class="pre">-S</span></tt></dt>
-<dd>Print current pool status and hash rate.</dd>
-<dt><tt class="docutils literal"><span class="pre">--wallet,</span> <span class="pre">-w</span> &lt;ADDRESS&gt;</tt></dt>
-<dd>Specify wallet address to mine to.</dd>
-</dl>
-</div>
-<div class="section" id="environment-variables">
-<h1>Environment Variables</h1>
-<dl class="docutils">
-<dt><tt class="docutils literal">MINER_CONFIG_DIR</tt></dt>
-<dd>Directory containing any <em>xmr-stak</em> configuration files.
-<em>~/.xmr-mine</em> is used by default.</dd>
-</dl>
-</div>
-<div class="section" id="notes">
-<h1>Notes</h1>
-<p>Script requires processor to have AES support.</p>
-<p>Any number of CryptoNight currencies may be specified in
-<em>xmr-mine.conf</em>.</p>
-<p>Device specific GPU configurations can be saved in <em>~/.xmr-mine</em>.
-GPU configuration is chosen based on device name and config filename.
-See example.</p>
-</div>
-<div class="section" id="credits">
-<h1>Credits</h1>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Author:</th><td class="field-body">arcmags</td>
-</tr>
-<tr class="field"><th class="field-name">License:</th><td class="field-body">GPL 3.0</td>
-</tr>
-<tr class="field"><th class="field-name">Donate(xmr):</th><td class="field-body">41dUPANhvCvLUuRVJpUc9cRFnsLHzWiTPUhyuamrVwa61xoP
-uxZaD6R28cLqxEhTaC6LuwcHtkbUi2uELDD88MoQHJKePvP</td>
-</tr>
-</tbody>
-</table>
+<p>This directory contains Arch Linux <a class="reference external" href="https://wiki.archlinux.org/index.php/PKGBUILD">PKGBUILD</a> files for <a class="reference external" href="https://github.com/fireice-uk/xmr-stak">xmr-stak</a>
+and several <a class="reference external" href="https://github.com/cryptonotefoundation/cryptonote">CryptoNote</a> currency CLIs.</p>
+<div class="section" id="installation">
+<h1>Installation</h1>
+<p><tt class="docutils literal">makepkg <span class="pre">-srci</span></tt> within the directory containing the desired
+PKGBUILD.</p>
+<p>See the <a class="reference external" href="https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages">WIKI</a> for more information.</p>
 </div>
 </div>
 </body>

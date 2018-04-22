@@ -1,0 +1,22 @@
+pkgbase = electroneum
+	pkgdesc = Secure, private, mobile based cryptocurrency
+	pkgver = 0.11.0.0.revert
+	pkgrel = 2
+	url = https://electroneum.com
+	arch = any
+	license = custom
+	makedepends = cmake
+	depends = boost
+	depends = openssl
+	depends = unbound
+	optdepends = miniupnpc: NAT punching
+	optdepends = libunwind: stack traces
+	optdepends = ldns: SSL toolkit
+	optdepends = expat: XML parsing
+	optdepends = doxygen: documentation
+	optdepends = graphviz: documentation
+	source = https://github.com/electroneum/electroneum/archive/v0.11.0.0-revert.tar.gz
+	md5sums = ecaa9b3aaa47db4b45c1d6ab4b3274b9
+
+pkgname = electroneum
+
