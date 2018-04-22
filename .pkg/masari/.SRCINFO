@@ -22,4 +22,4 @@ pkgbase = masari
 	source = https://github.com/masari-project/masari/archive/v0.1.4.0.tar.gz
 	md5sums = 0f75dbe49c0967a50645ac25e7c171d8
 
-pkgname = intensecoin
+pkgname = masari
