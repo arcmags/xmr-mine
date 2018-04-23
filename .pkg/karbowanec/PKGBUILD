@@ -1,0 +1,30 @@
+# Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+pkgname=karbowanec
+pkgver=1.5.1
+_pkgver=v.1.5.1
+pkgrel=1
+pkgdesc="Karbowanec: cryptonote currency daemon and wallet"
+arch=('x86_64' 'i686' 'armv7h' 'aarch64')
+url="https://github.com/seredat/$pkgname"
+license=('custom:Cryptonote')
+depends=('gcc6-libs' 'boost-libs' 'unbound' 'miniupnpc' 'libunwind' 'openssl' 'readline' 'zeromq')
+conflicts=()
+source=("$pkgname-$pkgver.tar.gz::$url/archive/{$_pkgver}.tar.gz")
+md5sums=('f87dc25ccaa3f9c631995312783f03b4')
+
+build() {
+    cd "${srcdir}/${pkgname}-${_pkgver}"
+    mkdir build
+    cd build
+    cmake .. \
+        -DCMAKE_CXX_COMPILER=g++-6 \
+        -DCMAKE_C_COMPILER=gcc-6
+    make
+}
+
+package() {
+	cd "${pkgname}-${_pkgver}/build"
+    install -Dm755 "./src/karbowanecd" "${pkgdir}/usr/bin/karbowanecd"
+    install -Dm755 "./src/simplewallet" \
+        "${pkgdir}/usr/bin/karbo-wallet-cli"
+}
