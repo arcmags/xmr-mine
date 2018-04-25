@@ -1,0 +1,25 @@
+pkgbase = haven
+	pkgdesc = Haven: cryptonote currency daemon and wallet
+	pkgver = 2.0.0
+	pkgrel = 1
+	url = https://github.com/havenprotocol/haven
+	arch = x86_64
+	arch = i686
+	arch = armv7h
+	arch = aarch64
+	license = custom:Cryptonote
+	makedepends = git
+	makedepends = cmake
+	makedepends = boost
+	makedepends = gtest
+	depends = boost-libs
+	depends = unbound
+	depends = miniupnpc
+	depends = libunwind
+	depends = openssl
+	depends = readline
+	depends = zeromq
+	source = https://github.com/havenprotocol/haven/archive/2.0.0.tar.gz
+	md5sums = c590fa268e5fefd2ec65562b4bc73e65
+
+pkgname = masari

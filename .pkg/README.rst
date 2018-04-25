@@ -11,6 +11,7 @@ CLI PKGBUILDs
 
 *   Dero_ 1.0.2.alpha
 *   Electroneum_ 0.11.0.0-revert
+*   Haven_ 2.0.0
 *   Intensecoin_ 2.0.0
 *   Karbowanec_ 1.5.1
 *   Masari_ 0.1.4.0
@@ -34,6 +35,7 @@ See the WIKI_ for more information.
 .. _xmr-stak: https://github.com/fireice-uk/xmr-stak
 .. _Dero: https://dero.io/
 .. _Electroneum: https://electroneum.com/
+.. _Haven: https://havenprotocol.com/
 .. _Intensecoin: https://intensecoin.com/
 .. _Karbowanec: https://karbo.io/
 .. _Masari: https://getmasari.org/
