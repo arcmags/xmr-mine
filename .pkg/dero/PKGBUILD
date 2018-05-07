@@ -1,6 +1,6 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 pkgname=dero
-pkgver=1.0.2.alpha
+pkgver=1.0.4
 pkgrel=1
 pkgdesc="Dero: private cryptonote currency with smart contracts"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('custom:Cryptonote')
 depends=('boost-libs' 'unbound' 'miniupnpc' 'libunwind' 'openssl' 'readline' 'zeromq')
 conflicts=()
 source=("$pkgname-$pkgver.tar.gz::http://seeds.dero.io/alpha/dero_linux_amd64.tar.gz")
-md5sums=('4affecf71d1bc584668f6ee0379b3351')
+md5sums=('d8b5abe4ee29c13d63537fd193c70c34')
 
 package() {
 	cd dero_linux_amd64

@@ -6,8 +6,8 @@ This directory contains Arch Linux PKGBUILD_ files for xmr-stak_
 and several CryptoNote_ currency CLIs.
 
 
-CLI PKGBUILDs
-=============
+Packages
+========
 
 *   Dero_ 1.0.2.alpha
 *   Electroneum_ 0.11.0.0-revert
@@ -23,8 +23,8 @@ CLI PKGBUILDs
 Installation
 ============
 
-``makepkg -srci`` within the directory containing the desired
-PKGBUILD.
+Run ``makepkg -srci`` within the directory containing the desired
+PKGBUILD to build and install the package.
 
 See the WIKI_ for more information.
 
