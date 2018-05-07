@@ -9,7 +9,7 @@ and several CryptoNote_ currency CLIs.
 Packages
 ========
 
-*   Dero_ 1.0.2.alpha
+*   Dero_ 1.0.4
 *   Electroneum_ 0.11.0.0-revert
 *   Haven_ 2.0.0
 *   Intensecoin_ 2.0.0
