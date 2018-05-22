@@ -321,7 +321,6 @@ if [ ! -f "$MINER_CONFIG" ]; then
     miner_error "xmr-mine.conf not found"
     exit 5
 fi
-
 # FAIL: xmr-mine already running:
 if [ "`pidof -x xmr-mine`" != "$$" ]; then
     miner_error "xmr-mine is already running"
@@ -355,6 +354,7 @@ if [ -n "$MINER_CURRENCY" ]; then
         haven)                  MINER_CURRENCY='XHV'    ;;
         intense|intensecoin)    MINER_CURRENCY='ITNS'   ;;
         karbo)                  MINER_CURRENCY='KRB'    ;;
+        masari)                 MINER_CURRENCY='MSR'    ;;
         monero)                 MINER_CURRENCY='XMR'    ;;
         stellite)               MINER_CURRENCY='XLT'    ;;
         sumokoin)               MINER_CURRENCY='SUMO'   ;;
@@ -373,19 +373,20 @@ MINER_CURRENCY="${MINER_CURRENCY^^}"
 
 # set xmr-stak currency from MINER_CURRENCY:
 case "$MINER_CURRENCY" in
-    AEON)   currency='aeon7'        ;;
-    BBS)    currency='bbscoin'      ;;
-    CROAT)  currency='croat'        ;;
-    EDL)    currency='edollar'      ;;
-    ETN)    currency='electroneum'  ;;
-    GRFT)   currency='graft'        ;;
-    ITNS)   currency='intense'      ;;
-    KRB)    currency='karbo'        ;;
-    SUMO)   currency='sumokoin'     ;;
-    XHV)    currency='haven'        ;;
-    XLT)    currency='stellite'     ;;
-    XMR)    currency='monero7'      ;;
-    *)      currency='cryptonight'  ;;
+    AEON)   currency='aeon7'            ;;
+    BBS)    currency='bbscoin'          ;;
+    CROAT)  currency='croat'            ;;
+    EDL)    currency='edollar'          ;;
+    ETN)    currency='electroneum'      ;;
+    GRFT)   currency='graft'            ;;
+    ITNS)   currency='intense'          ;;
+    KRB)    currency='karbo'            ;;
+    MSR)    currency='cryptonight_v7'   ;;
+    SUMO)   currency='sumokoin'         ;;
+    XHV)    currency='haven'            ;;
+    XLT)    currency='stellite'         ;;
+    XMR)    currency='monero7'          ;;
+    *)      currency='cryptonight'      ;;
 esac
 
 # parse miner password:

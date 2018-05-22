@@ -1,22 +1,21 @@
 pkgbase = electroneum
-	pkgdesc = Secure, private, mobile based cryptocurrency
-	pkgver = 0.11.0.0.revert
-	pkgrel = 2
-	url = https://electroneum.com
-	arch = any
-	license = custom
+	pkgdesc = Electroneum: cryptonote currency daemon and wallet
+	pkgver = 2.0.0.0
+	pkgrel = 1
+    url = https://github.com/electroneum/electroneum
+	arch = x86_64
+	arch = i686
+	license = custom:Cryptonote
+	makedepends = boost
 	makedepends = cmake
-	depends = boost
+	makedepends = git
+	depends = boost-libs
+	depends = libunwind
+	depends = miniupnpc
 	depends = openssl
+	depends = readline
 	depends = unbound
-	optdepends = miniupnpc: NAT punching
-	optdepends = libunwind: stack traces
-	optdepends = ldns: SSL toolkit
-	optdepends = expat: XML parsing
-	optdepends = doxygen: documentation
-	optdepends = graphviz: documentation
-	source = https://github.com/electroneum/electroneum/archive/v0.11.0.0-revert.tar.gz
-	md5sums = ecaa9b3aaa47db4b45c1d6ab4b3274b9
-
+	source = https://github.com/electroneum/electroneum/archive/v2.0.0.0.tar.gz
+	md5sums = fe217198ccc7da73de264262327321b3
 pkgname = electroneum
 

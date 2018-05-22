@@ -1,33 +1,39 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+
 pkgname=intensecoin
-pkgver=2.0.0
+pkgver=2.0.2.1
 pkgrel=1
 pkgdesc="Intenscoin: cryptonote currency daemon, wallet, and miner"
-arch=('x86_64' 'i686' 'armv7h' 'aarch64')
+arch=('x86_64' 'i686')
 url="https://github.com/valiant1x/$pkgname"
 license=('custom:Cryptonote')
-depends=('boost-libs' 'unbound' 'miniupnpc' 'libunwind' 'openssl' 'readline' 'zeromq')
-conflicts=()
+makedepends=( 'boost' 'cmake' 'git' )
+depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
+    'unbound' 'zeromq' )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-md5sums=('f1d5a6ca3bcd2c5f9b9f6a8fe72cdf72')
+md5sums=('89ee33725aa8d11d4d6825c9eb3e8d8d')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
-    make release
+    mkdir build
+    cd build
+    cmake ..
+    make
 }
 
 package() {
-	cd "${pkgname}-${pkgver}"
-    install -Dm644 "./utils/conf/intensecoind.conf" \
-        "${pkgdir}/etc/intensecoind.conf"
-    install -Dm755 "./build/release/bin/intense-blockchain-export" \
+	cd "${pkgname}-${pkgver}/build"
+    install -Dm755 "./bin/intense-blockchain-export" \
         "${pkgdir}/usr/bin/intense-blockchain-export"
-    install -Dm755 "./build/release/bin/intense-blockchain-import" \
+    install -Dm755 "./bin/intense-blockchain-import" \
         "${pkgdir}/usr/bin/intense-blockchain-import"
-    install -Dm755 "./build/release/bin/intense-wallet-cli" \
+    install -Dm755 "./bin/intense-wallet-cli" \
         "${pkgdir}/usr/bin/intense-wallet-cli"
-    install -Dm755 "./build/release/bin/intense-wallet-rpc" \
+    install -Dm755 "./bin/intense-wallet-rpc" \
         "${pkgdir}/usr/bin/intense-wallet-rpc"
-    install -Dm755 "./build/release/bin/intensecoind" \
+    install -Dm755 "./bin/intensecoind" \
         "${pkgdir}/usr/bin/intensecoind"
+    cd ..
+    install -Dm644 ./utils/conf/intensecoind.conf \
+        "${pkgdir}/etc/intensecoind.conf"
 }
