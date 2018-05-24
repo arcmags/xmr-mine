@@ -9,31 +9,36 @@ url="https://github.com/electroneum/$pkgname"
 license=('custom:Cryptonote')
 makedepends=( 'boost' 'cmake' 'git' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
-    'unbound' )
+    'unbound' 'zeromq' )
+optdepends=( 'doxygen: documentation'
+    'expat: XML parsing'
+    'graphviz: documentation'
+    'ldns: SSL toolkit' )
+checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
 md5sums=('fe217198ccc7da73de264262327321b3')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
-    mkdir build
-    cd build
+    mkdir build && cd build
     cmake ..
     make
 }
 
 package() {
-	cd "${pkgname}-${pkgver}/build"
-    install -Dm755 "./bin/electroneum-blockchain-export" \
+	cd "${pkgname}-${pkgver}"
+    install -Dm755 "./build/bin/electroneum-blockchain-export" \
         "${pkgdir}/usr/bin/electroneum-blockchain-export"
-    install -Dm755 "./bin/electroneum-blockchain-import" \
+    install -Dm755 "./build/bin/electroneum-blockchain-import" \
         "${pkgdir}/usr/bin/electroneum-blockchain-import"
-    install -Dm755 "./bin/electroneum-wallet-cli" \
+    install -Dm755 "./build/bin/electroneum-wallet-cli" \
         "${pkgdir}/usr/bin/electroneum-wallet-cli"
-    install -Dm755 "./bin/electroneum-wallet-rpc" \
+    install -Dm755 "./build/bin/electroneum-wallet-rpc" \
         "${pkgdir}/usr/bin/electroneum-wallet-rpc"
-    install -Dm755 "./bin/electroneumd" \
+    install -Dm755 "./build/bin/electroneumd" \
         "${pkgdir}/usr/bin/electroneumd"
-    cd ..
     install -Dm644 "./utils/conf/electroneumd.conf" \
         "${pkgdir}/etc/electroneumd.conf"
+    install -Dm644  LICENSE \
+        "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

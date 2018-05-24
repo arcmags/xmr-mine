@@ -356,7 +356,7 @@ if [ -n "$MINER_CURRENCY" ]; then
         karbo)                  MINER_CURRENCY='KRB'    ;;
         masari)                 MINER_CURRENCY='MSR'    ;;
         monero)                 MINER_CURRENCY='XMR'    ;;
-        stellite)               MINER_CURRENCY='XLT'    ;;
+        stellite)               MINER_CURRENCY='XTL'    ;;
         sumokoin)               MINER_CURRENCY='SUMO'   ;;
     esac
 # set MINER_CURRENCY from MINER_CONFIG:
@@ -384,7 +384,7 @@ case "$MINER_CURRENCY" in
     MSR)    currency='cryptonight_v7'   ;;
     SUMO)   currency='sumokoin'         ;;
     XHV)    currency='haven'            ;;
-    XLT)    currency='stellite'         ;;
+    XTL)    currency='stellite'         ;;
     XMR)    currency='monero7'          ;;
     *)      currency='cryptonight'      ;;
 esac

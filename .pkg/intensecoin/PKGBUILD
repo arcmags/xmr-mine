@@ -10,30 +10,35 @@ license=('custom:Cryptonote')
 makedepends=( 'boost' 'cmake' 'git' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
     'unbound' 'zeromq' )
+optdepends=( 'doxygen: documentation'
+    'expat: XML parsing'
+    'graphviz: documentation'
+    'ldns: SSL toolkit' )
+checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
 md5sums=('89ee33725aa8d11d4d6825c9eb3e8d8d')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
-    mkdir build
-    cd build
+    mkdir build && cd build
     cmake ..
     make
 }
 
 package() {
-	cd "${pkgname}-${pkgver}/build"
-    install -Dm755 "./bin/intense-blockchain-export" \
+	cd "${pkgname}-${pkgver}"
+    install -Dm755 "./build/bin/intense-blockchain-export" \
         "${pkgdir}/usr/bin/intense-blockchain-export"
-    install -Dm755 "./bin/intense-blockchain-import" \
+    install -Dm755 "./build/bin/intense-blockchain-import" \
         "${pkgdir}/usr/bin/intense-blockchain-import"
-    install -Dm755 "./bin/intense-wallet-cli" \
+    install -Dm755 "./build/bin/intense-wallet-cli" \
         "${pkgdir}/usr/bin/intense-wallet-cli"
-    install -Dm755 "./bin/intense-wallet-rpc" \
+    install -Dm755 "./build/bin/intense-wallet-rpc" \
         "${pkgdir}/usr/bin/intense-wallet-rpc"
-    install -Dm755 "./bin/intensecoind" \
+    install -Dm755 "./build/bin/intensecoind" \
         "${pkgdir}/usr/bin/intensecoind"
-    cd ..
     install -Dm644 ./utils/conf/intensecoind.conf \
         "${pkgdir}/etc/intensecoind.conf"
+    install -Dm644  LICENSE \
+        "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

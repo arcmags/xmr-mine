@@ -1,35 +1,45 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+
 pkgname=sumokoin
 pkgver=0.3.1.0
 pkgrel=1
 pkgdesc="Sumokoin: cryptonote currency daemon, wallet, and miner"
 arch=('x86_64' 'i686' 'armv7h' 'aarch64')
 url="https://github.com/sumoprojects/$pkgname"
-license=('custom:Cryptonote')
-depends=('boost-libs' 'db' 'libevent' 'libunwind' 'miniupnpc' 'openssl' 'readline' 'unbound' 'zeromq')
-conflicts=()
+license=('custom')
+makedepends=( 'boost' 'cmake' 'git' )
+depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
+    'unbound' 'zeromq' )
+optdepends=( 'doxygen: documentation'
+    'expat: XML parsing'
+    'graphviz: documentation'
+    'ldns: SSL toolkit' )
+checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
 md5sums=('b0d75b24bc799238f4c973fa61e29aa3')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
-    make release
+    mkdir build && cd build
+    #CXXFLAGS="-Wno-error=class-memaccess"
+    cmake ..
+    make
 }
 
 package() {
 	cd "${pkgname}-${pkgver}"
+    install -Dm755 "./build/bin/sumo-blockchain-export" \
+        "${pkgdir}/usr/bin/sumo-blockchain-export"
+    install -Dm755 "./build/bin/sumo-blockchain-import" \
+        "${pkgdir}/usr/bin/sumo-blockchain-import"
+    install -Dm755 "./build/bin/sumo-wallet-cli" \
+        "${pkgdir}/usr/bin/sumo-wallet-cli"
+    install -Dm755 "./build/bin/sumo-wallet-rpc" \
+        "${pkgdir}/usr/bin/sumo-wallet-rpc"
+    install -Dm755 "./build/bin/sumokoind" \
+        "${pkgdir}/usr/bin/sumokoind"
     install -Dm644 "./utils/conf/sumokoind.conf" \
         "${pkgdir}/etc/sumokoind.conf"
-    install -Dm755 "./build/release/bin/sumo-blockchain-export" \
-        "${pkgdir}/usr/bin/sumo-blockchain-export"
-    install -Dm755 "./build/release/bin/sumo-blockchain-import" \
-        "${pkgdir}/usr/bin/sumo-blockchain-import"
-    install -Dm755 "./build/release/bin/sumo-wallet-cli" \
-        "${pkgdir}/usr/bin/sumo-wallet-cli"
-    install -Dm755 "./build/release/bin/sumo-wallet-rpc" \
-        "${pkgdir}/usr/bin/sumo-wallet-rpc"
-    install -Dm755 "./build/release/bin/sumo-utils-deserialize" \
-        "${pkgdir}/usr/bin/sumo-utils-deserialize"
-    install -Dm755 "./build/release/bin/sumokoind" \
-        "${pkgdir}/usr/bin/sumokoind"
+    install -Dm644  LICENSE \
+        "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

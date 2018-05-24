@@ -1,5 +1,4 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
-# Note: gcc6 (in AUR) is required to build this package as is
 
 pkgname=haven
 pkgver=2.1.0
@@ -8,37 +7,41 @@ pkgdesc="Haven: cryptonote currency daemon and wallet"
 arch=('x86_64' 'i686')
 url="https://github.com/havenprotocol/$pkgname"
 license=('custom:Cryptonote')
-makedepends=( 'boost' 'cmake' 'gcc6' 'git' 'gtest' )
+makedepends=( 'boost' 'cmake' 'git' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
     'unbound' 'zeromq' )
+optdepends=( 'doxygen: documentation'
+    'expat: XML parsing'
+    'graphviz: documentation'
+    'ldns: SSL toolkit' )
+checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
 md5sums=('33242177af95524cf01cf1bc120ca85d')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
-    mkdir build
-    cd build
-    cmake .. \
-        -DCMAKE_CXX_COMPILER=g++-6 \
-        -DCMAKE_C_COMPILER=gcc-6
+    mkdir build && cd build
+    CXXFLAGS="-Wno-error=class-memaccess"
+    cmake ..
     make
 }
 
 package() {
-	cd "${pkgname}-${pkgver}/build"
-    install -Dm755 "./bin/haven-blockchain-export" \
+	cd "${pkgname}-${pkgver}"
+    install -Dm755 "./build/bin/haven-blockchain-export" \
         "${pkgdir}/usr/bin/haven-blockchain-export"
-    install -Dm755 "./bin/haven-blockchain-import" \
+    install -Dm755 "./build/bin/haven-blockchain-import" \
         "${pkgdir}/usr/bin/haven-blockchain-import"
-    install -Dm755 "./bin/haven-gen-trusted-multisig" \
+    install -Dm755 "./build/bin/haven-gen-trusted-multisig" \
         "${pkgdir}/usr/bin/haven-gen-trusted-multisig"
-    install -Dm755 "./bin/haven-wallet-cli" \
+    install -Dm755 "./build/bin/haven-wallet-cli" \
         "${pkgdir}/usr/bin/haven-wallet-cli"
-    install -Dm755 "./bin/haven-wallet-rpc" \
+    install -Dm755 "./build/bin/haven-wallet-rpc" \
         "${pkgdir}/usr/bin/haven-wallet-rpc"
-    install -Dm755 "./bin/havend" \
+    install -Dm755 "./build/bin/havend" \
         "${pkgdir}/usr/bin/havend"
-    cd ..
     install -Dm644 "./utils/conf/monerod.conf" \
         "${pkgdir}/etc/havend.conf"
+    install -Dm644  LICENSE \
+        "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }
