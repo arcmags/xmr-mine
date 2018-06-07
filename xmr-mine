@@ -358,6 +358,7 @@ if [ -n "$MINER_CURRENCY" ]; then
         monero)                 MINER_CURRENCY='XMR'    ;;
         stellite)               MINER_CURRENCY='XTL'    ;;
         sumokoin)               MINER_CURRENCY='SUMO'   ;;
+        turtlecoin)             MINER_CURRENCY='TRTL'   ;;
     esac
 # set MINER_CURRENCY from MINER_CONFIG:
 else
@@ -379,10 +380,12 @@ case "$MINER_CURRENCY" in
     EDL)    currency='edollar'          ;;
     ETN)    currency='electroneum'      ;;
     GRFT)   currency='graft'            ;;
+    IPBC)   currency='ipbc'             ;;
     ITNS)   currency='intense'          ;;
     KRB)    currency='karbo'            ;;
     MSR)    currency='cryptonight_v7'   ;;
     SUMO)   currency='sumokoin'         ;;
+    TRTL)   currency='turtlecoin'       ;;
     XHV)    currency='haven'            ;;
     XMR)    currency='monero7'          ;;
     XTL)    currency='stellite'         ;;
