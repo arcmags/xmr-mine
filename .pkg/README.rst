@@ -1,8 +1,8 @@
-===================
-Arch Linux Packages
-===================
+====================
+Arch Linux PKGBUILDs
+====================
 
-dero_ `1.0.4.15 <http://seeds.dero.io/alpha/>`__
+dero_ `1.0.4.17 <http://seeds.dero.io/alpha/>`__
     Cryptonote protocol rewritten in Golang.  Scheduled to include
     private smart contracts.  Currently closed source.
 
@@ -10,7 +10,7 @@ electroneum_ `2.0.0.0 <https://github.com/electroneum/electroneum/releases/tag/v
     Monero fork focusing on mobile support.
     `github <https://github.com/electroneum/electroneum/>`__
 
-haven_ `2.1.0 <https://github.com/havenprotocol/haven/releases/tag/2.1.0>`__
+haven_ `3.0.0 <https://github.com/havenprotocol/haven/releases/tag/3.0.0>`__
     Cryptocurrency scheduled to include a smart contract system
     for locking currency at a rigid fiat value.
     `github <https://github.com/havenprotocol/haven/>`__
@@ -24,26 +24,26 @@ karbowanec_ `1.5.1 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.1>`
     `github <https://github.com/seredat/karbowanec/>`__
 
 masari_ `0.2.3.0 <https://github.com/masari-project/masari/releases/tag/v0.2.3.0>`__
-    Monero based coin from the Middle East.
+    Monero based coin from Canadian developer.
     `github <https://github.com/masari-project/masari/>`__
 
-monero_ `0.12.0.0 <https://github.com/monero-project/monero/>`__
+monero_ `0.12.2.0 <https://github.com/monero-project/monero/releases/tag/v0.12.2.0>`__
     Original cryptonote currency focused on privacy and anonymity.
     `github <https://github.com/monero-project/monero/>`__
 
-stellite_ `1.2.3.2 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.3.2>`__
+stellite_ `1.2.4.0 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.0>`__
     Currency focusing on mobile and even smart device support.
     `github <https://github.com/stellitecoin/Stellite/>`__
 
 sumokoin_ `0.3.1.0 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.3.1.0>`__
-    Monero copy coin.
+    Monero copy coin; switched to cryptonote heavy algorithm.
     `github <https://github.com/sumoprojects/sumokoin/>`__
 
-xmr-stak-cpu_ `2.4.3 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.3>`__
+xmr-stak-cpu_ `2.4.4 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.4>`__
     xmr-stak compiled with CPU mining support only.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 
-xmr-stak-cpu-nvidia_ `2.4.3 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.3>`__
+xmr-stak-cpu-nvidia_ `2.4.4 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.4>`__
     xmr-stak compiled with CPU and NVIDIA mining support.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 

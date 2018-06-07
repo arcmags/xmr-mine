@@ -1,6 +1,6 @@
 pkgbase = stellite
 	pkgdesc = Stellite: cryptonote currency daemon, wallet, and miner
-	pkgver = 1.2.3.2
+	pkgver = 1.2.4.0
 	pkgrel = 1
 	url = https://github.com/stellitecoin/Stellite
 	arch = x86_64
@@ -21,6 +21,6 @@ pkgbase = stellite
     optdepends = graphviz
     optdepends = ldns
     checkdepends = gtest
-	source = https://github.com/stellitecoin/Stellite/archive/1.2.3.2.tar.gz
-	md5sums = 212a960ea375df8368603c9b7ac801f5
+	source = https://github.com/stellitecoin/Stellite/archive/1.2.4.0.tar.gz
+	md5sums = 6cdf9b1a40677c27ee72db11a4171d26
 pkgname = stellite

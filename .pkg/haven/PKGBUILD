@@ -1,7 +1,6 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
-
 pkgname=haven
-pkgver=2.1.0
+pkgver=3.0.0
 pkgrel=1
 pkgdesc="Haven: cryptonote currency daemon and wallet"
 arch=('x86_64' 'i686')
@@ -16,7 +15,7 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
-md5sums=('33242177af95524cf01cf1bc120ca85d')
+md5sums=('2af13866e91963a5067c8ed1c4f13f14')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

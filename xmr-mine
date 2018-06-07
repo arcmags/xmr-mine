@@ -2,7 +2,7 @@
 ##============================  xmr-mine  ============================##
 # Copyright (C) 2018 arcmags             GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.4.1.
+# Wrapper script for xmr-stak v2.4.4.
 
 miner_help() {
 cat <<'EODOC'
@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.4.3
+    xmr-stak v2.4.4
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -384,8 +384,8 @@ case "$MINER_CURRENCY" in
     MSR)    currency='cryptonight_v7'   ;;
     SUMO)   currency='sumokoin'         ;;
     XHV)    currency='haven'            ;;
-    XTL)    currency='stellite'         ;;
     XMR)    currency='monero7'          ;;
+    XTL)    currency='stellite'         ;;
     *)      currency='cryptonight'      ;;
 esac
 

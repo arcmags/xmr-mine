@@ -1,8 +1,7 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
-
 pkgname=stellite
 _pkgname=Stellite
-pkgver=1.2.3.2
+pkgver=1.2.4.0
 pkgrel=1
 pkgdesc="Stellite: cryptonote currency daemon, wallet, and miner"
 arch=('x86_64' 'i686')
@@ -17,7 +16,7 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("${_pkgname}-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
-md5sums=('212a960ea375df8368603c9b7ac801f5')
+md5sums=('6cdf9b1a40677c27ee72db11a4171d26')
 
 build() {
     cd "${srcdir}/${_pkgname}-${pkgver}"
@@ -38,7 +37,7 @@ package() {
         "${pkgdir}/usr/bin/stellite-wallet-rpc"
     install -Dm755 "./build/bin/stellited" \
         "${pkgdir}/usr/bin/stellited"
-    install -Dm644 "./utils/conf/electroneumd.conf" \
+    install -Dm644 "./utils/conf/stellited.conf" \
         "${pkgdir}/etc/stellited.conf"
     install -Dm644  LICENSE \
         "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
