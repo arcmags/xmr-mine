@@ -19,7 +19,7 @@ intensecoin_ `2.0.2.1 <https://github.com/valiant1x/intensecoin/releases/tag/v2.
     Cryptonote fork coin used as an exchange token for VPN services.
     `github <https://github.com/valiant1x/intensecoin/>`__
 
-karbowanec_ `1.5.1 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.1>`__
+karbowanec_ `1.5.2 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.2>`__
     Cryptonote fork from the Ukraine.
     `github <https://github.com/seredat/karbowanec/>`__
 
@@ -39,11 +39,11 @@ sumokoin_ `0.3.1.0 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.3.1
     Monero copy coin; switched to cryptonote heavy algorithm.
     `github <https://github.com/sumoprojects/sumokoin/>`__
 
-xmr-stak-cpu_ `2.4.4 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.4>`__
+xmr-stak-cpu_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
     xmr-stak compiled with CPU mining support only.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 
-xmr-stak-cpu-nvidia_ `2.4.4 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.4>`__
+xmr-stak-cpu-nvidia_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
     xmr-stak compiled with CPU and NVIDIA mining support.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 

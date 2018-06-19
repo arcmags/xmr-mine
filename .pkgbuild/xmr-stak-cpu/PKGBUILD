@@ -1,6 +1,6 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 pkgname=xmr-stak-cpu
-pkgver=2.4.4
+pkgver=2.4.5
 pkgrel=1
 pkgdesc="Monero CPU miner"
 arch=('x86_64')
@@ -15,7 +15,7 @@ makedepends=('cmake')
 depends=('libmicrohttpd' 'openssl' 'hwloc')
 source=("xmr-stak-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz"
     'no-donate.patch')
-md5sums=('de0d2eefd7bdf7fd315e6bfa83014ffe'
+md5sums=('a72cc1074e6215feb9c72e9fabcbf342'
     '9737fc7ffdcc178e4836d1a413c41f06')
 
 prepare() {

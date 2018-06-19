@@ -2,7 +2,7 @@
 ##============================  xmr-mine  ============================##
 # Copyright (C) 2018 arcmags             GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.4.4.
+# Wrapper script for xmr-stak v2.4.5.
 
 miner_help() {
 cat <<'EODOC'
@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.4.4
+    xmr-stak v2.4.5
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -343,25 +343,8 @@ if !(net_check); then
     exit 1
 fi
 
-# set MINER_CURRENCY from long names:
-if [ -n "$MINER_CURRENCY" ]; then
-    case "${MINER_CURRENCY,,}" in
-        bbscoin)                MINER_CURRENCY='BBS'    ;;
-        croat)                  MINER_CURRENCY='CROAT'  ;;
-        edollar)                MINER_CURRENCY='EDL'    ;;
-        electroneum)            MINER_CURRENCY='ETN'    ;;
-        graft)                  MINER_CURRENCY='GRFT'   ;;
-        haven)                  MINER_CURRENCY='XHV'    ;;
-        intense|intensecoin)    MINER_CURRENCY='ITNS'   ;;
-        karbo)                  MINER_CURRENCY='KRB'    ;;
-        masari)                 MINER_CURRENCY='MSR'    ;;
-        monero)                 MINER_CURRENCY='XMR'    ;;
-        stellite)               MINER_CURRENCY='XTL'    ;;
-        sumokoin)               MINER_CURRENCY='SUMO'   ;;
-        turtlecoin)             MINER_CURRENCY='TRTL'   ;;
-    esac
 # set MINER_CURRENCY from MINER_CONFIG:
-else
+if [ -z "$MINER_CURRENCY" ]; then
     MINER_CURRENCY="`grep -Po \
         '^ *MINER_CURRENCY=\K[^ ]+' "$MINER_CONFIG"`"
     # FAIL: no currency specified:
@@ -370,26 +353,79 @@ else
         exit 1
     fi
 fi
-MINER_CURRENCY="${MINER_CURRENCY^^}"
 
-# set xmr-stak currency from MINER_CURRENCY:
-case "$MINER_CURRENCY" in
-    AEON)   currency='aeon7'            ;;
-    BBS)    currency='bbscoin'          ;;
-    CROAT)  currency='croat'            ;;
-    EDL)    currency='edollar'          ;;
-    ETN)    currency='electroneum'      ;;
-    GRFT)   currency='graft'            ;;
-    IPBC)   currency='ipbc'             ;;
-    ITNS)   currency='intense'          ;;
-    KRB)    currency='karbo'            ;;
-    MSR)    currency='cryptonight_v7'   ;;
-    SUMO)   currency='sumokoin'         ;;
-    TRTL)   currency='turtlecoin'       ;;
-    XHV)    currency='haven'            ;;
-    XMR)    currency='monero7'          ;;
-    XTL)    currency='stellite'         ;;
-    *)      currency='cryptonight'      ;;
+# set currency from MINER_CURRENCY:
+case "${MINER_CURRENCY,,}" in
+    # currencies:
+    bbscoin)        currency='bbscoin'
+                    MINER_CURRENCY='BBS'        ;;
+    croat)          currency='croat'
+                    MINER_CURRENCY='CROAT'      ;;
+    edollar)        currency='edollar'
+                    MINER_CURRENCY='EDL'        ;;
+    electroneum)    currency='electroneum'
+                    MINER_CURRENCY='ETN'        ;;
+    graft)          currency='graft'
+                    MINER_CURRENCY='GRFT'       ;;
+    haven)          currency='haven'
+                    MINER_CURRENCY='XHV'        ;;
+    intense)        currency='intensecoin'
+                    MINER_CURRENCY='ITNS'       ;;
+    intensecoin)    currency='intensecoin'
+                    MINER_CURRENCY='ITNS'       ;;
+    karbo)          currency='karbo'
+                    MINER_CURRENCY='KRB'        ;;
+    karbowanec)     currency='karbo'
+                    MINER_CURRENCY='KRB'        ;;
+    masari)         currency='masari'
+                    MINER_CURRENCY='MSR'        ;;
+    monero)         currency='monero7'
+                    MINER_CURRENCY='XMR'        ;;
+    stellite)       currency='stellite'
+                    MINER_CURRENCY='XTL'        ;;
+    sumokoin)       currency='sumokoin'
+                    MINER_CURRENCY='SUMO'       ;;
+    turtlecoin)     currency='turtlecoin'
+                    MINER_CURRENCY='TRTL'       ;;
+    # symbols:
+    aeon)           currency='aeon7'
+                    MINER_CURRENCY='AEON'       ;;
+    bbs)            currency='bbscoin'
+                    MINER_CURRENCY='BBS'        ;;
+    croat)          currency='croat'
+                    MINER_CURRENCY='CROAT'      ;;
+    edl)            currency='edollar'
+                    MINER_CURRENCY='EDL'        ;;
+    etn)            currency='electroneum'
+                    MINER_CURRENCY='ETN'        ;;
+    grft)           currency='graft'
+                    MINER_CURRENCY='GRFT'       ;;
+    ipbc)           currency='ipbc'
+                    MINER_CURRENCY='IPBC'       ;;
+    itns)           currency='intensecoin'
+                    MINER_CURRENCY='ITNS'       ;;
+    krb)            currency='karbo'
+                    MINER_CURRENCY='KRB'        ;;
+    msr)            currency='masari'
+                    MINER_CURRENCY='MSR'        ;;
+    sumo)           currency='sumokoin'
+                    MINER_CURRENCY='SUMO'       ;;
+    trtl)           currency='turtlecoin'
+                    MINER_CURRENCY='TRTL'       ;;
+    xhv)            currency='haven'
+                    MINER_CURRENCY='XHV'        ;;
+    xmr)            currency='monero7'
+                    MINER_CURRENCY='XMR'        ;;
+    xtl)            currency='stellite'
+                    MINER_CURRENCY='XTL'        ;;
+    # algorithms:
+    cryptonight_lite)           currency='cryptonight_lite'         ;;
+    cryptonight_lite_v7)        currency='cryptonight_lite_v7'      ;;
+    cryptonight_lite_v7_xor)    currency='cryptonight_lite_v7_xor'  ;;
+    cryptonight)                currency='cryptonight'              ;;
+    cryptonight_v7)             currency='cryptonight_v7'           ;;
+    cryptonight_haven)          currency='cryptonight_haven'        ;;
+    cryptonight_heavy)          currency='cryptonight_heavy'        ;;
 esac
 
 # parse miner password:

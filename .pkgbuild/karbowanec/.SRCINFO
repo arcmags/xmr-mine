@@ -1,6 +1,6 @@
 pkgbase = karbowanec
 	pkgdesc = Karbowanec: cryptonote currency daemon and wallet
-	pkgver = 1.5.1
+	pkgver = 1.5.2
 	pkgrel = 1
 	url = https://github.com/seredat/karbowanec
 	arch = x86_64
@@ -21,6 +21,6 @@ pkgbase = karbowanec
     optdepends = graphviz
     optdepends = ldns
     checkdepends = gtest
-	source = https://github.com/seredat/karbowanec/archive/v.1.5.1.tar.gz
-	md5sums = f87dc25ccaa3f9c631995312783f03b4
+	source = https://github.com/seredat/karbowanec/archive/v.1.5.2.tar.gz
+	md5sums = 2f3ff90540a637d2debe16033568b018
 pkgname = karbowanec

@@ -1,8 +1,7 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
-
 pkgname=karbowanec
-pkgver=1.5.1
-_pkgver=v.1.5.1
+pkgver=1.5.2
+_pkgver=v.1.5.2
 pkgrel=1
 pkgdesc="Karbowanec: cryptonote currency daemon and wallet"
 arch=('x86_64' 'i686')
@@ -16,8 +15,8 @@ optdepends=( 'doxygen: documentation'
     'graphviz: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
-source=("$pkgname-$pkgver.tar.gz::$url/archive/{$_pkgver}.tar.gz")
-md5sums=('f87dc25ccaa3f9c631995312783f03b4')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_pkgver.tar.gz")
+md5sums=('2f3ff90540a637d2debe16033568b018')
 
 build() {
     cd "${srcdir}/${pkgname}-${_pkgver}"
