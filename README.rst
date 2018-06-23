@@ -113,12 +113,16 @@ Credits
 =======
 
 :Author:
-    arcmags
+    Chris Magyar
 
 :License:
     GPL 3.0
 
-:Donate(xmr):
+:Donate(MSR):
+    5mHzG8PAj8DQFvidGxYtj7WgD8Jt7Z1Lqj3QaaxFo9SKSCss
+    bRdJ8EpY11SNc6oaZ99RDkw6VV9Yj8hzYevPBZpo6BTBmxU
+
+:Donate(XMR):
     41dUPANhvCvLUuRVJpUc9cRFnsLHzWiTPUhyuamrVwa61xoP
     uxZaD6R28cLqxEhTaC6LuwcHtkbUi2uELDD88MoQHJKePvP
 

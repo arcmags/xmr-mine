@@ -1,6 +1,6 @@
 #!/bin/bash
 ##============================  xmr-mine  ============================##
-# Copyright (C) 2018 arcmags             GNU General Public License v3 #
+# Copyright (C) 2018 Chris Magyar        GNU General Public License v3 #
 ##====================================================================##
 # Wrapper script for xmr-stak v2.4.5.
 

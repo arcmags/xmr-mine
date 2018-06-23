@@ -1,0 +1,20 @@
+# Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+pkgname=dero
+pkgver=1.0.4.17
+pkgrel=1
+pkgdesc="Dero: private cryptonote currency with smart contracts"
+arch=('x86_64')
+url="https://dero.io"
+license=('custom:Cryptonote')
+depends=('boost-libs' 'unbound' 'miniupnpc' 'libunwind' 'openssl' 'readline' 'zeromq')
+source=("$pkgname-$pkgver.tar.gz::http://seeds.dero.io/alpha/dero_linux_amd64.tar.gz")
+md5sums=('4e0fda8028099131607c5b063981fc6e')
+
+package() {
+	cd dero_linux_amd64
+    install -Dm755 derod-linux-amd64 "${pkgdir}/usr/bin/derod"
+    install -Dm755 dero-wallet-cli-linux-amd64 \
+        "${pkgdir}/usr/bin/dero-wallet-cli"
+    install -Dm755 explorer-linux-amd64 \
+        "${pkgdir}/usr/bin/dero-explorer"
+}

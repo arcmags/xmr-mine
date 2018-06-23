@@ -1,0 +1,27 @@
+pkgbase = electroneum
+	pkgdesc = Electroneum: cryptonote currency daemon and wallet
+	pkgver = 2.0.0.0
+	pkgrel = 1
+    url = https://github.com/electroneum/electroneum
+	arch = x86_64
+	arch = i686
+	license = custom:Cryptonote
+	makedepends = boost
+	makedepends = cmake
+	makedepends = git
+	depends = boost-libs
+	depends = libunwind
+	depends = miniupnpc
+	depends = openssl
+	depends = readline
+	depends = unbound
+	depends = zeromq
+    optdepends = doxygen
+    optdepends = expat
+    optdepends = graphviz
+    optdepends = ldns
+    checkdepends = gtest
+	source = https://github.com/electroneum/electroneum/archive/v2.0.0.0.tar.gz
+	md5sums = fe217198ccc7da73de264262327321b3
+pkgname = electroneum
+
