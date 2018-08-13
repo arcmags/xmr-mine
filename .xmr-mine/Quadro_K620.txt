@@ -6,7 +6,8 @@
 
 "gpu_threads_conf" :
 [
-  { "index" : 0,
+  { 
+	"index" : 0,
     "threads" : 8,
     "blocks" : 48,
     "bfactor" : 2,

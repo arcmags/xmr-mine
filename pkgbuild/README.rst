@@ -27,7 +27,7 @@ masari_ `0.2.4.0 <https://github.com/masari-project/masari/releases/tag/v0.2.4.0
     Monero based coin from Canadian developer.
     `github <https://github.com/masari-project/masari/>`__
 
-monero_ `0.12.2.0 <https://github.com/monero-project/monero/releases/tag/v0.12.2.0>`__
+monero_ `0.12.3.0 <https://github.com/monero-project/monero/releases/tag/v0.12.3.0>`__
     Original cryptonote currency focused on privacy and anonymity.
     `github <https://github.com/monero-project/monero/>`__
 
@@ -39,8 +39,12 @@ sumokoin_ `0.3.1.0 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.3.1
     Monero copy coin; switched to cryptonote heavy algorithm.
     `github <https://github.com/sumoprojects/sumokoin/>`__
 
-xmr-stak-cpu_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
+xmr-stak-cpu_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
     xmr-stak compiled with CPU mining support only.
+    `github <https://github.com/fireice-uk/xmr-stak/>`__
+
+xmr-stak-cpu-amd_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
+    xmr-stak compiled with CPU and AMD mining support.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 
 xmr-stak-cpu-nvidia_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__

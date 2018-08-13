@@ -19,7 +19,7 @@ a fallback to the *./.xmr-mine* directory contained within this repo.
 Requirements
 ============
 
-xmr-stak v2.4.5
+xmr-stak v2.4.7
     The *xmr-mine* wrapper script extends the functionality of
     *xmr-stak* at the command line.  Some form of *xmr-stak* must be
     installed.

@@ -1,8 +1,8 @@
 #!/bin/bash
 ##============================  xmr-mine  ============================##
-# Copyright (C) 2018 Chris Magyar        GNU General Public License v3 #
+# Copyright (C) 2018 arcmags             GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.4.5.
+# Wrapper script for xmr-stak v2.4.7.
 
 miner_help() {
 cat <<'EODOC'
@@ -31,10 +31,10 @@ OPTIONS
         Set currency to mine for.  Any currency with a wallet and
         pool given in xmr-mine.conf may be used.
 
-    --dryrun, D
+    --dryrun, -D
         Generate config.txt and pools.txt without launching xmr-stak.
 
-    --help
+    --help, -H
         Print help.
 
     --kill, -K
@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.4.5
+    xmr-stak v2.4.7
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -141,17 +141,13 @@ prefer_ipv4='true'
 
 
 ##===========================  FUNCTIONS  ============================##
-# Check internet connection.
-net_check() {
-    if (ping -q -c 1 -W 3 google.com &> /dev/null) ||
-    (ping -q -c 1 -W 5 archlinux.org &> /dev/null); then
-        return 0
-    else
-        return 1
-    fi
+# Return internet connection status.
+internet_check() {
+    return `ping -q -c1 -W3 google.com &> /dev/null ||
+        ping -q -c1 -W5 archlinux.org &> /dev/null`
 }
 
-# Check system clock sync status.
+# Return ntp sync status.
 ntp_check() {
     return `timedatectl | grep 'clock synchronized: yes' >/dev/null`
 }
@@ -172,11 +168,20 @@ miner_error() {
 
 # Kill miner (xmr-stak).
 miner_kill() {
-    if !(pgrep -x xmr-stak >/dev/null); then
+    local N=0
+    if !(pgrep -x xmr-stak &>/dev/null); then
         miner_print "not mining"
         exit 1
     fi
-    pkill xmr-stak
+    pkill xmr-stak &>/dev/null
+    while (pgrep -x xmr-stak &>/dev/null) && [ $N -lt 10 ]; do
+        sleep 1
+        ((N++))
+    done
+    if [ $N -ge 10 ]; then
+        miner_error "unable to kill xmr-stak"
+        exit 2
+    fi
     miner_print "killed xmr-stak"
     exit 0
 }
@@ -274,7 +279,7 @@ while [ -n "$1" ]; do case "$1" in
     --background|-B)    FLAG_DAEMON='true'                      ;;
     --currency|-c)      shift; MINER_CURRENCY="$1"              ;;
     --dryrun|-D)        FLAG_DRYRUN='true'                      ;;
-    --help)             MINER_ACTION='help'                     ;;
+    --help|-H)          MINER_ACTION='help'                     ;;
     --kill|-K)          MINER_ACTION='kill'                     ;;
     --pool|-p)          shift; MINER_POOLS+=( "$1" )            ;;
     --proxy)            shift; MINER_PROXY="$1"                 ;;
@@ -316,29 +321,30 @@ case $MINER_ACTION in
     status)     miner_status    ;;
 esac
 
-# FAIL: no xmr-mine.conf:
-if [ ! -f "$MINER_CONFIG" ]; then
-    miner_error "xmr-mine.conf not found"
-    exit 5
-fi
 # FAIL: xmr-mine already running:
 if [ "`pidof -x xmr-mine`" != "$$" ]; then
     miner_error "xmr-mine is already running"
-    exit 4
+    exit 0
 fi
 # FAIL: xmr-stak already running:
-if (pgrep -x xmr-stak >/dev/null); then
+if [ "`pidof -x xmr-mine`" != "$$" ] || \
+(pgrep -x xmr-stak &>/dev/null); then
     miner_error "xmr-stak is already running"
+    exit 0
+fi
+# FAIL: no xmr-mine.conf:
+if [ ! -f "$MINER_CONFIG" ]; then
+    miner_error "xmr-mine.conf not found"
     exit 3
 fi
 # FAIL: no AES support:
-if !(grep -P 'flags\s*:.* aes( |$)' /proc/cpuinfo >/dev/null); then
+if !(grep -P 'flags\s*:.* aes( |$)' /proc/cpuinfo &>/dev/null); then
     miner_error "CPU does not support AES"
     miner_print "unable to launch stak miner"
     exit 2
 fi
 # FAIL: no internet connection:
-if !(net_check); then
+if !(internet_check); then
     miner_error "no internet connection"
     exit 1
 fi
@@ -359,6 +365,8 @@ case "${MINER_CURRENCY,,}" in
     # currencies:
     bbscoin)        currency='bbscoin'
                     MINER_CURRENCY='BBS'        ;;
+    bittube)        currency='bittube'
+                    MINER_CURRENCY='TUBE'       ;;
     croat)          currency='croat'
                     MINER_CURRENCY='CROAT'      ;;
     edollar)        currency='edollar'
@@ -412,6 +420,8 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='SUMO'       ;;
     trtl)           currency='turtlecoin'
                     MINER_CURRENCY='TRTL'       ;;
+    tube)           currency='bittube'
+                    MINER_CURRENCY='TUBE'       ;;
     xhv)            currency='haven'
                     MINER_CURRENCY='XHV'        ;;
     xmr)            currency='monero7'
@@ -419,6 +429,7 @@ case "${MINER_CURRENCY,,}" in
     xtl)            currency='stellite'
                     MINER_CURRENCY='XTL'        ;;
     # algorithms:
+    cyrptonight_bittube2)       currency='cyrptonight_bittube2'     ;;
     cryptonight_lite)           currency='cryptonight_lite'         ;;
     cryptonight_lite_v7)        currency='cryptonight_lite_v7'      ;;
     cryptonight_lite_v7_xor)    currency='cryptonight_lite_v7_xor'  ;;
@@ -560,12 +571,18 @@ fi
 
 # use preexisting GPU specific nvidia.txt:
 GPU="`lspci | grep -Pom1 '^.*?VGA.+?controller:\s?\K.*'`"
+GPU="${GPU,,}"
 CONFIG_FILES="`ls "$MINER_CONFIG_DIR"`"
 for FILE in $CONFIG_FILES; do
     FILE_GPU="${FILE%.txt}"
     FILE_GPU="${FILE_GPU//_/ }"
+    FILE_GPU="${FILE_GPU,,}"
     if [[ "$GPU" =~ "${FILE_GPU}" ]]; then
-        cp "$MINER_CONFIG_DIR/$FILE" ./nvidia.txt
+		if [[ "$GPU" =~ 'nvidia' ]]; then
+			cp "$MINER_CONFIG_DIR/$FILE" ./nvidia.txt
+		elif [[ "$GPU" =~ 'radeon' ]]; then
+			cp "$MINER_CONFIG_DIR/$FILE" ./amd.txt
+		fi
     fi
 done
 
@@ -576,7 +593,7 @@ if [ "$FLAG_DRYRUN" = 'false' ]; then
     if [ "$FLAG_DAEMON" = 'true' ]; then
         # daemon incognito mode:
         if [ "$FLAG_QUIET" = 'true' ]; then
-            xmr-stak >/dev/null 2>&1 &
+            xmr-stak &>/dev/null &
             sleep 2
         # daemon normal mode:
         else
