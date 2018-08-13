@@ -22,7 +22,7 @@ md5sums=('3d120c2ea49a504b8b97ed8c8d78821d'
 
 prepare() {
     cd "$srcdir/xmr-stak-${pkgver}"
-    #patch -p1 -i ../no-donate.patch
+    patch -p1 -i ../no-donate.patch
 }
 
 build() {
