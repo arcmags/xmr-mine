@@ -2,9 +2,12 @@
 Arch Linux PKGBUILDs
 ====================
 
+aeon_ `0.12.5.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.5.0-aeon>`__
+    Monero fork utilizing cryptonight-lite protocol.
+    `github <https://github.com/aeonix/aeon/>`__
+
 dero_ `1.0.4.17 <http://seeds.dero.io/alpha/>`__
-    Cryptonote protocol rewritten in Golang.  Scheduled to include
-    private smart contracts.  Currently closed source.
+    Cryptonote protocol rewritten in Golang.
 
 electroneum_ `2.0.0.0 <https://github.com/electroneum/electroneum/releases/tag/v2.0.0.0>`__
     Monero fork focusing on mobile support.
@@ -39,15 +42,15 @@ sumokoin_ `0.3.1.0 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.3.1
     Monero copy coin; switched to cryptonote heavy algorithm.
     `github <https://github.com/sumoprojects/sumokoin/>`__
 
-xmr-stak-cpu_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
+xmr-stak-cpu_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__
     xmr-stak compiled with CPU mining support only.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 
-xmr-stak-cpu-amd_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
+xmr-stak-cpu-amd_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__
     xmr-stak compiled with CPU and AMD mining support.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 
-xmr-stak-cpu-nvidia_ `2.4.5 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.5>`__
+xmr-stak-cpu-nvidia_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__
     xmr-stak compiled with CPU and NVIDIA mining support.
     `github <https://github.com/fireice-uk/xmr-stak/>`__
 
@@ -64,6 +67,7 @@ See the wiki_ for more information.
 .. _CryptoNote: https://github.com/cryptonotefoundation/cryptonote
 .. _PKGBUILD: https://wiki.archlinux.org/index.php/PKGBUILD
 .. _wiki: https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages
+.. _aeon: http://www.aeon.cash/
 .. _dero: https://dero.io/
 .. _electroneum: https://electroneum.com/
 .. _haven: https://havenprotocol.com/
@@ -74,4 +78,5 @@ See the wiki_ for more information.
 .. _stellite: https://stellite.cash/
 .. _sumokoin: https://www.sumokoin.org/
 .. _xmr-stak-cpu: https://github.com/fireice-uk/xmr-stak
+.. _xmr-stak-cpu-amd: https://github.com/fireice-uk/xmr-stak
 .. _xmr-stak-cpu-nvidia: https://github.com/fireice-uk/xmr-stak

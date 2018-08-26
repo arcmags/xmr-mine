@@ -1,0 +1,18 @@
+pkgbase = aeon
+	pkgdesc = Aeon: cryptonote currency daemon and wallet
+	pkgver = 0.12.5.0
+	pkgrel = 1
+	url = https://github.com/aeonix/aeon
+	arch = x86_64
+	license = custom:Cryptonote
+	makedepends = git
+	makedepends = cmake
+	makedepends = boost
+	depends = boost-libs
+	depends = openssl
+	depends = zeromq
+	depends = pcsclite
+	source = https://github.com/aeonix/aeon/archive/v0.12.5.0-aeon.tar.gz
+	md5sums = 6ce26e8d203a66ba367b2ec19c0fde12
+pkgname = aeon
+
