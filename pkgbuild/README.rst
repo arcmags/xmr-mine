@@ -6,8 +6,9 @@ aeon_ `0.12.5.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.5.0-aeon>`__
     Monero fork utilizing cryptonight-lite protocol.
     `github <https://github.com/aeonix/aeon/>`__
 
-dero_ `1.0.4.17 <http://seeds.dero.io/alpha/>`__
-    Cryptonote protocol rewritten in Golang.
+dero_ `2.0.1 <https://github.com/deroproject/derosuite/releases/tag/v2.0.1>`__
+    Cryptonote protocol implemented in Golang.
+    `github <https://github.com/deroproject/derosuite/>`__
 
 electroneum_ `2.0.0.0 <https://github.com/electroneum/electroneum/releases/tag/v2.0.0.0>`__
     Monero fork focusing on mobile support.

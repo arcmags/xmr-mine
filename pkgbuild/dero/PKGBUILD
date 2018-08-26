@@ -1,20 +1,42 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+
 pkgname=dero
-pkgver=1.0.4.17
+pkgver=2.0.1
+_git=deroproject
+_gitname=derosuite
+_gitver=v2.0.1
 pkgrel=1
-pkgdesc="Dero: private cryptonote currency with smart contracts"
-arch=('x86_64')
-url="https://dero.io"
-license=('custom:Cryptonote')
-depends=('boost-libs' 'unbound' 'miniupnpc' 'libunwind' 'openssl' 'readline' 'zeromq')
-source=("$pkgname-$pkgver.tar.gz::http://seeds.dero.io/alpha/dero_linux_amd64.tar.gz")
-md5sums=('4e0fda8028099131607c5b063981fc6e')
+pkgdesc='Dero: cryptonote currency daemon and wallet'
+arch=( 'x86_64' )
+url="https://github.com/$_git/$_gitname"
+license=( 'custom:Research' )
+makedepends=( 'git' 'go' )
+depends=( 'glibc' )
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
+md5sums=( 'f5c9621d9ea7dbd25ffb545b9a65ae71' )
+
+build() {
+	if ! [ "`uname -m`" = 'x86_64' ]; then
+		printf "\e[1;31m==> ERROR:\e[1;37m "
+		printf "local machine not x86_64.\n"
+		return 1
+	fi 
+	printf "\e[1;34m  ->\e[1;37m "
+	printf "go get -u github.com/deroproject/derosuite/...\n"
+	go get -u github.com/deroproject/derosuite/...
+}
 
 package() {
-	cd dero_linux_amd64
-    install -Dm755 derod-linux-amd64 "${pkgdir}/usr/bin/derod"
-    install -Dm755 dero-wallet-cli-linux-amd64 \
-        "${pkgdir}/usr/bin/dero-wallet-cli"
-    install -Dm755 explorer-linux-amd64 \
-        "${pkgdir}/usr/bin/dero-explorer"
+	cd "$_gitname-$pkgver"
+	if [ -z "$GOPATH" ]; then
+		GOPATH="$HOME/go"	
+	fi
+    install -Dm755 "$GOPATH/bin/derod" \
+		"$pkgdir/usr/bin/derod"
+    install -Dm755 "$GOPATH/bin/dero-wallet-cli" \
+		"$pkgdir/usr/bin/dero-wallet-cli"
+    install -Dm755 "$GOPATH/bin/explorer" \
+		"$pkgdir/usr/bin/dero-explorer"
+    install -Dm644 LICENSE \
+		"${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }
