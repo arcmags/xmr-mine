@@ -1,11 +1,14 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
+
 pkgname=karbowanec
-pkgver=1.5.2
-_pkgver=v.1.5.2
+pkgver=1.5.5
+_gituser=seredat
+_gitrepo=karbowanec
+_gitver=v.1.5.5
 pkgrel=1
 pkgdesc="Karbowanec: cryptonote currency daemon and wallet"
 arch=('x86_64' 'i686')
-url="https://github.com/seredat/$pkgname"
+url="https://github.com/$_gituser/$_gitrepo"
 license=('GPL')
 makedepends=( 'boost' 'cmake' 'git' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
@@ -15,23 +18,31 @@ optdepends=( 'doxygen: documentation'
     'graphviz: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
-source=("$pkgname-$pkgver.tar.gz::$url/archive/$_pkgver.tar.gz")
-md5sums=('2f3ff90540a637d2debe16033568b018')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
+md5sums=('4de9de8459ceeeb0bbf3f084be30ab3d')
+
+prepare() {
+	if [ -d "$srcdir/$_gitrepo-$_gitver" ]; then
+		mv "$srcdir/$_gitrepo-$_gitver" "$srcdir/$pkgname-$pkgver"
+	elif [ -d "$srcdir/$pkgname-$_gitver" ]; then
+		mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
+	fi 
+	cd "$srcdir/$pkgname-$pkgver"
+}
 
 build() {
-    cd "${srcdir}/${pkgname}-${_pkgver}"
+    cd "$srcdir/$pkgname-$pkgver"
     mkdir build && cd build
-    CXXFLAGS="-Wno-error=class-memaccess"
     cmake ..
     make
 }
 
 package() {
-	cd "${pkgname}-${_pkgver}"
+	cd "$pkgname-$pkgver"
     install -Dm755 "./build/src/karbowanecd" \
         "${pkgdir}/usr/bin/karbowanecd"
     install -Dm755 "./build/src/simplewallet" \
         "${pkgdir}/usr/bin/karbo-wallet-cli"
-    install -Dm644  LICENSE \
+    install -Dm644 LICENSE \
         "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

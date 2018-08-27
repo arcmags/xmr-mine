@@ -18,7 +18,7 @@ haven_ `3.0.0 <https://github.com/havenprotocol/haven/releases/tag/3.0.0>`__
 intensecoin_ `2.0.2.1 <https://github.com/valiant1x/intensecoin/releases/tag/v2.0.2.1>`__
     Cryptonote fork coin used as an exchange token for VPN services.
 
-karbowanec_ `1.5.2 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.2>`__
+karbowanec_ `1.5.5 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.5>`__
     Cryptonote fork from the Ukraine.
 
 masari_ `0.2.4.0 <https://github.com/masari-project/masari/releases/tag/v0.2.4.0>`__
