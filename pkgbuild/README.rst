@@ -5,21 +5,21 @@ Arch Linux PKGBUILDs
 aeon_ `0.12.5.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.5.0-aeon>`__
     Monero fork utilizing cryptonight-lite protocol.
 
-dero_ `2.0.1 <https://github.com/deroproject/derosuite/releases/tag/v2.0.1>`__
+dero_ `2.1.0 <https://github.com/deroproject/derosuite/releases/tag/V2.1.0>`__
     Cryptonote protocol implemented in Golang.
 
-electroneum_ `2.0.0.0 <https://github.com/electroneum/electroneum/releases/tag/v2.0.0.0>`__
+electroneum_ `2.1.1.0 <https://github.com/electroneum/electroneum/releases/tag/2.1.1.0>`__
     Monero fork focusing on mobile support.
 
-haven_ `3.0.0 <https://github.com/havenprotocol/haven/releases/tag/3.0.0>`__
+haven_ `3.0.2 <https://github.com/havenprotocol/haven/releases/tag/3.0.2>`__
     Cryptocurrency scheduled to include a smart contract system
     for locking currency at a rigid fiat value.
 
-intensecoin_ `2.0.2.1 <https://github.com/valiant1x/intensecoin/releases/tag/v2.0.2.1>`__
-    Cryptonote fork coin used as an exchange token for VPN services.
-
-karbowanec_ `1.5.5 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.5>`__
+karbowanec_ `1.5.7 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.7>`__
     Cryptonote fork from the Ukraine.
+
+lethean_ `2.1 <https://github.com/LetheanMovement/lethean/releases/tag/v2.1>`__
+    Cryptonote fork coin used as an exchange token for VPN services.
 
 masari_ `0.2.4.0 <https://github.com/masari-project/masari/releases/tag/v0.2.4.0>`__
     Monero based coin from Canadian developer.
@@ -59,8 +59,8 @@ See the wiki_ for more information.
 .. _dero: https://dero.io/
 .. _electroneum: https://electroneum.com/
 .. _haven: https://havenprotocol.com/
-.. _intensecoin: https://intensecoin.com/
 .. _karbowanec: https://karbo.io/
+.. _lethean: https://lethean.io/
 .. _masari: https://getmasari.org/
 .. _monero: https://getmonero.org/
 .. _stellite: https://stellite.cash/

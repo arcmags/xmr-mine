@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=karbowanec
-pkgver=1.5.5
+pkgver=1.5.7
 _gituser=seredat
 _gitrepo=karbowanec
-_gitver=v.1.5.5
+_gitver=v.1.5.7
 pkgrel=1
 pkgdesc="Karbowanec: cryptonote currency daemon and wallet"
 arch=('x86_64' 'i686')
@@ -19,14 +19,16 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('4de9de8459ceeeb0bbf3f084be30ab3d')
+md5sums=('56d7fbfa348d434add3db196a4e12c2d')
 
 prepare() {
-	if [ -d "$srcdir/$_gitrepo-$_gitver" ]; then
-		mv "$srcdir/$_gitrepo-$_gitver" "$srcdir/$pkgname-$pkgver"
-	elif [ -d "$srcdir/$pkgname-$_gitver" ]; then
-		mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
-	fi 
+    if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
+        if [ -d "$srcdir/$_gitrepo-$_gitver" ]; then
+            mv "$srcdir/$_gitrepo-$_gitver" "$srcdir/$pkgname-$pkgver"
+        elif [ -d "$srcdir/$pkgname-$_gitver" ]; then
+            mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
+        fi
+    fi
 	cd "$srcdir/$pkgname-$pkgver"
 }
 

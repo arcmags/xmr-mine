@@ -1,6 +1,6 @@
 pkgbase = haven
 	pkgdesc = Haven: cryptonote currency daemon and wallet
-	pkgver = 3.0.0
+	pkgver = 3.0.2
 	pkgrel = 1
 	url = https://github.com/havenprotocol/haven
 	arch = x86_64
@@ -21,6 +21,6 @@ pkgbase = haven
     optdepends = graphviz
     optdepends = ldns
     checkdepends = gtest
-	source = https://github.com/havenprotocol/haven/archive/3.0.0.tar.gz
-	md5sums = 2af13866e91963a5067c8ed1c4f13f14
+	source = https://github.com/havenprotocol/haven/archive/3.0.2.tar.gz
+	md5sums = da2f9aef37b91203d9e45fa47931b998
 pkgname = haven

@@ -1,11 +1,14 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=electroneum
-pkgver=2.0.0.0
+pkgver=2.1.1.0
+_gituser=electroneum
+_gitrepo=electroneum
+_gitver=2.1.1.0
 pkgrel=1
 pkgdesc='Electroneum: cryptonote currency daemon and wallet'
 arch=('x86_64' 'i686')
-url="https://github.com/electroneum/$pkgname"
+url="https://github.com/$_gituser/$_gitrepo"
 license=('custom:Cryptonote')
 makedepends=( 'boost' 'cmake' 'git' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
@@ -15,8 +18,20 @@ optdepends=( 'doxygen: documentation'
     'graphviz: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
-source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-md5sums=('fe217198ccc7da73de264262327321b3')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
+md5sums=('06739768dfdbac52e49a5683f38582ef')
+
+prepare() {
+    if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
+        if [ -d "$srcdir/$_gitrepo-$_gitver" ]; then
+            mv "$srcdir/$_gitrepo-$_gitver" "$srcdir/$pkgname-$pkgver"
+        elif [ -d "$srcdir/$pkgname-$_gitver" ]; then
+            mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
+        fi
+    fi
+	cd "$srcdir/$pkgname-$pkgver"
+}
+
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

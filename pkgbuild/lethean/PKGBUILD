@@ -1,15 +1,16 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
-pkgname=haven
-pkgver=3.0.2
-_gituser=havenprotocol
-_gitrepo=haven
-_gitver=3.0.2
+pkgname=lethean
+pkgver=2.1
+_gituser=LetheanMovement
+_gitrepo=lethean
+_gitver=v2.1
 pkgrel=1
-pkgdesc="Haven: cryptonote currency daemon and wallet"
+pkgdesc="Lethean: cryptonote currency daemon, wallet, and miner"
 arch=('x86_64' 'i686')
 url="https://github.com/$_gituser/$_gitrepo"
 license=('custom:Cryptonote')
+replaces=('intensecoin')
 makedepends=( 'boost' 'cmake' 'git' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
     'unbound' 'zeromq' )
@@ -19,7 +20,7 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('da2f9aef37b91203d9e45fa47931b998')
+md5sums=('011c114527b3ab93691d5683ea890e31')
 
 prepare() {
     if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
@@ -35,27 +36,26 @@ prepare() {
 build() {
     cd "$srcdir/$pkgname-$pkgver"
     mkdir build && cd build
-    CXXFLAGS="-Wno-error=class-memaccess"
     cmake ..
     make
 }
 
 package() {
 	cd "${pkgname}-${pkgver}"
-    install -Dm755 "./build/bin/haven-blockchain-export" \
-        "${pkgdir}/usr/bin/haven-blockchain-export"
-    install -Dm755 "./build/bin/haven-blockchain-import" \
-        "${pkgdir}/usr/bin/haven-blockchain-import"
-    install -Dm755 "./build/bin/haven-gen-trusted-multisig" \
-        "${pkgdir}/usr/bin/haven-gen-trusted-multisig"
-    install -Dm755 "./build/bin/haven-wallet-cli" \
-        "${pkgdir}/usr/bin/haven-wallet-cli"
-    install -Dm755 "./build/bin/haven-wallet-rpc" \
-        "${pkgdir}/usr/bin/haven-wallet-rpc"
-    install -Dm755 "./build/bin/havend" \
-        "${pkgdir}/usr/bin/havend"
-    install -Dm644 "./utils/conf/monerod.conf" \
-        "${pkgdir}/etc/havend.conf"
+    install -Dm755 "./build/bin/intense-blockchain-export" \
+        "${pkgdir}/usr/bin/lethean-blockchain-export"
+    install -Dm755 "./build/bin/intense-blockchain-import" \
+        "${pkgdir}/usr/bin/lethean-blockchain-import"
+    install -Dm755 "./build/bin/intense-wallet-cli" \
+        "${pkgdir}/usr/bin/lethean-wallet-cli"
+    install -Dm755 "./build/bin/intense-wallet-rpc" \
+        "${pkgdir}/usr/bin/lethean-wallet-rpc"
+    install -Dm755 "./build/bin/intense-wallet-vpn-rpc" \
+        "${pkgdir}/usr/bin/lethean-wallet-vpn-rpc"
+    install -Dm755 "./build/bin/intensecoind" \
+        "${pkgdir}/usr/bin/letheand"
+    install -Dm644 ./utils/conf/intensecoind.conf \
+        "${pkgdir}/etc/letheand.conf"
     install -Dm644  LICENSE \
         "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }
