@@ -216,7 +216,10 @@ miner_status() {
     fi
 
     # pool address:
-    POOL_ADDRESS="`grep -Po '"pool": ?"\K[^:]+(?=(:|"))' <<< "$JSON"`"
+    POOL_ADDRESS="`grep -Po '"pool": ?"\K[^":]+(?=(:|"))' <<< "$JSON"`"
+    if [ "$POOL_ADDRESS" = 'not connected' ]; then
+        POOL_ADDRESS='disconnected'
+    fi
 
     # pool ping:
     POOL_PING="`grep -Po '"ping": ?\K[0-9]+(?=,)' <<< "$JSON"`"
@@ -378,13 +381,15 @@ case "${MINER_CURRENCY,,}" in
     haven)          currency='haven'
                     MINER_CURRENCY='XHV'        ;;
     intense)        currency='intensecoin'
-                    MINER_CURRENCY='ITNS'       ;;
+                    MINER_CURRENCY='LTHN'       ;;
     intensecoin)    currency='intensecoin'
-                    MINER_CURRENCY='ITNS'       ;;
+                    MINER_CURRENCY='LTHN'       ;;
     karbo)          currency='karbo'
                     MINER_CURRENCY='KRB'        ;;
     karbowanec)     currency='karbo'
                     MINER_CURRENCY='KRB'        ;;
+    lethean)        currency='intensecoin'
+                    MINER_CURRENCY='LTHN'       ;;
     masari)         currency='masari'
                     MINER_CURRENCY='MSR'        ;;
     monero)         currency='monero7'
@@ -410,10 +415,10 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='GRFT'       ;;
     ipbc)           currency='ipbc'
                     MINER_CURRENCY='IPBC'       ;;
-    itns)           currency='intensecoin'
-                    MINER_CURRENCY='ITNS'       ;;
     krb)            currency='karbo'
                     MINER_CURRENCY='KRB'        ;;
+    lthn)           currency='intensecoin'
+                    MINER_CURRENCY='LTHN'       ;;
     msr)            currency='masari'
                     MINER_CURRENCY='MSR'        ;;
     sumo)           currency='sumokoin'
@@ -491,7 +496,7 @@ fi
 # switch to clean miner directory:
 mkdir -p "$MINER_DIR"
 cd "$MINER_DIR"
-rm -f config.txt pools.txt cpu.txt nvidia.txt
+rm -f config.txt pools.txt cpu.txt nvidia.txt amd.txt
 
 # use preexisting config.txt:
 if [ -f "$XMR_STAK_CONFIG" ]; then
@@ -557,6 +562,12 @@ else
     POOLS_TXT+="],\n"
     POOLS_TXT+="\"currency\" : \"$currency\",\n"
     printf "$POOLS_TXT" > pools.txt
+fi
+
+# set timestamp on config.txt and pools.txt to prevent /tmp clearing:
+if [[ "$MINER_DIR" =~ /tmp* ]]; then
+    touch -d 'next year' config.txt
+    touch -d 'next year' pools.txt
 fi
 
 # use preexisting cpu.txt:
