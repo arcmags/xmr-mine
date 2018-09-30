@@ -1,22 +1,25 @@
-# Maintainer: Konstantin Shalygin <k0ste@k0ste.ru>
-# Contributor: Konstantin Shalygin <k0ste@k0ste.ru>
-# Contributor: Chris Magyar <c.magyar.ec@gmail.com>
+# Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=aeon
-pkgver=0.12.5.0
+pkgver=0.12.6.0
+_gituser=aeonix
+_gitrepo=aeon
+_gitver=v0.12.6.0-aeon
 pkgrel=1
 pkgdesc='Aeon: cryptonote currency daemon and wallet'
-url="https://github.com/aeonix/${pkgname}"
-depends=('boost-libs' 'openssl' 'zeromq' 'pcsclite' )
-makedepends=('git' 'cmake' 'boost' )
-license=('custom:Cryptonote')
 arch=('x86_64')
-source=("${url}/archive/v${pkgver}-${pkgname}.tar.gz")
-md5sums=('6ce26e8d203a66ba367b2ec19c0fde12')
+url="https://github.com/aeonix/${pkgname}"
+license=('custom:Cryptonote')
+makedepends=( 'boost' 'cmake' 'git' 'rapidjson' )
+depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl'
+    'pcsclite' 'readline' 'unbound' 'zeromq' )
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
+md5sums=('91cfa5d1a770e70e2ab596f2126584b0')
 
 prepare() {
-	cd "${pkgname}-${pkgver}-${pkgname}"
-	git clone \
+    mv "$srcdir/aeon-0.12.6.0-aeon" "$srcdir/$pkgname-$pkgver"
+	cd "$srcdir/$pkgname-$pkgver"
+    git clone \
 		git://github.com/monero-project/miniupnp.git external/miniupnp
 	git clone \
 		git://github.com/monero-project/unbound.git external/unbound
@@ -25,14 +28,14 @@ prepare() {
 }
 
 build() {
-	cd "${pkgname}-${pkgver}-${pkgname}"
+    cd "$srcdir/$pkgname-$pkgver"
     mkdir build && cd build
     cmake ..
     make
 }
 
 package() {
-	cd "${pkgname}-${pkgver}-${pkgname}"
+	cd "$pkgname-$pkgver"
     install -Dm755 "./build/bin/aeon-blockchain-blackball" \
         "${pkgdir}/usr/bin/aeon-blockchain-blackball"
     install -Dm755 "./build/bin/aeon-blockchain-export" \
@@ -49,6 +52,6 @@ package() {
         "${pkgdir}/usr/bin/aeon-wallet-rpc"
     install -Dm644 ./utils/conf/aeond.conf \
         "${pkgdir}/etc/aeond.conf"
-    install -Dm644  LICENSE \
+    install -Dm644 LICENSE \
         "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

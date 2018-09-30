@@ -2,7 +2,7 @@
 Arch Linux PKGBUILDs
 ====================
 
-aeon_ `0.12.5.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.5.0-aeon>`__
+aeon_ `0.12.6.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.6.0-aeon>`__
     Monero fork utilizing cryptonight-lite protocol.
 
 dero_ `2.1.0 <https://github.com/deroproject/derosuite/releases/tag/V2.1.0>`__
@@ -21,7 +21,7 @@ karbowanec_ `1.5.7 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.7>`
 lethean_ `2.1 <https://github.com/LetheanMovement/lethean/releases/tag/v2.1>`__
     Cryptonote fork coin used as an exchange token for VPN services.
 
-masari_ `0.2.4.3 <https://github.com/masari-project/masari/releases/tag/v0.2.4.3>`__
+masari_ `0.2.4.5 <https://github.com/masari-project/masari/releases/tag/v0.2.4.5>`__
     Monero based coin from Canadian developer.
 
 monero_ `0.12.3.0 <https://github.com/monero-project/monero/releases/tag/v0.12.3.0>`__
