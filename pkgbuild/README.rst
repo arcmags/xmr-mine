@@ -5,7 +5,7 @@ Arch Linux PKGBUILDs
 aeon_ `0.12.6.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.6.0-aeon>`__
     Monero fork utilizing cryptonight-lite protocol.
 
-dero_ `2.1.0 <https://github.com/deroproject/derosuite/releases/tag/V2.1.0>`__
+dero_ `2.1.2 <https://github.com/deroproject/derosuite/releases/tag/v2.1.2-1>`__
     Cryptonote protocol implemented in Golang.
 
 electroneum_ `2.1.1.0 <https://github.com/electroneum/electroneum/releases/tag/2.1.1.0>`__

@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=dero
-pkgver=2.1.0
+pkgver=2.1.2
 _git=deroproject
 _gitname=derosuite
-_gitver=V2.1.0
+_gitver=v2.1.2-1
 pkgrel=1
 pkgdesc='Dero: cryptonote currency daemon and wallet'
 arch=( 'x86_64' )
@@ -13,7 +13,7 @@ license=( 'custom:Research' )
 makedepends=( 'git' 'go' )
 depends=( 'glibc' )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=( '937fd74832c0fda20793755c54a28d33' )
+md5sums=( 'ec237bdf755d46cc27caa53b7582b94e' )
 
 build() {
 	if ! [ "`uname -m`" = 'x86_64' ]; then
@@ -27,7 +27,7 @@ build() {
 }
 
 package() {
-	cd "$_gitname-$pkgver"
+	cd "$_gitname-$pkgver-1"
 	if [ -z "$GOPATH" ]; then
 		GOPATH="$HOME/go"
 	fi
