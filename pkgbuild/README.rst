@@ -8,10 +8,10 @@ aeon_ `0.12.6.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.6.0-aeon>`__
 dero_ `2.1.2 <https://github.com/deroproject/derosuite/releases/tag/v2.1.2-1>`__
     Cryptonote protocol implemented in Golang.
 
-electroneum_ `2.1.1.0 <https://github.com/electroneum/electroneum/releases/tag/2.1.1.0>`__
+electroneum_ `2.1.1.1 <https://github.com/electroneum/electroneum/releases/tag/v2.1.1.1>`__
     Monero fork focusing on mobile support.
 
-haven_ `3.0.2 <https://github.com/havenprotocol/haven/releases/tag/3.0.2>`__
+haven_ `3.1.0 <https://github.com/havenprotocol/haven/releases/tag/3.1.0>`__
     Cryptocurrency scheduled to include a smart contract system
     for locking currency at a rigid fiat value.
 

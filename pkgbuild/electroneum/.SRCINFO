@@ -1,6 +1,6 @@
 pkgbase = electroneum
 	pkgdesc = Electroneum: cryptonote currency daemon and wallet
-	pkgver = 2.1.1.0
+	pkgver = 2.1.1.1
 	pkgrel = 1
     url = https://github.com/electroneum/electroneum
 	arch = x86_64
@@ -21,7 +21,7 @@ pkgbase = electroneum
     optdepends = graphviz
     optdepends = ldns
     checkdepends = gtest
-	source = https://github.com/electroneum/electroneum/archive/2.1.1.0.tar.gz
-	md5sums = 06739768dfdbac52e49a5683f38582ef
+	source = https://github.com/electroneum/electroneum/archive/2.1.1.1.tar.gz
+	md5sums = 747b23e5fbb5436d58b043f189fddccb
 pkgname = electroneum
 

@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=electroneum
-pkgver=2.1.1.0
+pkgver=2.1.1.1
 _gituser=electroneum
 _gitrepo=electroneum
-_gitver=2.1.1.0
+_gitver=v2.1.1.1
 pkgrel=1
 pkgdesc='Electroneum: cryptonote currency daemon and wallet'
 arch=('x86_64' 'i686')
@@ -19,7 +19,7 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('06739768dfdbac52e49a5683f38582ef')
+md5sums=('747b23e5fbb5436d58b043f189fddccb')
 
 prepare() {
     if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
