@@ -1,13 +1,15 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 pkgname=stellite
-_pkgname=Stellite
-pkgver=1.2.4.0
+pkgver=1.2.4.4
+_gituser=stellitecoin
+_gitrepo=Stellite
+_gitver=1.2.4.4
 pkgrel=1
 pkgdesc="Stellite: cryptonote currency daemon, wallet, and miner"
 arch=('x86_64' 'i686')
-url="https://github.com/stellitecoin/${_pkgname}"
+url="https://github.com/$_gituser/$_gitrepo"
 license=('custom:Cryptonote')
-makedepends=( 'boost' 'cmake' 'git' )
+makedepends=( 'boost=1.66.0' 'cmake' 'git' 'icu=61.1')
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl' 'readline'
     'unbound' 'zeromq' )
 optdepends=( 'doxygen: documentation'
@@ -15,18 +17,29 @@ optdepends=( 'doxygen: documentation'
     'graphviz: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
-source=("${_pkgname}-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz")
-md5sums=('6cdf9b1a40677c27ee72db11a4171d26')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
+md5sums=('7f51418bd3634c84b33715029c55c978')
+
+prepare() {
+    if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
+        if [ -d "$srcdir/$_gitrepo-$_gitver" ]; then
+            mv "$srcdir/$_gitrepo-$_gitver" "$srcdir/$pkgname-$pkgver"
+        elif [ -d "$srcdir/$pkgname-$_gitver" ]; then
+            mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
+        fi
+    fi
+	cd "$srcdir/$pkgname-$pkgver"
+}
 
 build() {
-    cd "${srcdir}/${_pkgname}-${pkgver}"
+    cd "$srcdir/$pkgname-$pkgver"
     mkdir build && cd build
     cmake ..
     make
 }
 
 package() {
-	cd "${_pkgname}-${pkgver}"
+	cd "$pkgname-$pkgver"
     install -Dm755 "./build/bin/stellite-blockchain-export" \
         "${pkgdir}/usr/bin/stellite-blockchain-export"
     install -Dm755 "./build/bin/stellite-blockchain-import" \

@@ -15,10 +15,10 @@ haven_ `3.1.0 <https://github.com/havenprotocol/haven/releases/tag/3.1.0>`__
     Cryptocurrency scheduled to include a smart contract system
     for locking currency at a rigid fiat value.
 
-karbowanec_ `1.5.7 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.7>`__
+karbowanec_ `1.5.8 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.8>`__
     Cryptonote fork from the Ukraine.
 
-lethean_ `2.1 <https://github.com/LetheanMovement/lethean/releases/tag/v2.1>`__
+lethean_ `3.0.0.b2 <https://github.com/LetheanMovement/lethean/releases/tag/v3.0.0.b2>`__
     Cryptonote fork coin used as an exchange token for VPN services.
 
 masari_ `0.2.4.5 <https://github.com/masari-project/masari/releases/tag/v0.2.4.5>`__
@@ -27,10 +27,10 @@ masari_ `0.2.4.5 <https://github.com/masari-project/masari/releases/tag/v0.2.4.5
 monero_ `0.12.3.0 <https://github.com/monero-project/monero/releases/tag/v0.12.3.0>`__
     Original cryptonote currency focused on privacy and anonymity.
 
-stellite_ `1.2.4.0 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.0>`__
+stellite_ `1.2.4.4 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.4>`__
     Currency focusing on mobile and even smart device support.
 
-sumokoin_ `0.3.1.0 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.3.1.0>`__
+sumokoin_ `0.4.1.1 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.4.1.1>`__
     Monero copy coin; switched to cryptonote heavy algorithm.
 
 xmr-stak-cpu_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__

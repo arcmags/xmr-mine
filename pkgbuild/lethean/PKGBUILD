@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=lethean
-pkgver=2.1
+pkgver=3.0.0.b2
 _gituser=LetheanMovement
 _gitrepo=lethean
-_gitver=v2.1
+_gitver=v3.0.0.b2
 pkgrel=1
 pkgdesc="Lethean: cryptonote currency daemon, wallet, and miner"
 arch=('x86_64' 'i686')
@@ -20,7 +20,7 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('011c114527b3ab93691d5683ea890e31')
+md5sums=('83d61e7b7bba8bbf0f5fa7550e132064')
 
 prepare() {
     if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
@@ -42,18 +42,18 @@ build() {
 
 package() {
 	cd "${pkgname}-${pkgver}"
-    install -Dm755 "./build/bin/intense-blockchain-export" \
+    install -Dm755 "./build/bin/lethean-blockchain-export" \
         "${pkgdir}/usr/bin/lethean-blockchain-export"
-    install -Dm755 "./build/bin/intense-blockchain-import" \
+    install -Dm755 "./build/bin/lethean-blockchain-import" \
         "${pkgdir}/usr/bin/lethean-blockchain-import"
-    install -Dm755 "./build/bin/intense-wallet-cli" \
-        "${pkgdir}/usr/bin/lethean-wallet-cli"
-    install -Dm755 "./build/bin/intense-wallet-rpc" \
-        "${pkgdir}/usr/bin/lethean-wallet-rpc"
-    install -Dm755 "./build/bin/intense-wallet-vpn-rpc" \
-        "${pkgdir}/usr/bin/lethean-wallet-vpn-rpc"
-    install -Dm755 "./build/bin/intensecoind" \
+    install -Dm755 "./build/bin/letheand" \
         "${pkgdir}/usr/bin/letheand"
+    install -Dm755 "./build/bin/lethean-wallet-cli" \
+        "${pkgdir}/usr/bin/lethean-wallet-cli"
+    install -Dm755 "./build/bin/lethean-wallet-rpc" \
+        "${pkgdir}/usr/bin/lethean-wallet-rpc"
+    install -Dm755 "./build/bin/lethean-wallet-vpn-rpc" \
+        "${pkgdir}/usr/bin/lethean-wallet-vpn-rpc"
     install -Dm644 ./utils/conf/intensecoind.conf \
         "${pkgdir}/etc/letheand.conf"
     install -Dm644  LICENSE \
