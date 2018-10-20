@@ -24,7 +24,7 @@ lethean_ `3.0.0.b2 <https://github.com/LetheanMovement/lethean/releases/tag/v3.0
 masari_ `0.2.4.5 <https://github.com/masari-project/masari/releases/tag/v0.2.4.5>`__
     Monero based coin from Canadian developer.
 
-monero_ `0.12.3.0 <https://github.com/monero-project/monero/releases/tag/v0.12.3.0>`__
+monero_ `0.13.0.3 <https://github.com/monero-project/monero/releases/tag/v0.13.0.3>`__
     Original cryptonote currency focused on privacy and anonymity.
 
 stellite_ `1.2.4.4 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.4>`__
