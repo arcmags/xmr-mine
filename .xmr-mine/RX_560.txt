@@ -1,20 +1,17 @@
-/*  Radeon RX 560
- *  memory: 3131
- *  compute units: 16
- */
+/*  Radeon RX 560 */
 
 "gpu_threads_conf" : 
 [
   { 
-	"index" : 0,
+    "index" : 0,
     "intensity" : 896, 
     "worksize" : 8,
     "affine_to_cpu" : false, 
-    "strided_index" : 1, 
+    "strided_index" : 2, 
     "mem_chunk" : 2,
+    "unroll" : 8, 
     "comp_mode" : true
   },
 ],
 
 "platform_index" : 0,
-

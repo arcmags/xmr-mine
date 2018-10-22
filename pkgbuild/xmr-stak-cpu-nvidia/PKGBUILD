@@ -1,7 +1,7 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 # Note: requires gcc6.
 pkgname=xmr-stak-cpu-nvidia
-pkgver=2.4.7
+pkgver=2.5.1
 pkgrel=1
 pkgdesc="Monero CPU/nvidia all in one miner"
 arch=('x86_64')
@@ -16,8 +16,8 @@ makedepends=('cmake' 'gcc6' 'opencl-headers')
 depends=('libmicrohttpd' 'openssl' 'hwloc' 'cuda' 'ocl-icd')
 source=("xmr-stak-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz"
     'no-donate.patch')
-md5sums=('3d120c2ea49a504b8b97ed8c8d78821d'
-    '9737fc7ffdcc178e4836d1a413c41f06')
+md5sums=('7049c65da140cb41ebb7d7260ec70e42'
+    'ce1427ca3af66fdadd599bc11ffa27be')
 
 prepare() {
     cd "$srcdir/xmr-stak-${pkgver}"

@@ -5,7 +5,7 @@ Arch Linux PKGBUILDs
 aeon_ `0.12.6.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.6.0-aeon>`__
     Monero fork utilizing cryptonight-lite protocol.
 
-dero_ `2.1.2 <https://github.com/deroproject/derosuite/releases/tag/v2.1.2-1>`__
+dero_ `2.1.5 <https://github.com/deroproject/derosuite/releases/tag/v2.1.5>`__
     Cryptonote protocol implemented in Golang.
 
 electroneum_ `2.1.1.1 <https://github.com/electroneum/electroneum/releases/tag/v2.1.1.1>`__
@@ -33,13 +33,13 @@ stellite_ `1.2.4.4 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.
 sumokoin_ `0.4.1.1 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.4.1.1>`__
     Monero copy coin; switched to cryptonote heavy algorithm.
 
-xmr-stak-cpu_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__
+xmr-stak-cpu_ `2.5.1 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.1>`__
     xmr-stak compiled with CPU mining support only.
 
-xmr-stak-cpu-amd_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__
+xmr-stak-cpu-amd_ `2.5.1 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.1>`__
     xmr-stak compiled with CPU and AMD mining support.
 
-xmr-stak-cpu-nvidia_ `2.4.7 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.4.7>`__
+xmr-stak-cpu-nvidia_ `2.5.1 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.1>`__
     xmr-stak compiled with CPU and NVIDIA mining support.
 
 
