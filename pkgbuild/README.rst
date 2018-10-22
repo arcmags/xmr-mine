@@ -15,7 +15,7 @@ haven_ `3.1.0 <https://github.com/havenprotocol/haven/releases/tag/3.1.0>`__
     Cryptocurrency scheduled to include a smart contract system
     for locking currency at a rigid fiat value.
 
-karbowanec_ `1.5.8 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.8>`__
+karbowanec_ `1.5.9 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.9>`__
     Cryptonote fork from the Ukraine.
 
 lethean_ `3.0.0.b2 <https://github.com/LetheanMovement/lethean/releases/tag/v3.0.0.b2>`__
