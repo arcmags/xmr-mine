@@ -2,7 +2,7 @@
 ##============================  xmr-mine  ============================##
 # Copyright (C) 2018 arcmags             GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.4.7.
+# Wrapper script for xmr-stak v2.5.1.
 
 miner_help() {
 cat <<'EODOC'
@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.4.7
+    xmr-stak v2.5.1
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -392,7 +392,7 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='LTHN'       ;;
     masari)         currency='masari'
                     MINER_CURRENCY='MSR'        ;;
-    monero)         currency='monero7'
+    monero)         currency='monero'
                     MINER_CURRENCY='XMR'        ;;
     stellite)       currency='stellite'
                     MINER_CURRENCY='XTL'        ;;
@@ -421,6 +421,10 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='LTHN'       ;;
     msr)            currency='masari'
                     MINER_CURRENCY='MSR'        ;;
+    qrl)            currency='qrl'
+                    MINER_CURRENCY='QRL'        ;;
+    ryo)            currency='ryo'
+                    MINER_CURRENCY='RYO'        ;;
     sumo)           currency='sumokoin'
                     MINER_CURRENCY='SUMO'       ;;
     trtl)           currency='turtlecoin'
@@ -429,19 +433,23 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='TUBE'       ;;
     xhv)            currency='haven'
                     MINER_CURRENCY='XHV'        ;;
-    xmr)            currency='monero7'
+    xmr)            currency='monero'
                     MINER_CURRENCY='XMR'        ;;
     xtl)            currency='stellite'
                     MINER_CURRENCY='XTL'        ;;
     # algorithms:
-    cyrptonight_bittube2)       currency='cyrptonight_bittube2'     ;;
+    cryptonight_bittube2)       currency='cyrptonight_bittube2'     ;;
+    cryptonight)                currency='cryptonight'              ;;
+    cryptonight_haven)          currency='cryptonight_haven'        ;;
+    cryptonight_haven)          currency='cryptonight_haven'        ;;
+    cryptonight_heavy)          currency='cryptonight_heavy'        ;;
     cryptonight_lite)           currency='cryptonight_lite'         ;;
     cryptonight_lite_v7)        currency='cryptonight_lite_v7'      ;;
     cryptonight_lite_v7_xor)    currency='cryptonight_lite_v7_xor'  ;;
-    cryptonight)                currency='cryptonight'              ;;
+    cryptonight_masari)         currency='cryptonight_masari'       ;;
     cryptonight_v7)             currency='cryptonight_v7'           ;;
-    cryptonight_haven)          currency='cryptonight_haven'        ;;
-    cryptonight_heavy)          currency='cryptonight_heavy'        ;;
+    cryptonight_v8)             currency='cryptonight_v8'           ;;
+    cryptonight_v7_stellite)    currency='cryptonight_v7_stellite'  ;;
 esac
 
 # parse miner password:
