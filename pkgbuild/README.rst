@@ -15,16 +15,16 @@ haven_ `3.1.0 <https://github.com/havenprotocol/haven/releases/tag/3.1.0>`__
     Cryptocurrency scheduled to include a smart contract system
     for locking currency at a rigid fiat value.
 
-karbowanec_ `1.5.9 <https://github.com/seredat/karbowanec/releases/tag/v.1.5.9>`__
+karbowanec_ `1.6.0 <https://github.com/seredat/karbowanec/releases/tag/v.1.6.0>`__
     Cryptonote fork from the Ukraine.
 
-lethean_ `3.0.0.b2 <https://github.com/LetheanMovement/lethean/releases/tag/v3.0.0.b2>`__
+lethean_ `3.0.0.b4 <https://github.com/LetheanMovement/lethean/releases/tag/v3.0.0.b4>`__
     Cryptonote fork coin used as an exchange token for VPN services.
 
 masari_ `0.2.4.5 <https://github.com/masari-project/masari/releases/tag/v0.2.4.5>`__
     Monero based coin from Canadian developer.
 
-monero_ `0.13.0.3 <https://github.com/monero-project/monero/releases/tag/v0.13.0.3>`__
+monero_ `0.13.0.4 <https://github.com/monero-project/monero/releases/tag/v0.13.0.4>`__
     Original cryptonote currency focused on privacy and anonymity.
 
 stellite_ `1.2.4.4 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.4>`__

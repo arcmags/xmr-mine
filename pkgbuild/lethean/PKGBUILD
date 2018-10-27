@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=lethean
-pkgver=3.0.0.b2
+pkgver=3.0.0.b4
 _gituser=LetheanMovement
 _gitrepo=lethean
-_gitver=v3.0.0.b2
+_gitver=v3.0.0.b4
 pkgrel=1
 pkgdesc="Lethean: cryptonote currency daemon, wallet, and miner"
 arch=('x86_64' 'i686')
@@ -20,7 +20,7 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('83d61e7b7bba8bbf0f5fa7550e132064')
+md5sums=('55cff000b0c73dc0ec520c2af471709a')
 
 prepare() {
     if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
