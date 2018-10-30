@@ -1,7 +1,6 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
-# Note: requires gcc6.
 pkgname=xmr-stak-cpu-nvidia
-pkgver=2.5.1
+pkgver=2.5.2
 pkgrel=1
 pkgdesc="Monero CPU/nvidia all in one miner"
 arch=('x86_64')
@@ -16,8 +15,8 @@ makedepends=('cmake' 'gcc6' 'opencl-headers')
 depends=('libmicrohttpd' 'openssl' 'hwloc' 'cuda' 'ocl-icd')
 source=("xmr-stak-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz"
     'no-donate.patch')
-md5sums=('7049c65da140cb41ebb7d7260ec70e42'
-    'ce1427ca3af66fdadd599bc11ffa27be')
+md5sums=('e23757501cb030a0ecd4d7b77fd3bd93'
+    '73a3f89510681a2ea5c6b597f3c27589')
 
 prepare() {
     cd "$srcdir/xmr-stak-${pkgver}"
@@ -31,14 +30,6 @@ build() {
     cmake .. \
         -DCMAKE_C_COMPILER=gcc-6 \
         -DCMAKE_CXX_COMPILER=g++-6 \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_LINK_STATIC=OFF \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DMICROHTTPD_ENABLE=ON \
-        -DOpenSSL_ENABLE=ON \
-        -DXMR-STAK_COMPILE=native \
-        -DCPU_ENABLE=ON \
-        -DHWLOC_ENABLE=ON \
         -DOpenCL_ENABLE=OFF
     make
 }

@@ -33,14 +33,17 @@ stellite_ `1.2.4.4 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.
 sumokoin_ `0.4.1.1 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.4.1.1>`__
     Monero copy coin; switched to cryptonote heavy algorithm.
 
-xmr-stak-cpu_ `2.5.1 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.1>`__
+xmr-stak-cpu_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
     xmr-stak compiled with CPU mining support only.
 
-xmr-stak-cpu-amd_ `2.5.1 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.1>`__
+xmr-stak-cpu-amd_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
     xmr-stak compiled with CPU and AMD mining support.
 
-xmr-stak-cpu-nvidia_ `2.5.1 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.1>`__
+xmr-stak-cpu-nvidia_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
     xmr-stak compiled with CPU and NVIDIA mining support.
+    
+xmr-stak-cpu-amd-nvidia_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
+    xmr-stak compiled with CPU, AMD, and NVIDIA mining support.
 
 
 Installation
@@ -68,3 +71,4 @@ See the wiki_ for more information.
 .. _xmr-stak-cpu: https://github.com/fireice-uk/xmr-stak
 .. _xmr-stak-cpu-amd: https://github.com/fireice-uk/xmr-stak
 .. _xmr-stak-cpu-nvidia: https://github.com/fireice-uk/xmr-stak
+.. _xmr-stak-cpu-amd-nvidia: https://github.com/fireice-uk/xmr-stak

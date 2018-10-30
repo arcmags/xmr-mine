@@ -2,7 +2,7 @@
 ##============================  xmr-mine  ============================##
 # Copyright (C) 2018 arcmags             GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.5.1.
+# Wrapper script for xmr-stak v2.5.2.
 
 miner_help() {
 cat <<'EODOC'
@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.5.1
+    xmr-stak v2.5.2
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
