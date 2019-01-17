@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=karbowanec
-pkgver=1.6.0
+pkgver=1.6.3
 _gituser=seredat
 _gitrepo=karbowanec
-_gitver=v.1.6.0
+_gitver=v.1.6.3
 pkgrel=1
 pkgdesc="Karbowanec: cryptonote currency daemon and wallet"
 arch=('x86_64' 'i686')
@@ -19,17 +19,10 @@ optdepends=( 'doxygen: documentation'
     'ldns: SSL toolkit' )
 checkdepends=('gtest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('32b8881279563d12758c91f62759f4fc')
+md5sums=('0f8bef0a6d77f0b31e1724ea0f6ee56e')
 
 prepare() {
-    if [ ! -d "$srcdir/$pkgname-$pkgver" ]; then
-        if [ -d "$srcdir/$_gitrepo-$_gitver" ]; then
-            mv "$srcdir/$_gitrepo-$_gitver" "$srcdir/$pkgname-$pkgver"
-        elif [ -d "$srcdir/$pkgname-$_gitver" ]; then
-            mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
-        fi
-    fi
-	cd "$srcdir/$pkgname-$pkgver"
+    mv "$srcdir/$pkgname-$_gitver" "$srcdir/$pkgname-$pkgver"
 }
 
 build() {
@@ -40,7 +33,7 @@ build() {
 }
 
 package() {
-	cd "$pkgname-$pkgver"
+    cd "$pkgname-$pkgver"
     install -Dm755 "./build/src/karbowanecd" \
         "${pkgdir}/usr/bin/karbowanecd"
     install -Dm755 "./build/src/simplewallet" \

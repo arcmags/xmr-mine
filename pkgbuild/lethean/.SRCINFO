@@ -1,6 +1,6 @@
 pkgbase = lethean
 	pkgdesc = Lethean: cryptonote currency daemon, wallet, and miner
-	pkgver = 3.0.0.b4
+	pkgver = 3.0.0
 	pkgrel = 1
 	url = https://github.com/valiant1x/intensecoin
 	arch = x86_64
@@ -21,6 +21,6 @@ pkgbase = lethean
     optdepends = graphviz
     optdepends = ldns
     checkdepends = gtest
-	source = https://github.com/LetheanMovement/lethean/archive/v3.0.0.b4.tar.gz
-	md5sums = 55cff000b0c73dc0ec520c2af471709a
+	source = https://github.com/LetheanMovement/lethean/archive/v3.0.0.tar.gz
+	md5sums = 0643451326a82a5fe8325bb098651c6d
 pkgname = lethean

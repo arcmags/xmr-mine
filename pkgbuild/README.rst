@@ -2,62 +2,33 @@
 Arch Linux PKGBUILDs
 ====================
 
-aeon_ `0.12.6.0 <https://github.com/aeonix/aeon/releases/tag/v0.12.6.0-aeon>`__
-    Monero fork utilizing cryptonight-lite protocol.
+aeon_ 0.12.8.0-1
 
-dero_ `2.1.5 <https://github.com/deroproject/derosuite/releases/tag/v2.1.5>`__
-    Cryptonote protocol implemented in Golang.
+dero_ 2.1.5-1
 
-electroneum_ `2.1.1.1 <https://github.com/electroneum/electroneum/releases/tag/v2.1.1.1>`__
-    Monero fork focusing on mobile support.
+electroneum_ 2.1.1.1-1
 
-haven_ `3.1.0 <https://github.com/havenprotocol/haven/releases/tag/3.1.0>`__
-    Cryptocurrency scheduled to include a smart contract system
-    for locking currency at a rigid fiat value.
+haven_ 3.1.0-1
 
-karbowanec_ `1.6.0 <https://github.com/seredat/karbowanec/releases/tag/v.1.6.0>`__
-    Cryptonote fork from the Ukraine.
+karbowanec_ 1.6.3
 
-lethean_ `3.0.0.b4 <https://github.com/LetheanMovement/lethean/releases/tag/v3.0.0.b4>`__
-    Cryptonote fork coin used as an exchange token for VPN services.
+lethean_ 3.0.0-1
 
-masari_ `0.2.4.5 <https://github.com/masari-project/masari/releases/tag/v0.2.4.5>`__
-    Monero based coin from Canadian developer.
+masari_ 0.2.4.5
 
-monero_ `0.13.0.4 <https://github.com/monero-project/monero/releases/tag/v0.13.0.4>`__
-    Original cryptonote currency focused on privacy and anonymity.
+monero_ 0.13.0.4
 
-stellite_ `1.2.4.4 <https://github.com/stellitecoin/Stellite/releases/tag/1.2.4.4>`__
-    Currency focusing on mobile and even smart device support.
+sumokoin_ 0.4.1.1-1
 
-sumokoin_ `0.4.1.1 <https://github.com/sumoprojects/sumokoin/releases/tag/v0.4.1.1>`__
-    Monero copy coin; switched to cryptonote heavy algorithm.
+xmr-stak-cpu_ 2.7.1-1
 
-xmr-stak-cpu_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
-    xmr-stak compiled with CPU mining support only.
+xmr-stak-cpu-amd_ 2.7.1
 
-xmr-stak-cpu-amd_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
-    xmr-stak compiled with CPU and AMD mining support.
+xmr-stak-cpu-nvidia_ 2.7.1-1
 
-xmr-stak-cpu-nvidia_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
-    xmr-stak compiled with CPU and NVIDIA mining support.
-    
-xmr-stak-cpu-amd-nvidia_ `2.5.2 <https://github.com/fireice-uk/xmr-stak/releases/tag/2.5.2>`__
-    xmr-stak compiled with CPU, AMD, and NVIDIA mining support.
+xmr-stak-cpu-amd-nvidia_ 2.7.1
 
 
-Installation
-============
-
-Run ``makepkg -srci`` within the directory containing the desired
-PKGBUILD to build and install the package.
-
-See the wiki_ for more information.
-
-
-.. _CryptoNote: https://github.com/cryptonotefoundation/cryptonote
-.. _PKGBUILD: https://wiki.archlinux.org/index.php/PKGBUILD
-.. _wiki: https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages
 .. _aeon: http://www.aeon.cash/
 .. _dero: https://dero.io/
 .. _electroneum: https://electroneum.com/

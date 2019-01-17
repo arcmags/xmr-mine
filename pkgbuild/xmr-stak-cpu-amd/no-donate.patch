@@ -1,5 +1,5 @@
---- xmr-stak-2.5.2/xmrstak/donate-level.hpp
-+++ xmr-stak-2.5.2/xmrstak/donate-level.hpp
+--- xmr-stak-2.7.1/xmrstak/donate-level.hpp
++++ xmr-stak-2.7.1/xmrstak/donate-level.hpp
 @@ -15,4 +15,4 @@
   *
   */

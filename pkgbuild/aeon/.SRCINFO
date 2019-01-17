@@ -1,6 +1,6 @@
 pkgbase = aeon
 	pkgdesc = Aeon: cryptonote currency daemon and wallet
-	pkgver = 0.12.6.0
+	pkgver = 0.12.8.0
 	pkgrel = 1
 	url = https://github.com/aeonix/aeon
 	arch = x86_64
@@ -17,7 +17,7 @@ pkgbase = aeon
 	depends = readline
 	depends = unbound
 	depends = zeromq
-	source = https://github.com/aeonix/aeon/archive/v0.12.6.0-aeon.tar.gz
-	md5sums = 91cfa5d1a770e70e2ab596f2126584b0
+	source = https://github.com/aeonix/aeon/archive/v0.12.8.0-aeon.tar.gz
+	md5sums = 854e396224eb1baf03b13ce6aac47f22
 pkgname = aeon
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 ##============================  xmr-mine  ============================##
-# Copyright (C) 2018 arcmags             GNU General Public License v3 #
+# (C) 2019 Chris Magyar                  GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.5.2.
+# Wrapper script for xmr-stak v2.7.1.
 
 miner_help() {
-cat <<'EODOC'
+cat <<'HELPDOC'
 NAME
     xmr-mine
 
@@ -27,7 +27,7 @@ OPTIONS
     --background, -B
         Launch xmr-stak in daemon mode and fork to background.
 
-    --currency, -C <currency>
+    --currency, -c <currency>
         Set currency to mine for.  Any currency with a wallet and
         pool given in xmr-mine.conf may be used.
 
@@ -69,7 +69,7 @@ OPTIONS
 ENVIRONMENT VARIABLES
     MINER_CONFIG_DIR
         Directory containing any xmr-stak configuration files.
-        ~/.xmr-mine is used by default if left unset.
+        ~/.config/xmr-mine is used by default if left unset.
 
 CONFIGURATION
     Wallet and pool information can be specified in
@@ -82,13 +82,13 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.5.2
+    xmr-stak v2.7.1
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
     https://github.com/arcmags/xmr-mine
     https://github.com/fireice-uk/xmr-stak
-EODOC
+HELPDOC
 exit 0
 }
 
@@ -109,7 +109,7 @@ XMR_STAK_POOLS=
 XMR_STAK_CPU=
 XMR_STAK_NVIDIA=
 # miner config directory:
-MINER_CONFIG_DIR="${MINER_CONFIG_DIR:-$HOME/.xmr-mine}"
+MINER_CONFIG_DIR="${MINER_CONFIG_DIR:-$HOME/.config/xmr-mine}"
 # miner directory:
 MINER_DIR="/tmp/xmr-mine"
 # script flags:
@@ -370,12 +370,8 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='BBS'        ;;
     bittube)        currency='bittube'
                     MINER_CURRENCY='TUBE'       ;;
-    croat)          currency='croat'
-                    MINER_CURRENCY='CROAT'      ;;
-    edollar)        currency='edollar'
-                    MINER_CURRENCY='EDL'        ;;
-    electroneum)    currency='electroneum'
-                    MINER_CURRENCY='ETN'        ;;
+    freehaven)      currency='freehaven'
+                    MINER_CURRENCY='XFH'        ;;
     graft)          currency='graft'
                     MINER_CURRENCY='GRFT'       ;;
     haven)          currency='haven'
@@ -405,12 +401,6 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='AEON'       ;;
     bbs)            currency='bbscoin'
                     MINER_CURRENCY='BBS'        ;;
-    croat)          currency='croat'
-                    MINER_CURRENCY='CROAT'      ;;
-    edl)            currency='edollar'
-                    MINER_CURRENCY='EDL'        ;;
-    etn)            currency='electroneum'
-                    MINER_CURRENCY='ETN'        ;;
     grft)           currency='graft'
                     MINER_CURRENCY='GRFT'       ;;
     ipbc)           currency='ipbc'
@@ -431,6 +421,8 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='TRTL'       ;;
     tube)           currency='bittube'
                     MINER_CURRENCY='TUBE'       ;;
+    xfh)            currency='freehaven'
+                    MINER_CURRENCY='XFH'        ;;
     xhv)            currency='haven'
                     MINER_CURRENCY='XHV'        ;;
     xmr)            currency='monero'
@@ -441,12 +433,12 @@ case "${MINER_CURRENCY,,}" in
     cryptonight_bittube2)       currency='cyrptonight_bittube2'     ;;
     cryptonight)                currency='cryptonight'              ;;
     cryptonight_haven)          currency='cryptonight_haven'        ;;
-    cryptonight_haven)          currency='cryptonight_haven'        ;;
     cryptonight_heavy)          currency='cryptonight_heavy'        ;;
     cryptonight_lite)           currency='cryptonight_lite'         ;;
     cryptonight_lite_v7)        currency='cryptonight_lite_v7'      ;;
     cryptonight_lite_v7_xor)    currency='cryptonight_lite_v7_xor'  ;;
     cryptonight_masari)         currency='cryptonight_masari'       ;;
+    cryptonight_superfast)      currency='cryptonight_superfast'    ;;
     cryptonight_v7)             currency='cryptonight_v7'           ;;
     cryptonight_v8)             currency='cryptonight_v8'           ;;
     cryptonight_v7_stellite)    currency='cryptonight_v7_stellite'  ;;
@@ -597,17 +589,16 @@ for FILE in $CONFIG_FILES; do
     FILE_GPU="${FILE_GPU//_/ }"
     FILE_GPU="${FILE_GPU,,}"
     if [[ "$GPU" =~ "${FILE_GPU}" ]]; then
-		if [[ "$GPU" =~ 'nvidia' ]]; then
-			cp "$MINER_CONFIG_DIR/$FILE" ./nvidia.txt
-		elif [[ "$GPU" =~ 'radeon' ]]; then
-			cp "$MINER_CONFIG_DIR/$FILE" ./amd.txt
-		fi
+        if [[ "$GPU" =~ 'nvidia' ]]; then
+            cp "$MINER_CONFIG_DIR/$FILE" ./nvidia.txt
+        elif [[ "$GPU" =~ 'radeon' ]]; then
+            cp "$MINER_CONFIG_DIR/$FILE" ./amd.txt
+        fi
     fi
 done
 
 # launch xmr-stak:
 if [ "$FLAG_DRYRUN" = 'false' ]; then
-
     # daemon mode:
     if [ "$FLAG_DAEMON" = 'true' ]; then
         # daemon incognito mode:
@@ -620,7 +611,6 @@ if [ "$FLAG_DRYRUN" = 'false' ]; then
             sleep 2
             miner_print "xmr-stak forked to background PID: $!\n"
         fi
-
     # normal mode:
     else
         xmr-stak

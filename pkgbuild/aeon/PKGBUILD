@@ -1,10 +1,10 @@
 # Maintainer: Chris Magyar <c.magyar.ec@gmail.com>
 
 pkgname=aeon
-pkgver=0.12.6.0
+pkgver=0.12.8.0
 _gituser=aeonix
 _gitrepo=aeon
-_gitver=v0.12.6.0-aeon
+_gitver=v0.12.8.0-aeon
 pkgrel=1
 pkgdesc='Aeon: cryptonote currency daemon and wallet'
 arch=('x86_64')
@@ -14,10 +14,10 @@ makedepends=( 'boost' 'cmake' 'git' 'rapidjson' )
 depends=( 'boost-libs' 'libunwind' 'miniupnpc' 'openssl'
     'pcsclite' 'readline' 'unbound' 'zeromq' )
 source=("$pkgname-$pkgver.tar.gz::$url/archive/$_gitver.tar.gz")
-md5sums=('91cfa5d1a770e70e2ab596f2126584b0')
+md5sums=('854e396224eb1baf03b13ce6aac47f22')
 
 prepare() {
-    mv "$srcdir/aeon-0.12.6.0-aeon" "$srcdir/$pkgname-$pkgver"
+    mv "$srcdir/aeon-0.12.8.0-aeon" "$srcdir/$pkgname-$pkgver"
 	cd "$srcdir/$pkgname-$pkgver"
     git clone \
 		git://github.com/monero-project/miniupnp.git external/miniupnp
