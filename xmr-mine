@@ -2,7 +2,7 @@
 ##============================  xmr-mine  ============================##
 # (C) 2019 Chris Magyar                  GNU General Public License v3 #
 ##====================================================================##
-# Wrapper script for xmr-stak v2.7.1.
+# Wrapper script for xmr-stak v2.8.3.
 
 miner_help() {
 cat <<'HELPDOC'
@@ -82,7 +82,7 @@ CONFIGURATION
     every run unless a config file is specified.
 
 REQUIREMENTS
-    xmr-stak v2.7.1
+    xmr-stak v2.8.3
         Monero unified CPU/GPU pool miner.
 
 SEE ALSO
@@ -366,6 +366,8 @@ fi
 # set currency from MINER_CURRENCY:
 case "${MINER_CURRENCY,,}" in
     # currencies:
+    aeon7)          currency='aeon7'
+                    MINER_CURRENCY='AEON'       ;;
     bbscoin)        currency='bbscoin'
                     MINER_CURRENCY='BBS'        ;;
     bittube)        currency='bittube'
@@ -376,26 +378,26 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='GRFT'       ;;
     haven)          currency='haven'
                     MINER_CURRENCY='XHV'        ;;
-    intense)        currency='intensecoin'
-                    MINER_CURRENCY='LTHN'       ;;
-    intensecoin)    currency='intensecoin'
-                    MINER_CURRENCY='LTHN'       ;;
     karbo)          currency='karbo'
                     MINER_CURRENCY='KRB'        ;;
     karbowanec)     currency='karbo'
                     MINER_CURRENCY='KRB'        ;;
-    lethean)        currency='intensecoin'
+    lethean)        currency='lethean'
                     MINER_CURRENCY='LTHN'       ;;
     masari)         currency='masari'
                     MINER_CURRENCY='MSR'        ;;
     monero)         currency='monero'
                     MINER_CURRENCY='XMR'        ;;
+    plenteum)       currency='plenteum'
+                    MINER_CURRENCY='PLE'        ;;
     stellite)       currency='stellite'
                     MINER_CURRENCY='XTL'        ;;
     sumokoin)       currency='sumokoin'
                     MINER_CURRENCY='SUMO'       ;;
     turtlecoin)     currency='turtlecoin'
                     MINER_CURRENCY='TRTL'       ;;
+    zelerius)       currency='zelerius'
+                    MINER_CURRENCY='ZLS'        ;;
     # symbols:
     aeon)           currency='aeon7'
                     MINER_CURRENCY='AEON'       ;;
@@ -407,10 +409,12 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='IPBC'       ;;
     krb)            currency='karbo'
                     MINER_CURRENCY='KRB'        ;;
-    lthn)           currency='intensecoin'
+    lthn)           currency='lethean'
                     MINER_CURRENCY='LTHN'       ;;
     msr)            currency='masari'
                     MINER_CURRENCY='MSR'        ;;
+    ple)            currency='plenteum'
+                    MINER_CURRENCY='PLE'        ;;
     qrl)            currency='qrl'
                     MINER_CURRENCY='QRL'        ;;
     ryo)            currency='ryo'
@@ -429,9 +433,13 @@ case "${MINER_CURRENCY,,}" in
                     MINER_CURRENCY='XMR'        ;;
     xtl)            currency='stellite'
                     MINER_CURRENCY='XTL'        ;;
+    zls)            currency='zelerius'
+                    MINER_CURRENCY='ZLS'        ;;
     # algorithms:
-    cryptonight_bittube2)       currency='cyrptonight_bittube2'     ;;
     cryptonight)                currency='cryptonight'              ;;
+    cryptonight_bittube2)       currency='cyrptonight_bittube2'     ;;
+    cryptonight_conceal)        currency='cyrptonight_conceal'      ;;
+    cryptonight_gpu)            currency='cyrptonight_gpu'          ;;
     cryptonight_haven)          currency='cryptonight_haven'        ;;
     cryptonight_heavy)          currency='cryptonight_heavy'        ;;
     cryptonight_lite)           currency='cryptonight_lite'         ;;
@@ -439,9 +447,12 @@ case "${MINER_CURRENCY,,}" in
     cryptonight_lite_v7_xor)    currency='cryptonight_lite_v7_xor'  ;;
     cryptonight_masari)         currency='cryptonight_masari'       ;;
     cryptonight_superfast)      currency='cryptonight_superfast'    ;;
+    cryptonight_turtle)         currency='cryptonight_turtle'       ;;
     cryptonight_v7)             currency='cryptonight_v7'           ;;
-    cryptonight_v8)             currency='cryptonight_v8'           ;;
     cryptonight_v7_stellite)    currency='cryptonight_v7_stellite'  ;;
+    cryptonight_v8)             currency='cryptonight_v8'           ;;
+    cryptonight_v8_half)        currency='cryptonight_v8_half'      ;;
+    cryptonight_v8_zelerius)    currency='cryptonight_v8_zelerius'  ;;
 esac
 
 # parse miner password:
